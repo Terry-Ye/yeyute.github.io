@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>AT的博客</title>
+  <subtitle>放下杂念,幸福天天</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2017-03-02T09:10:05.530Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>AT</name>
+    <email>terry.dawu@gmail.com</email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>秒杀活动的架构设计</title>
+    <link href="http://yoursite.com/2017/03/02/%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
+    <id>http://yoursite.com/2017/03/02/秒杀活动的架构设计/</id>
+    <published>2017-03-02T09:04:18.000Z</published>
+    <updated>2017-03-02T09:10:05.530Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="场景的说明"><a href="#场景的说明" class="headerlink" title="场景的说明"></a>场景的说明</h3>]]></content>
+    
+    <summary type="html">
+    
+      稳定版本的设计
+    
+    </summary>
+    
+      <category term="技术" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="架构设计" scheme="http://yoursite.com/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
+    
+  </entry>
+  
+</feed>
