@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-02T09:10:05.530Z</updated>
+  <updated>2017-03-03T09:50:17.086Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,85 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析</title>
+    <link href="http://yoursite.com/2017/03/03/CGI%E3%80%81FastCGI%E3%80%81PHP-CGI%E3%80%81PHP-FPM-%E5%85%B3%E7%B3%BB%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90/"/>
+    <id>http://yoursite.com/2017/03/03/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/</id>
+    <published>2017-03-03T09:31:56.000Z</published>
+    <updated>2017-03-03T09:50:17.086Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单总结"><a href="#CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单总结" class="headerlink" title="CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单总结"></a>CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单总结</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">value</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CGI</td>
+<td style="text-align:left">抽象来说是通用的服务网关， 标准的CGI对每个请求都会解析php.ini文件，初始化执行环境</td>
+</tr>
+<tr>
+<td style="text-align:left">PHP-CGI</td>
+<td style="text-align:left">php-cgi只是解释PHP脚本的程序而已</td>
+</tr>
+<tr>
+<td style="text-align:left">FastCGI</td>
+<td style="text-align:left">一种管理php-cgi的协议(抽象)，一套由操作系统管理的php-cgi管理程序(具体) ，是用来提高CGI程序性能的</td>
+</tr>
+<tr>
+<td style="text-align:left">PHP-FPM</td>
+<td style="text-align:left">实现fast-cgi协议的具体程序</td>
+</tr>
+</tbody>
+</table>
+<p>例：mvc与tp框架的关系， mvc是一种设计模式，tp框架是实现mvc模式的具体程序。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      CGI、FastCGI、PHP-CGI、PHP-FPM
+    
+    </summary>
+    
+      <category term="Technology" scheme="http://yoursite.com/categories/Technology/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>【学习笔记】hexo 命令</title>
+    <link href="http://yoursite.com/2017/03/03/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91hexo-%E5%91%BD%E4%BB%A4/"/>
+    <id>http://yoursite.com/2017/03/03/【学习笔记】hexo-命令/</id>
+    <published>2017-03-03T02:06:47.000Z</published>
+    <updated>2017-03-03T09:51:46.298Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 全局安装安装</div><div class="line">npm install hexo -g</div><div class="line"># 升级  </div><div class="line">npm update hexo -g  </div><div class="line"># 初始化 </div><div class="line">hexo init</div></pre></td></tr></table></figure>
+<h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 本地启动服务</div><div class="line">hexo s == hexo server  </div><div class="line"># 生成静态文件</div><div class="line">hexo g = hexo generate </div><div class="line"># 部署,将代码上传到配置的服务器</div><div class="line">hexo d == hexo deploy</div></pre></td></tr></table></figure>
+<h3 id="新建"><a href="#新建" class="headerlink" title="新建"></a>新建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 新建文章</div><div class="line">hexo new &quot;postName&quot;</div><div class="line"># 新建页面 </div><div class="line">hexo new page &quot;pageName&quot;</div></pre></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>删除 ./source/_posts/里对应的md文件. ps:不能全部删除，会报错。<br>然后对应执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo g == hexo generate#生成</div><div class="line">hexo s == hexo server #启动服务预览</div><div class="line">hexo d == hexo deploy#部署</div></pre></td></tr></table></figure>
+<p>hexo clean,直接把public下的所有文章和分类目录都删除了,tags,archices,categories也会重新布局,请小心操作</p>
+<h3 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># Hexo 会监视文件变动并自动更新，您无须重启服务器。</div><div class="line">hexo server </div><div class="line"># 静态模式</div><div class="line">hexo server -s </div><div class="line"># 更改端口</div><div class="line">hexo server -p 5000 </div><div class="line"># 自定义 IP</div><div class="line">hexo server -i 192.168.1.1</div><div class="line"></div><div class="line"># 清除缓存 网页正常情况下可以忽略此条命令,public 文件夹内容将全部删除</div><div class="line">hexo clean </div><div class="line"># 生成静态网页</div><div class="line">hexo g </div><div class="line"># 开始部署</div><div class="line">hexo d</div></pre></td></tr></table></figure>
+<h3 id="监视文件变动"><a href="#监视文件变动" class="headerlink" title="监视文件变动"></a>监视文件变动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 使用 Hexo 生成静态文件快速而且简单</div><div class="line">hexo generate</div><div class="line"># 监视文件变动</div><div class="line">hexo generate --watch</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      hexo
+    
+    </summary>
+    
+      <category term="Technology" scheme="http://yoursite.com/categories/Technology/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>秒杀活动的架构设计</title>
     <link href="http://yoursite.com/2017/03/02/%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
     <id>http://yoursite.com/2017/03/02/秒杀活动的架构设计/</id>
     <published>2017-03-02T09:04:18.000Z</published>
-    <updated>2017-03-02T09:10:05.530Z</updated>
+    <updated>2017-03-02T09:47:54.841Z</updated>
     
     <content type="html"><![CDATA[<h3 id="场景的说明"><a href="#场景的说明" class="headerlink" title="场景的说明"></a>场景的说明</h3>]]></content>
     
@@ -30,7 +104,7 @@
     
     </summary>
     
-      <category term="技术" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="Technology" scheme="http://yoursite.com/categories/Technology/"/>
     
     
       <category term="架构设计" scheme="http://yoursite.com/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>

@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | AT的博客</title>
+  <title>CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
-<meta property="og:type" content="website">
-<meta property="og:title" content="AT的博客">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="CGI、FastCGI、PHP-CGI、PHP-FPM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析">
+<meta property="og:url" content="http://yoursite.com/2017/03/03/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta property="og:description" content="CGI、FastCGI、PHP-CGI、PHP-FPM">
+<meta property="og:updated_time" content="2017-03-03T09:50:17.086Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AT的博客">
-<meta name="twitter:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta name="twitter:title" content="CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析">
+<meta name="twitter:description" content="CGI、FastCGI、PHP-CGI、PHP-FPM">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -144,37 +145,62 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/03/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/" class="archive-article-date">
+
+        
+        <a href="/2017/03/03/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/" class="archive-article-date">
   	<time datetime="2017-03-03T09:31:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/03/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/">CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单总结"><a href="#CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单总结" class="headerlink" title="CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单总结"></a>CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单总结</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">value</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CGI</td>
+<td style="text-align:left">抽象来说是通用的服务网关， 标准的CGI对每个请求都会解析php.ini文件，初始化执行环境</td>
+</tr>
+<tr>
+<td style="text-align:left">PHP-CGI</td>
+<td style="text-align:left">php-cgi只是解释PHP脚本的程序而已</td>
+</tr>
+<tr>
+<td style="text-align:left">FastCGI</td>
+<td style="text-align:left">一种管理php-cgi的协议(抽象)，一套由操作系统管理的php-cgi管理程序(具体) ，是用来提高CGI程序性能的</td>
+</tr>
+<tr>
+<td style="text-align:left">PHP-FPM</td>
+<td style="text-align:left">实现fast-cgi协议的具体程序</td>
+</tr>
+</tbody>
+</table>
+<p>例：mvc与tp框架的关系， mvc是一种设计模式，tp框架是实现mvc模式的具体程序。</p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -187,104 +213,86 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/03/03/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/03/【学习笔记】hexo-命令/" class="archive-article-date">
-  	<time datetime="2017-03-03T02:06:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/03/【学习笔记】hexo-命令/">【学习笔记】hexo 命令</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/03/【学习笔记】hexo-命令/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【学习笔记】hexo 命令</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/02/秒杀活动的架构设计/" class="archive-article-date">
-  	<time datetime="2017-03-02T09:04:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/02/秒杀活动的架构设计/">秒杀活动的架构设计</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">架构设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
+
   
-  
-    </div></section>
+    <div class="duoshuo"></div>
   
 
-    
+
 
 
           </div>
@@ -307,8 +315,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
