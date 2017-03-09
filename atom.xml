@@ -147,7 +147,7 @@
     <link href="http://yoursite.com/2015/03/11/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Memcached/"/>
     <id>http://yoursite.com/2015/03/11/深入理解-Memcached/</id>
     <published>2015-03-11T06:41:37.000Z</published>
-    <updated>2017-03-09T08:11:37.388Z</updated>
+    <updated>2017-03-09T08:15:00.288Z</updated>
     
     <content type="html"><![CDATA[<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
 <li>单个item 最大的数据 1M</li>
@@ -171,7 +171,7 @@
 <li>Slab class：特定chunk的组</li>
 </ul>
 <p>如何组织数据的呢？<br>内存分配流程</p>
-<p><img src="http://localhost:4000/assets/memcached.png" alt="memcached"></p>
+<p><img src="https://yeyute.github.io/assets/memcached.png" alt="memcached"></p>
 <table>
 <thead>
 <tr>
