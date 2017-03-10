@@ -14,12 +14,12 @@
 <meta property="og:url" content="http://yoursite.com/2016/01/01/Mysql-聚簇索引/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="聚簇索引,mysql">
-<meta property="og:image" content="http://localhost:4000/assets/jcsy.png">
-<meta property="og:updated_time" content="2017-03-10T09:23:08.506Z">
+<meta property="og:image" content="https://yeyute.github.io/assets/jcsy.png">
+<meta property="og:updated_time" content="2017-03-10T09:24:57.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql 聚簇索引(Clustered Index)">
 <meta name="twitter:description" content="聚簇索引,mysql">
-<meta name="twitter:image" content="http://localhost:4000/assets/jcsy.png">
+<meta name="twitter:image" content="https://yeyute.github.io/assets/jcsy.png">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -59,6 +59,10 @@
 			<ul>
 			
 				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories/Technology/">技术</a></li>
+	        
+				<li><a href="/categories/Life/">生活</a></li>
 	        
 			</ul>
 		</nav>
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,10 +137,14 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 100%"><a href="/">主页</a></li>
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories/Technology/">技术</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories/Life/">生活</a></li>
 		        
 				</ul>
 			</nav>
@@ -249,7 +261,7 @@
 <h3 id="聚簇索引中的记录是如何存放"><a href="#聚簇索引中的记录是如何存放" class="headerlink" title="聚簇索引中的记录是如何存放"></a>聚簇索引中的记录是如何存放</h3><ol>
 <li>节点页只包含了索引列，叶子页包含了行的全部数据，就是既存储索引值,又在叶子中存储行的数据</li>
 <li>Innodb是通过主键聚集数据，如果没有主键，Innodb会选择一个唯一的非空索引代替。如果没有这样的索引，会隐式定义一个主键来作为聚簇索引。</li>
-<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列<br><img src="http://localhost:4000/assets/jcsy.png" alt=""></li>
+<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列<br><img src="https://yeyute.github.io/assets/jcsy.png" alt=""></li>
 </ol>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
 <li>可以把相关的数据保存在一起。 例如电子邮件，可以根据用户ID来聚集数据，这样只需要从磁盘读取少数的数据页就能获取某个用户的全部邮件。如果没有使用聚簇索引，则每封邮件都可能导致一次磁盘的I/O.</li>
@@ -476,15 +488,15 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -497,6 +509,10 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
             
             <div class="clearfix"></div>
