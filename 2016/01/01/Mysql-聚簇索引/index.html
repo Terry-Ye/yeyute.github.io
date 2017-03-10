@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2015/3 | AT的博客</title>
+  <title>Mysql 聚簇索引 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
-<meta property="og:type" content="website">
-<meta property="og:title" content="AT的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2015/03/index.html">
+  <meta name="description" content="聚簇索引,mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql 聚簇索引">
+<meta property="og:url" content="http://yoursite.com/2016/01/01/Mysql-聚簇索引/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta property="og:description" content="聚簇索引,mysql">
+<meta property="og:updated_time" content="2017-03-10T01:31:28.082Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AT的博客">
-<meta name="twitter:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta name="twitter:title" content="Mysql 聚簇索引">
+<meta name="twitter:description" content="聚簇索引,mysql">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -144,89 +145,65 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Mysql-聚簇索引" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/03/11/深入理解-Memcached/" class="archive-article-date">
-  	<time datetime="2015-03-11T06:41:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-11</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/03/11/深入理解-Memcached/">深入理解 Memcached</a>
+    <h1 class="article-title" itemprop="name">
+      Mysql 聚簇索引
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2016/01/01/Mysql-聚簇索引/" class="archive-article-date">
+  	<time datetime="2016-01-01T06:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
+<li>每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放。但是，一个表可以有不止一个非聚簇索引。</li>
+<li>如果需要该索引,只要将索引指定为主键(primary key)就可以了</li>
+<li>如果正在使用Innodb 表并且没有什么数据需要聚集，那么可以定义一个代理键作为主键，这种主键的数据应该和应用无关，最简单的方法是使用AUTO_INCREMENT 自增列。这样可以保证数据行是按顺序写入，对于根据主键做关联操作的性能也会更好。 </li>
+<li>顺序的主键会造成什么坏的结果？ 在高并发插入可能导致间隙锁竞争，可以考虑重新设计表，或者更改innodb_autoinc_lock_mode参数（innodb在语句1的实际插入操作执行前就预分配给该语句三个自增值，当有一个新的insert语句2要执行时，读取的AUTO_INCREMENT=4，这样虽然语句1可能还没有执行完，语句2就可直接执行无需等待语句2。）</li>
+</ol>
+<h3 id="聚簇索引中的记录是如何存放"><a href="#聚簇索引中的记录是如何存放" class="headerlink" title="聚簇索引中的记录是如何存放"></a>聚簇索引中的记录是如何存放</h3><ol>
+<li>节点页只包含了索引列，叶子页包含了行的全部数据</li>
+<li>Innodb是通过主键聚集数据，如果没有主键，Innodb会选择一个唯一的非空索引代替。如果没有这样的索引，会隐式定义一个主键来作为聚簇索引。</li>
+<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列</li>
+</ol>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>可以把相关的数据保存在一起。 例如电子邮件，可以根据用户ID来聚集数据，这样只需要从磁盘读取少数的数据页就能获取某个用户的全部邮件。如果没有使用聚簇索引，则每封邮件都可能导致一次磁盘的I/O.</li>
+<li>数据访问更快。将索引和数据保存在同一个B-Tree中，因此从聚簇索引中获取数据通常比非聚簇索引查找更快</li>
+<li>使用覆盖索引扫描的查询可以直接使用页节点中的主键值</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<li>聚簇数据最大限度地提高了I/O密集型应用的性能，但如果数据全部都放在内存中，则访问的顺序就没那么重要了，聚会簇索引也就没什么优势</li>
+<li>更新索引列代价很大，因为innodb 强制将每个被更新的行移动到新的位置</li>
+<li>插入的速度严重依赖于插入顺充，按照主键的顺序插入是加载数据到INNODB表中速度最快的方式，如果不是，那么加载完成后最好 使用optimize table命令重新排序</li>
+<li>对于插入新行，或主键更新，导致需要移动行的时候，可能面临“页分裂”问题。 当行的主键值要求必须将这一行插入到某个已满的页中时，存储引擎会将该页分裂成两个页面来容纳该行，会导致表占用更大的磁盘空间</li>
+<li>可能会导致全表扫描变慢，尤其是行比较稀疏 或者 页分裂 存储不连续的时候</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nosql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
         		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/03/10/hexo-命令/" class="archive-article-date">
-  	<time datetime="2015-03-10T02:06:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/03/10/hexo-命令/">hexo 命令</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
+      		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
         		</li>
@@ -234,7 +211,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -247,17 +224,95 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/01/01/Mysql-聚簇索引/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/01/02/Mysql-覆盖索引/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Mysql 覆盖索引
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2015/07/03/http-代理详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">http 代理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+  
+    <div class="duoshuo"></div>
   
 
-    
+
 
 
           </div>
@@ -280,8 +335,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

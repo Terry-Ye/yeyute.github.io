@@ -245,6 +245,224 @@
 
 
   
+    <article id="post-深入理解-Memcached" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/11/深入理解-Memcached/">深入理解 Memcached</a>
+    </h1>
+  
+
+        
+        <a href="/2015/03/11/深入理解-Memcached/" class="archive-article-date">
+  	<time datetime="2015-03-11T06:41:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>单个item 最大的数据 1M</li>
+<li>单进程最大的使用内存 2G ，需要更多内存时可开多个端口</li>
+<li>memcached 是多线程，非阻塞io复用的网络模型，redis 是单线程</li>
+<li>键长最大250字节</li>
+</ul>
+<p>MEMCACHE_COMPRESSED为压缩选项，缩后数据一般为原数据大小的30%左右，节省了70%的传输性能消耗所得会大于文件压缩带来的性能损耗；<br>存的数据的确有大于几百字节的，如果都是小于100字节的键值对，压缩可能反而带来膨胀，</p>
+<h3 id="常见的运用场景"><a href="#常见的运用场景" class="headerlink" title="常见的运用场景"></a>常见的运用场景</h3><ul>
+<li>memcached来保持session，实现session共享（session跨服务器的一种解决方案）</li>
+</ul>
+<h3 id="解释压缩"><a href="#解释压缩" class="headerlink" title="解释压缩"></a>解释压缩</h3><blockquote>
+<p>注：php 官网的memcache 扩展的最新几个版本，当value好像是大于20k时（具体数值待验证），会自动压缩，尝试过压缩后有乱码情况,尝试使用1。1版本的不会自动压缩的情况</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span>(<span class="variable">$this</span>-&gt;_key(<span class="variable">$key</span>), <span class="variable">$value</span>, MEMCACHE_COMPRESSED, <span class="variable">$ttl</span>);</div></pre></td></tr></table></figure>
+<p>MEMCACHE_COMPRESSED为压缩选项缩后数据一般为原数据大小的30%左右，节省了70%的传输性能消耗所得会大于文件压缩带来的性能损耗；存的数据的确有大于几百字节的，如果都是小于100字节的键值对，压缩可能反而带来膨胀，Memcached中都是按照固定大小分块存储的，最小也要88 B。所以对于过小数据带来的压缩膨胀并不是太大的问题；</p>
+<h3 id="内存管理机制（默认是使用Slab-Allocatoion机制分配、管理内存）"><a href="#内存管理机制（默认是使用Slab-Allocatoion机制分配、管理内存）" class="headerlink" title="内存管理机制（默认是使用Slab Allocatoion机制分配、管理内存）"></a>内存管理机制（默认是使用Slab Allocatoion机制分配、管理内存）</h3><ul>
+<li>将内存分割成各种尺寸的块(chunk),并把尺寸相同的块分成组(chunk的集合)</li>
+<li>page 是分配Slab的内存空间 默认是1M 根据Slab大小切分成chunk</li>
+<li>chunk:用户缓存记录的内存空间</li>
+<li>Slab class：特定chunk的组</li>
+</ul>
+<p>如何组织数据的呢？<br>内存分配流程</p>
+<p><img src="https://yeyute.github.io/assets/memcached.png" alt="memcached"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">内存单位</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">slab</td>
+<td style="text-align:left">数据大小相似的为一类, 放在同一个slab中.(按照chunk分类)</td>
+</tr>
+<tr>
+<td style="text-align:left">page</td>
+<td style="text-align:left">每个page分配1M大小, 该类slab下的chunk用完, 重新申请一个page; 分配一次的大小. 如果没有page, 每次分配初始化一个chunk太浪费资源.</td>
+</tr>
+<tr>
+<td style="text-align:left">chunk</td>
+<td style="text-align:left">数据存放最小也是最大的单位, 一个key对应的数据不能跨chunk(默认最大为1M)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">内存分配参数</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">used_chunks</td>
+<td style="text-align:left">已分配给item的chunk数量, 只分配, 不一定使用（初始化）</td>
+</tr>
+<tr>
+<td style="text-align:left">free_chunks</td>
+<td style="text-align:left">尚未分配的chunk数量, 由delete释放的chunk(get不到时也会释放)</td>
+</tr>
+<tr>
+<td style="text-align:left">free_chunks_end</td>
+<td style="text-align:left">分配后还没有被使用过的chunk</td>
+</tr>
+</tbody>
+</table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nosql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2015/03/11/深入理解-Memcached/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-hexo-命令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/10/hexo-命令/">hexo 命令</a>
+    </h1>
+  
+
+        
+        <a href="/2015/03/10/hexo-命令/" class="archive-article-date">
+  	<time datetime="2015-03-10T02:06:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># 全局安装安装</span></div><div class="line">npm install hexo -g</div><div class="line"><span class="meta"># 升级  </span></div><div class="line">npm update hexo -g  </div><div class="line"><span class="meta"># 初始化 </span></div><div class="line">hexo init</div></pre></td></tr></table></figure>
+<h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 本地启动服务</span></div><div class="line">hexo <span class="attr">s</span> == hexo server  </div><div class="line"><span class="comment"># 生成静态文件</span></div><div class="line">hexo <span class="attr">g</span> = hexo generate </div><div class="line"><span class="comment"># 部署,将代码上传到配置的服务器</span></div><div class="line">hexo <span class="attr">d</span> == hexo deploy</div></pre></td></tr></table></figure>
+<h3 id="新建"><a href="#新建" class="headerlink" title="新建"></a>新建</h3><figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># 新建文章</span></div><div class="line">hexo <span class="keyword">new</span> <span class="string">"postName"</span></div><div class="line"><span class="meta"># 新建页面 </span></div><div class="line">hexo <span class="keyword">new</span> page <span class="string">"pageName"</span></div></pre></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>删除 ./source/_posts/里对应的md文件. ps:不能全部删除，会报错。<br>然后对应执行</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo <span class="attr">g</span> == hexo generate<span class="comment">#生成</span></div><div class="line">hexo <span class="attr">s</span> == hexo server <span class="comment">#启动服务预览</span></div><div class="line">hexo <span class="attr">d</span> == hexo deploy<span class="comment">#部署</span></div></pre></td></tr></table></figure>
+<p>hexo clean,直接把public下的所有文章和分类目录都删除了,tags,archices,categories也会重新布局,请小心操作</p>
+<h3 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h3><figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># Hexo 会监视文件变动并自动更新，您无须重启服务器。</span></div><div class="line">hexo server </div><div class="line"><span class="meta"># 静态模式</span></div><div class="line">hexo server -s </div><div class="line"><span class="meta"># 更改端口</span></div><div class="line">hexo server -p <span class="number">5000</span> </div><div class="line"><span class="meta"># 自定义 IP</span></div><div class="line">hexo server -i <span class="number">192.168</span><span class="number">.1</span><span class="number">.1</span></div><div class="line"></div><div class="line"><span class="meta"># 清除缓存 网页正常情况下可以忽略此条命令,public 文件夹内容将全部删除</span></div><div class="line">hexo clean </div><div class="line"><span class="meta"># 生成静态网页</span></div><div class="line">hexo g </div><div class="line"><span class="meta"># 开始部署</span></div><div class="line">hexo d</div></pre></td></tr></table></figure>
+<h3 id="监视文件变动"><a href="#监视文件变动" class="headerlink" title="监视文件变动"></a>监视文件变动</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 使用 Hexo 生成静态文件快速而且简单</div><div class="line">hexo <span class="keyword">generate</span></div><div class="line"># 监视文件变动</div><div class="line">hexo <span class="keyword">generate</span> --watch</div></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2015/03/10/hexo-命令/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
@@ -342,7 +560,23 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nosql</a>
               </li>
             
             <div class="clearfix"></div>

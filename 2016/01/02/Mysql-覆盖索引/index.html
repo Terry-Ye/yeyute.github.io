@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2017/3 | AT的博客</title>
+  <title>Mysql 覆盖索引 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
-<meta property="og:type" content="website">
-<meta property="og:title" content="AT的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2017/03/index.html">
+  <meta name="description" content="覆盖索引,mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql 覆盖索引">
+<meta property="og:url" content="http://yoursite.com/2016/01/02/Mysql-覆盖索引/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta property="og:description" content="覆盖索引,mysql">
+<meta property="og:updated_time" content="2017-03-10T01:39:46.435Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AT的博客">
-<meta name="twitter:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta name="twitter:title" content="Mysql 覆盖索引">
+<meta name="twitter:description" content="覆盖索引,mysql">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -144,37 +145,74 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Mysql-覆盖索引" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/03/【学习笔记】hexo-命令/" class="archive-article-date">
-  	<time datetime="2017-03-03T02:06:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/03/【学习笔记】hexo-命令/">【学习笔记】hexo 命令</a>
+    <h1 class="article-title" itemprop="name">
+      Mysql 覆盖索引
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
+        
+        <a href="/2016/01/02/Mysql-覆盖索引/" class="archive-article-date">
+  	<time datetime="2016-01-02T02:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
+<li>覆盖索引能够极大地提高性能。 考虑一下如果查询只需要扫描索引而无须回表，会带来多少好处 <ol>
+<li>索引的条目通常远小于数据行大小，所以如果只需要读取索引，那极大地减少数据访问量，所以更内容全部放在内存中</li>
+<li>索引是按照列值顺序存储的（至少单个页内是这样的）</li>
+<li>一些存储引擎如MyISAM 的内存只缓存索引。</li>
+<li>由于innodb 的聚簇索引，覆盖索引 对Innodb表特别有用。 Innodb的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询</li>
+</ol>
+</li>
+<li>mysql 只能用b-tree索引来做覆盖索引</li>
+<li>当发起一个被索引覆盖的查询时，在 EXPLAIN 的extra列可以看到 “Using index”的信息</li>
+</ol>
+<p>例子</p>
+<pre><code>explain select * from prodcuts where actor = &quot;yeyute&quot; and title like &apos; %aplollo%&apos;;
+</code></pre><ol>
+<li>没有任务索引能够覆盖这个查询，因为查询从表中选择了所有的列， 不过 where 条件中的表是有索引可以覆盖的</li>
+<li>mysql 不能在索引中执行like 操作 。 mysql5.5以为更早版本，只允许在索引中做简单操作（&gt; 和 &gt;= 和 !=  ）,这种情况，mysql 只能提取数据行的值而不是索引值来做比较</li>
+</ol>
+<h3 id="使用索引扫描来做排序"><a href="#使用索引扫描来做排序" class="headerlink" title="使用索引扫描来做排序"></a>使用索引扫描来做排序</h3><ul>
+<li>explain type列的值为“index”</li>
+<li>如果索引不能覆盖查询所需的全部列，就得扫描查询所需的全部列</li>
+<li>mysql 可以使用同一个索引既满足排序，又用于查找行</li>
+<li>关联多表时，只有当order by 子句引用的字段全部为第一个表时，才能使用索引做排序</li>
+<li>建立（sex,country），查询时不限制性别，可以在查询条件新增 sex in(‘m’,’f’) and country=’’ 来使用索引</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -187,17 +225,95 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/01/02/Mysql-覆盖索引/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/01/03/Mysql-字段类型/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Mysql 字段类型
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2016/01/01/Mysql-聚簇索引/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Mysql 聚簇索引</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+  
+    <div class="duoshuo"></div>
   
 
-    
+
 
 
           </div>
@@ -220,8 +336,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
@@ -290,11 +406,23 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nosql</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nosql</a>
               </li>
             
             <div class="clearfix"></div>

@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2015/3 | AT的博客</title>
+  <title>【看书笔记】http 代理 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
-<meta property="og:type" content="website">
-<meta property="og:title" content="AT的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2015/03/index.html">
+  <meta name="description" content="http 代理详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【看书笔记】http 代理">
+<meta property="og:url" content="http://yoursite.com/2015/07/03/【看书笔记】http-代理详解/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta property="og:description" content="http 代理详解">
+<meta property="og:updated_time" content="2017-03-10T01:05:51.502Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AT的博客">
-<meta name="twitter:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta name="twitter:title" content="【看书笔记】http 代理">
+<meta name="twitter:description" content="http 代理详解">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -144,48 +145,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-【看书笔记】http-代理详解" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/03/11/深入理解-Memcached/" class="archive-article-date">
-  	<time datetime="2015-03-11T06:41:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-11</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/03/11/深入理解-Memcached/">深入理解 Memcached</a>
+    <h1 class="article-title" itemprop="name">
+      【看书笔记】http 代理
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2015/07/03/【看书笔记】http-代理详解/" class="archive-article-date">
+  	<time datetime="2015-07-02T17:16:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-07-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="web-代理-proxy"><a href="#web-代理-proxy" class="headerlink" title="web 代理(proxy)"></a>web 代理(proxy)</h3><p>代理位于客户端和服务器之间，扮演“中间人”的角色，对web客户端来说是扮演服务器的角色，对服务器来说是扮演客户端的角色</p>
+<h3 id="代理与网关的对比"><a href="#代理与网关的对比" class="headerlink" title="代理与网关的对比"></a>代理与网关的对比</h3><p>代理连接的是两个或多个使用相同协议的应用程序<br>网关扮演的是“协议转换器”的角色，即使客户端和服务器使用的是不同的协议，客户端也可以通过网关完成与服务器之间的事务处理，例：浏览器&lt;-&gt;web/e-mail 网关(pop) &lt;-&gt; e-mail服务器 ，网关将不同的协议连接起来</p>
+<h3 id="为什么使用代理，运用的场景"><a href="#为什么使用代理，运用的场景" class="headerlink" title="为什么使用代理，运用的场景"></a>为什么使用代理，运用的场景</h3><ol>
+<li>代理服务器可以看到并接触到所有流过的http流量，所以代理可以监视流量并对其进行修改<br>应用的场景</li>
+<li>集中式访问控制代理(对禁止的站点强行禁止访问)</li>
+<li>集中式文档访问控制代理</li>
+<li>安全防火墙(提高安全性，以便对流量进行详细的检查)</li>
+<li>web 缓存</li>
+<li>反向代理，以制作于分布式网络</li>
+<li>内容路由器（根据网络流量状态以及内容类型将请求导向特定的服务器）</li>
+<li>转码器 例：可以在传输gif图片时，将其转换成jpeg图片，减少尺寸，也可以对图片进行压缩，同样可以对文本压缩</li>
+<li>匿名者（主动从http报文中删除身份特性，例ip，from头部，referer(请求报头，告知服务器用户的来源页面)首部，cookie,uri的会话id）</li>
+</ol>
+<h3 id="反向代理与正向代理"><a href="#反向代理与正向代理" class="headerlink" title="反向代理与正向代理"></a>反向代理与正向代理</h3><p>反射代理 - 保护和隐藏原始资源服务器</p>
+<p>情景- 用户 c -&gt;代理 a -&gt;机器 b</p>
+<ol>
+<li>正向代理 - 主体是 c，a是c的代理</li>
+<li>反向代理 - 主体是 c，a是b的代理</li>
+</ol>
+<h3 id="代理服务器的部署的几种方式"><a href="#代理服务器的部署的几种方式" class="headerlink" title="代理服务器的部署的几种方式"></a>代理服务器的部署的几种方式</h3><ol>
+<li>出口代理  控制本地网络与大型因特网之间的流量，公司部分网站控制访问等</li>
+<li>访问（入口）代理  用于处理客户的聚合请求，。ISP使用缓存代理来存储常用文档的副本来提高用户的下载速度</li>
+<li>反向代理</li>
+<li>网络交换代理 将具有足够能力的代理放在网络之间的因特网对等交换点上，通过缓存来减轻因特网节点的拥塞，并对流量进行监视</li>
+</ol>
+<h3 id="代理如何获取流量的"><a href="#代理如何获取流量的" class="headerlink" title="代理如何获取流量的"></a>代理如何获取流量的</h3><ol>
+<li>修改客户端 - 手动或自动修改浏览器代理配置，客户端的http请求直接发给代理</li>
+<li>修改网络 - 在客户端不知道的情况下，拦截网络流量并将其导入代理，这种拦截称为拦截代理。例：连接使用公共wifi时，会有将所有的站点修改到本地的hosts,获取拦截的流量信息后再请求问点返回。</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nosql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -198,66 +226,95 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2015/07/03/【看书笔记】http-代理详解/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/03/10/hexo-命令/" class="archive-article-date">
-  	<time datetime="2015-03-10T02:06:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/03/10/hexo-命令/">hexo 命令</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
+  
+<nav id="article-nav">
+  
+    <a href="/2016/03/09/秒杀活动的架构设计/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          秒杀活动的架构设计
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/11/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
+
+
+
   
-  
-    </div></section>
+    <div class="duoshuo"></div>
   
 
-    
+
 
 
           </div>
@@ -280,8 +337,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
@@ -350,23 +407,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">nosql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
             
             <div class="clearfix"></div>
