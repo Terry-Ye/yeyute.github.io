@@ -146,6 +146,56 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-用脚步丈量家乡-汕尾" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/10/用脚步丈量家乡-汕尾/">用脚步丈量家乡 - 汕尾</a>
+    </h1>
+  
+
+        
+        <a href="/2017/03/10/用脚步丈量家乡-汕尾/" class="archive-article-date">
+  	<time datetime="2017-03-10T02:00:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/10/用脚步丈量家乡-汕尾/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-秒杀活动的架构设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -477,7 +527,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/01/Mysql-聚簇索引/">Mysql 聚簇索引</a>
+      <a class="article-title" href="/2016/01/01/Mysql-聚簇索引/">Mysql 聚簇索引(Clustered Index)</a>
     </h1>
   
 
@@ -491,15 +541,88 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
-<li>每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放。但是，一个表可以有不止一个非聚簇索引。</li>
-<li>如果需要该索引,只要将索引指定为主键(primary key)就可以了</li>
+<li>每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放，但是，一个表可以有不止一个非聚簇索引。例:你翻到新华字典的汉字“爬”那一页就是P开头的部分，这就是物理存储顺序（聚簇索引）；而不用你到目录，找到汉字“爬”所在的页码，然后根据页码找到这个字（非聚簇索引）</li>
+<li>如果需要该索引,只要将索引指定为主键(primary key)就可以，根据主键创建聚簇索引</li>
 <li>如果正在使用Innodb 表并且没有什么数据需要聚集，那么可以定义一个代理键作为主键，这种主键的数据应该和应用无关，最简单的方法是使用AUTO_INCREMENT 自增列。这样可以保证数据行是按顺序写入，对于根据主键做关联操作的性能也会更好。 </li>
 <li>顺序的主键会造成什么坏的结果？ 在高并发插入可能导致间隙锁竞争，可以考虑重新设计表，或者更改innodb_autoinc_lock_mode参数（innodb在语句1的实际插入操作执行前就预分配给该语句三个自增值，当有一个新的insert语句2要执行时，读取的AUTO_INCREMENT=4，这样虽然语句1可能还没有执行完，语句2就可直接执行无需等待语句2。）</li>
 </ol>
+<h3 id="什么时候用到聚簇索引"><a href="#什么时候用到聚簇索引" class="headerlink" title="什么时候用到聚簇索引"></a>什么时候用到聚簇索引</h3><p>以下将id设置为主键时，mysql 会根据主键创建聚簇索引,例：如果没设置主键，自增，where id=’1000’，是扫描全表<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test_user`</span> (</div><div class="line">	<span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</div><div class="line">	<span class="string">`user_name`</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span>,</div><div class="line">	<span class="string">`password`</span> <span class="built_in">CHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span>,</div><div class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</div><div class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure></p>
+<p>设置id为主键，自增，以下是对应的分析数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> test_user <span class="keyword">where</span> <span class="keyword">id</span>=<span class="string">'16000000'</span> ;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">值</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">select_type</td>
+<td style="text-align:left">simple</td>
+<td style="text-align:left">简单的 select 查询,不使用 union 及子查询</td>
+</tr>
+<tr>
+<td style="text-align:left">table</td>
+<td style="text-align:left">test_user</td>
+<td style="text-align:left">表名</td>
+</tr>
+<tr>
+<td style="text-align:left">partitions</td>
+<td style="text-align:left">null</td>
+<td style="text-align:left">列代表给定表所使用的分区</td>
+</tr>
+<tr>
+<td style="text-align:left">type</td>
+<td style="text-align:left">const</td>
+<td style="text-align:left">是说明只有一条匹配值，</td>
+</tr>
+<tr>
+<td style="text-align:left">possible_keys</td>
+<td style="text-align:left">PRIMARY</td>
+<td style="text-align:left">指出 MySQL 能在该表中使用哪些索引有助于 查询。如果为空,说明没有可用的索引</td>
+</tr>
+<tr>
+<td style="text-align:left">key</td>
+<td style="text-align:left">PRIMARY</td>
+<td style="text-align:left">MySQL 实际从 possible_key 选择使用的索引</td>
+</tr>
+<tr>
+<td style="text-align:left">key_len</td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">使用的索引的长度。在不损失精确性的情况 下,长度越短越好</td>
+</tr>
+<tr>
+<td style="text-align:left">ref</td>
+<td style="text-align:left">const</td>
+<td style="text-align:left">where 条件筛选后表上至多有一条元组匹配时</td>
+</tr>
+<tr>
+<td style="text-align:left">rows</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">MYSQL 认为必须检查的用来返回请求数据的行数</td>
+</tr>
+<tr>
+<td style="text-align:left">filtered</td>
+<td style="text-align:left">100</td>
+<td style="text-align:left">列给出了一个百分比的值，这个百分比值和rows列的值一起使用，可以估计出那些将要和QEP中的前一个表进行连接的行的数目。前一个表就是指id列的值比当前表的id小的表</td>
+</tr>
+</tbody>
+</table>
+<h3 id="主键设置为那个字段合适"><a href="#主键设置为那个字段合适" class="headerlink" title="主键设置为那个字段合适"></a>主键设置为那个字段合适</h3><p>情况分析</p>
+<ol>
+<li>选择聚簇索引应基于where子句和连接操作的类型。</li>
+<li>在聚簇索引中不要包含经常修改的列，因为值修改后，数据行必须移动到新的位置。</li>
+<li>大多数表都应该有聚簇索引或使用分区来降低对表尾页的竞争，在一个高事务的环境中，对最后一页的封锁严重影响系统的吞吐量</li>
+<li>在聚簇索引下，数据在物理上按顺序排在数据页上，重复值也排在一起，因而在那些包含范围检查(between、&lt;、&lt;=、&amp; gt;、&gt;=)或使用group by或order by的查询时，一旦找到具有范围中第一个键值的行，具有后续索引值的行保证物理上毗连在一起而不必进一步搜索，避免了大范围扫描，可以大大提高查询速度。</li>
+<li>在一个频繁发生插入操作的表上建立聚簇索引时，不要建在具有单调上升值的列(如IDENTITY)上，否则会经常引起封锁冲突。</li>
+</ol>
+<p>用户名字段，可以设置为主键，但是不推荐<br>1.用户名是比较规则字母数字序列，这可能导致性能上有所差别<br>2.假如以用户名作为主键并与其他表关联，当删除用户时，再创建一个同名的用户，可能导致这些关联紊乱。而绝对唯一的ID则不会。<br>3.有的系统可能会允许修改用户名，如果以用户名为主键，将带来很多麻烦。而如果以ID为主键进行关联，则没有此问题。</p>
 <h3 id="聚簇索引中的记录是如何存放"><a href="#聚簇索引中的记录是如何存放" class="headerlink" title="聚簇索引中的记录是如何存放"></a>聚簇索引中的记录是如何存放</h3><ol>
-<li>节点页只包含了索引列，叶子页包含了行的全部数据</li>
+<li>节点页只包含了索引列，叶子页包含了行的全部数据，就是既存储索引值,又在叶子中存储行的数据</li>
 <li>Innodb是通过主键聚集数据，如果没有主键，Innodb会选择一个唯一的非空索引代替。如果没有这样的索引，会隐式定义一个主键来作为聚簇索引。</li>
-<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列</li>
+<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列<br><img src="http://localhost:4000/assets/jcsy.png" alt=""></li>
 </ol>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
 <li>可以把相关的数据保存在一起。 例如电子邮件，可以根据用户ID来聚集数据，这样只需要从磁盘读取少数的数据页就能获取某个用户的全部邮件。如果没有使用聚簇索引，则每封邮件都可能导致一次磁盘的I/O.</li>
@@ -552,111 +675,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/01/01/Mysql-聚簇索引/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-http-代理详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/03/http-代理详解/">http 代理</a>
-    </h1>
-  
-
-        
-        <a href="/2015/07/03/http-代理详解/" class="archive-article-date">
-  	<time datetime="2015-07-02T17:16:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-07-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="web-代理-proxy"><a href="#web-代理-proxy" class="headerlink" title="web 代理(proxy)"></a>web 代理(proxy)</h3><p>代理位于客户端和服务器之间，扮演“中间人”的角色，对web客户端来说是扮演服务器的角色，对服务器来说是扮演客户端的角色</p>
-<h3 id="代理与网关的对比"><a href="#代理与网关的对比" class="headerlink" title="代理与网关的对比"></a>代理与网关的对比</h3><p>代理连接的是两个或多个使用相同协议的应用程序<br>网关扮演的是“协议转换器”的角色，即使客户端和服务器使用的是不同的协议，客户端也可以通过网关完成与服务器之间的事务处理，例：浏览器&lt;-&gt;web/e-mail 网关(pop) &lt;-&gt; e-mail服务器 ，网关将不同的协议连接起来</p>
-<h3 id="为什么使用代理，运用的场景"><a href="#为什么使用代理，运用的场景" class="headerlink" title="为什么使用代理，运用的场景"></a>为什么使用代理，运用的场景</h3><ol>
-<li>代理服务器可以看到并接触到所有流过的http流量，所以代理可以监视流量并对其进行修改<br>应用的场景</li>
-<li>集中式访问控制代理(对禁止的站点强行禁止访问)</li>
-<li>集中式文档访问控制代理</li>
-<li>安全防火墙(提高安全性，以便对流量进行详细的检查)</li>
-<li>web 缓存</li>
-<li>反向代理，以制作于分布式网络</li>
-<li>内容路由器（根据网络流量状态以及内容类型将请求导向特定的服务器）</li>
-<li>转码器 例：可以在传输gif图片时，将其转换成jpeg图片，减少尺寸，也可以对图片进行压缩，同样可以对文本压缩</li>
-<li>匿名者（主动从http报文中删除身份特性，例ip，from头部，referer(请求报头，告知服务器用户的来源页面)首部，cookie,uri的会话id）</li>
-</ol>
-<h3 id="反向代理与正向代理"><a href="#反向代理与正向代理" class="headerlink" title="反向代理与正向代理"></a>反向代理与正向代理</h3><p>反射代理 - 保护和隐藏原始资源服务器</p>
-<p>情景- 用户 c -&gt;代理 a -&gt;机器 b</p>
-<ol>
-<li>正向代理 - 主体是 c，a是c的代理</li>
-<li>反向代理 - 主体是 c，a是b的代理</li>
-</ol>
-<h3 id="代理服务器的部署的几种方式"><a href="#代理服务器的部署的几种方式" class="headerlink" title="代理服务器的部署的几种方式"></a>代理服务器的部署的几种方式</h3><ol>
-<li>出口代理  控制本地网络与大型因特网之间的流量，公司部分网站控制访问等</li>
-<li>访问（入口）代理  用于处理客户的聚合请求，。ISP使用缓存代理来存储常用文档的副本来提高用户的下载速度</li>
-<li>反向代理</li>
-<li>网络交换代理 将具有足够能力的代理放在网络之间的因特网对等交换点上，通过缓存来减轻因特网节点的拥塞，并对流量进行监视</li>
-</ol>
-<h3 id="代理如何获取流量的"><a href="#代理如何获取流量的" class="headerlink" title="代理如何获取流量的"></a>代理如何获取流量的</h3><ol>
-<li>修改客户端 - 手动或自动修改浏览器代理配置，客户端的http请求直接发给代理</li>
-<li>修改网络 - 在客户端不知道的情况下，拦截网络流量并将其导入代理，这种拦截称为拦截代理。例：连接使用公共wifi时，会有将所有的站点修改到本地的hosts,获取拦截的流量信息后再请求问点返回。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015/07/03/http-代理详解/">展开全文 >></a>
         </p>
       
 
@@ -779,15 +797,15 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nosql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nosql</a>
               </li>
             
             <div class="clearfix"></div>
