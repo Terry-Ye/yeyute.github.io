@@ -158,6 +158,102 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-状态设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/12/状态设计模式/">状态设计模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/04/12/状态设计模式/" class="archive-article-date">
+  	<time datetime="2016-04-12T14:59:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="什么时候适用状态设计模式"><a href="#什么时候适用状态设计模式" class="headerlink" title="什么时候适用状态设计模式"></a>什么时候适用状态设计模式</h3><ul>
+<li>有大量的判断状态的条件</li>
+<li>状态模式的作用就是允许对象在状态改变时改变其行为，所以根据业务需求进行分析。</li>
+</ul>
+<h3 id="最基本的场景例子-比起全部判断语句的做法，这不是更好么"><a href="#最基本的场景例子-比起全部判断语句的做法，这不是更好么" class="headerlink" title="最基本的场景例子(比起全部判断语句的做法，这不是更好么)"></a>最基本的场景例子(比起全部判断语句的做法，这不是更好么)</h3><ul>
+<li>开灯关灯</li>
+<li>扩展 开灯-&gt;加亮-&gt;再加亮-&gt;关灯</li>
+<li>九宫格的数字移动游戏</li>
+</ul>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>它将与特定状态相关的行为局部化，并且将不同状态的行为分割开来:</li>
+<li>代码清晰可见，扩展性好</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>状态模式的使用必然会增加系统类和对象的个数。</li>
+</ul>
+<p><strong>只做开灯关灯例子说明 学习于php 设计模式（强烈推荐这本书）</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">content</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $onState;</div><div class="line">    <span class="keyword">private</span> $offState;</div><div class="line">    <span class="keyword">private</span> $currentState;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;onState      = <span class="keyword">new</span> OnState(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;offState     = <span class="keyword">new</span> offState(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;currentState = <span class="keyword">$this</span>-&gt;offState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [trueOnLight 开灯]</div><div class="line">     * <span class="doctag">@return</span> [type] [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">trueOnLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;currentState-&gt;onLight();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [trueOffLight 关灯]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">trueOffLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;currentState-&gt;offLight();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [getState 取得关灯的实例]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOffState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;offState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [getOnState 取得开灯实例]</div><div class="line">     * <span class="doctag">@return</span> [type] [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOnState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;onState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [setState 设置当前的实例]</div><div class="line">     * <span class="doctag">@param</span> Istate $state [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setState</span><span class="params">(Istate $state)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;currentState = $state;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 接口</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">interface</span>  <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 开灯状态</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OnState</span> <span class="keyword">implements</span> <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Content $content)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content =  $content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [onLight 开灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'已经开灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [offLight 关灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;content-&gt;setState(<span class="keyword">$this</span>-&gt;content-&gt;getOffState());</div><div class="line">        <span class="keyword">return</span> <span class="string">'关灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 关灯状态</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OffState</span> <span class="keyword">implements</span> <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Content $content)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content = $content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [onLight 开灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content-&gt;setState(<span class="keyword">$this</span>-&gt;content-&gt;getOnState());</div><div class="line">        <span class="keyword">return</span> <span class="string">'开灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [offLight 关灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'已经关灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 用户调用用例</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">client</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content = <span class="keyword">new</span> content();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOnLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOnLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOffLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOffLight();<span class="keyword">exit</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$client = <span class="keyword">new</span> client();</div><div class="line"><span class="meta">?&gt;</span></div><div class="line"><span class="comment">/** </span></div><div class="line"> * 实例化一个Context 实例之后，初始请求是打开灯，因为灯默认是关的 ，请求显示的结果如下</div><div class="line"> * 开灯了</div><div class="line"> * 已经开灯了</div><div class="line"> * 关灯了</div><div class="line"> * 已经关灯了</div><div class="line"> */</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>每一个行动中，我们必须把目光放到我们的过去、现在和将来的行动之外，<br>还要超越这些行为影响到的其他人，而看到所有这一切之间的关系，<br>这样一来，我们就会非常的谨慎</p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/04/12/状态设计模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-秒杀活动的架构设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -562,178 +658,6 @@
 
 
   
-    <article id="post-Mysql-聚簇索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/01/Mysql-聚簇索引/">Mysql 聚簇索引(Clustered Index)</a>
-    </h1>
-  
-
-        
-        <a href="/2016/01/01/Mysql-聚簇索引/" class="archive-article-date">
-  	<time datetime="2016-01-01T06:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
-<li>每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放，但是，一个表可以有不止一个非聚簇索引。例:你翻到新华字典的汉字“爬”那一页就是P开头的部分，这就是物理存储顺序（聚簇索引）；而不用你到目录，找到汉字“爬”所在的页码，然后根据页码找到这个字（非聚簇索引）</li>
-<li>如果需要该索引,只要将索引指定为主键(primary key)就可以，根据主键创建聚簇索引</li>
-<li>如果正在使用Innodb 表并且没有什么数据需要聚集，那么可以定义一个代理键作为主键，这种主键的数据应该和应用无关，最简单的方法是使用AUTO_INCREMENT 自增列。这样可以保证数据行是按顺序写入，对于根据主键做关联操作的性能也会更好。 </li>
-<li>顺序的主键会造成什么坏的结果？ 在高并发插入可能导致间隙锁竞争，可以考虑重新设计表，或者更改innodb_autoinc_lock_mode参数（innodb在语句1的实际插入操作执行前就预分配给该语句三个自增值，当有一个新的insert语句2要执行时，读取的AUTO_INCREMENT=4，这样虽然语句1可能还没有执行完，语句2就可直接执行无需等待语句2。）</li>
-</ol>
-<h3 id="什么时候用到聚簇索引"><a href="#什么时候用到聚簇索引" class="headerlink" title="什么时候用到聚簇索引"></a>什么时候用到聚簇索引</h3><p>以下将id设置为主键时，mysql 会根据主键创建聚簇索引,例：如果没设置主键，自增，where id=’1000’，是扫描全表<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test_user`</span> (</div><div class="line">	<span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</div><div class="line">	<span class="string">`user_name`</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span>,</div><div class="line">	<span class="string">`password`</span> <span class="built_in">CHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span>,</div><div class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</div><div class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure></p>
-<p>设置id为主键，自增，以下是对应的分析数据</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">select</span> * <span class="keyword">from</span> test_user <span class="keyword">where</span> <span class="keyword">id</span>=<span class="string">'16000000'</span> ;</div></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">字段</th>
-<th style="text-align:left">值</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">select_type</td>
-<td style="text-align:left">simple</td>
-<td style="text-align:left">简单的 select 查询,不使用 union 及子查询</td>
-</tr>
-<tr>
-<td style="text-align:left">table</td>
-<td style="text-align:left">test_user</td>
-<td style="text-align:left">表名</td>
-</tr>
-<tr>
-<td style="text-align:left">partitions</td>
-<td style="text-align:left">null</td>
-<td style="text-align:left">列代表给定表所使用的分区</td>
-</tr>
-<tr>
-<td style="text-align:left">type</td>
-<td style="text-align:left">const</td>
-<td style="text-align:left">是说明只有一条匹配值，</td>
-</tr>
-<tr>
-<td style="text-align:left">possible_keys</td>
-<td style="text-align:left">PRIMARY</td>
-<td style="text-align:left">指出 MySQL 能在该表中使用哪些索引有助于 查询。如果为空,说明没有可用的索引</td>
-</tr>
-<tr>
-<td style="text-align:left">key</td>
-<td style="text-align:left">PRIMARY</td>
-<td style="text-align:left">MySQL 实际从 possible_key 选择使用的索引</td>
-</tr>
-<tr>
-<td style="text-align:left">key_len</td>
-<td style="text-align:left">4</td>
-<td style="text-align:left">使用的索引的长度。在不损失精确性的情况 下,长度越短越好</td>
-</tr>
-<tr>
-<td style="text-align:left">ref</td>
-<td style="text-align:left">const</td>
-<td style="text-align:left">where 条件筛选后表上至多有一条元组匹配时</td>
-</tr>
-<tr>
-<td style="text-align:left">rows</td>
-<td style="text-align:left">1</td>
-<td style="text-align:left">MYSQL 认为必须检查的用来返回请求数据的行数</td>
-</tr>
-<tr>
-<td style="text-align:left">filtered</td>
-<td style="text-align:left">100</td>
-<td style="text-align:left">列给出了一个百分比的值，这个百分比值和rows列的值一起使用，可以估计出那些将要和QEP中的前一个表进行连接的行的数目。前一个表就是指id列的值比当前表的id小的表</td>
-</tr>
-</tbody>
-</table>
-<h3 id="主键设置为那个字段合适"><a href="#主键设置为那个字段合适" class="headerlink" title="主键设置为那个字段合适"></a>主键设置为那个字段合适</h3><p>情况分析</p>
-<ol>
-<li>选择聚簇索引应基于where子句和连接操作的类型。</li>
-<li>在聚簇索引中不要包含经常修改的列，因为值修改后，数据行必须移动到新的位置。</li>
-<li>大多数表都应该有聚簇索引或使用分区来降低对表尾页的竞争，在一个高事务的环境中，对最后一页的封锁严重影响系统的吞吐量</li>
-<li>在聚簇索引下，数据在物理上按顺序排在数据页上，重复值也排在一起，因而在那些包含范围检查(between、&lt;、&lt;=、&amp; gt;、&gt;=)或使用group by或order by的查询时，一旦找到具有范围中第一个键值的行，具有后续索引值的行保证物理上毗连在一起而不必进一步搜索，避免了大范围扫描，可以大大提高查询速度。</li>
-<li>在一个频繁发生插入操作的表上建立聚簇索引时，不要建在具有单调上升值的列(如IDENTITY)上，否则会经常引起封锁冲突。</li>
-</ol>
-<p>用户名字段，可以设置为主键，但是不推荐<br>1.用户名是比较规则字母数字序列，这可能导致性能上有所差别<br>2.假如以用户名作为主键并与其他表关联，当删除用户时，再创建一个同名的用户，可能导致这些关联紊乱。而绝对唯一的ID则不会。<br>3.有的系统可能会允许修改用户名，如果以用户名为主键，将带来很多麻烦。而如果以ID为主键进行关联，则没有此问题。</p>
-<h3 id="聚簇索引中的记录是如何存放"><a href="#聚簇索引中的记录是如何存放" class="headerlink" title="聚簇索引中的记录是如何存放"></a>聚簇索引中的记录是如何存放</h3><ol>
-<li>节点页只包含了索引列，叶子页包含了行的全部数据，就是既存储索引值,又在叶子中存储行的数据</li>
-<li>Innodb是通过主键聚集数据，如果没有主键，Innodb会选择一个唯一的非空索引代替。如果没有这样的索引，会隐式定义一个主键来作为聚簇索引。</li>
-<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列<br><img src="https://yeyute.github.io/assets/jcsy.png" alt=""></li>
-</ol>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
-<li>可以把相关的数据保存在一起。 例如电子邮件，可以根据用户ID来聚集数据，这样只需要从磁盘读取少数的数据页就能获取某个用户的全部邮件。如果没有使用聚簇索引，则每封邮件都可能导致一次磁盘的I/O.</li>
-<li>数据访问更快。将索引和数据保存在同一个B-Tree中，因此从聚簇索引中获取数据通常比非聚簇索引查找更快</li>
-<li>使用覆盖索引扫描的查询可以直接使用页节点中的主键值</li>
-</ol>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
-<li>聚簇数据最大限度地提高了I/O密集型应用的性能，但如果数据全部都放在内存中，则访问的顺序就没那么重要了，聚会簇索引也就没什么优势</li>
-<li>更新索引列代价很大，因为innodb 强制将每个被更新的行移动到新的位置</li>
-<li>插入的速度严重依赖于插入顺充，按照主键的顺序插入是加载数据到INNODB表中速度最快的方式，如果不是，那么加载完成后最好 使用optimize table命令重新排序</li>
-<li>对于插入新行，或主键更新，导致需要移动行的时候，可能面临“页分裂”问题。 当行的主键值要求必须将这一行插入到某个已满的页中时，存储引擎会将该页分裂成两个页面来容纳该行，会导致表占用更大的磁盘空间</li>
-<li>可能会导致全表扫描变慢，尤其是行比较稀疏 或者 页分裂 存储不连续的时候</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/01/01/Mysql-聚簇索引/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -827,6 +751,10 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
@@ -835,7 +763,7 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -847,11 +775,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">生活</a>
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>
