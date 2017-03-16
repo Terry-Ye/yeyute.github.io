@@ -6,20 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>深入理解 Memcached | AT的博客</title>
+  <title>适配器设计模式 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="深入理解 Memcached">
+  <meta name="description" content="php,适配器设计模式,设计模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深入理解 Memcached">
-<meta property="og:url" content="http://yoursite.com/2015/03/11/深入理解-Memcached/index.html">
+<meta property="og:title" content="适配器设计模式">
+<meta property="og:url" content="http://yoursite.com/2016/05/01/适配器模式/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="深入理解 Memcached">
-<meta property="og:image" content="https://yeyute.github.io/assets/memcached.png">
-<meta property="og:updated_time" content="2017-03-09T08:15:00.288Z">
+<meta property="og:description" content="php,适配器设计模式,设计模式">
+<meta property="og:updated_time" content="2017-03-16T09:16:03.640Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="深入理解 Memcached">
-<meta name="twitter:description" content="深入理解 Memcached">
-<meta name="twitter:image" content="https://yeyute.github.io/assets/memcached.png">
+<meta name="twitter:title" content="适配器设计模式">
+<meta name="twitter:description" content="php,适配器设计模式,设计模式">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -159,93 +157,45 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-深入理解-Memcached" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-适配器模式" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      深入理解 Memcached
+      适配器设计模式
     </h1>
   
 
         
-        <a href="/2015/03/11/深入理解-Memcached/" class="archive-article-date">
-  	<time datetime="2015-03-11T06:41:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-11</time>
+        <a href="/2016/05/01/适配器模式/" class="archive-article-date">
+  	<time datetime="2016-05-01T15:44:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-05-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
-<li>单个item 最大的数据 1M</li>
-<li>单进程最大的使用内存 2G ，需要更多内存时可开多个端口</li>
-<li>memcached 是多线程，非阻塞io复用的网络模型，redis 是单线程</li>
-<li>键长最大250字节</li>
+        <h3 id="适配器的适用场景"><a href="#适配器的适用场景" class="headerlink" title="适配器的适用场景"></a>适配器的适用场景</h3><ul>
+<li>代码的复用性需求多的。</li>
+<li>就像不同的手机充电一样，需要一个适配器使usb连接头和墙上插座相互兼容，分解问题可以得到 <ul>
+<li>usb连接头 -&gt;不变</li>
+<li>插座不变 -&gt;不变</li>
+<li>数据线 -&gt;变</li>
 </ul>
-<p>MEMCACHE_COMPRESSED为压缩选项，缩后数据一般为原数据大小的30%左右，节省了70%的传输性能消耗所得会大于文件压缩带来的性能损耗；<br>存的数据的确有大于几百字节的，如果都是小于100字节的键值对，压缩可能反而带来膨胀，</p>
-<h3 id="常见的运用场景"><a href="#常见的运用场景" class="headerlink" title="常见的运用场景"></a>常见的运用场景</h3><ul>
-<li>memcached来保持session，实现session共享（session跨服务器的一种解决方案）</li>
+</li>
+<li><p>活动专题，例抽奖，固定的规则是充值有抽奖机会，但是突然来了一个需求说充值还要分享才能有抽奖机会，这时可以运用上这个设计模式</p>
+<p>题目（来自于php 设计模式 书） - 假设一个企业网站同时销售软件服务和软件产品，目前所有的交易都在美国进行，后续业务决定向欧洲发展要增加货币换算（增加适配器）</p>
+</li>
 </ul>
-<h3 id="解释压缩"><a href="#解释压缩" class="headerlink" title="解释压缩"></a>解释压缩</h3><blockquote>
-<p>注：php 官网的memcache 扩展的最新几个版本，当value好像是大于20k时（具体数值待验证），会自动压缩，尝试过压缩后有乱码情况,尝试使用1。1版本的不会自动压缩的情况</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span>(<span class="variable">$this</span>-&gt;_key(<span class="variable">$key</span>), <span class="variable">$value</span>, MEMCACHE_COMPRESSED, <span class="variable">$ttl</span>);</div></pre></td></tr></table></figure>
-<p>MEMCACHE_COMPRESSED为压缩选项缩后数据一般为原数据大小的30%左右，节省了70%的传输性能消耗所得会大于文件压缩带来的性能损耗；存的数据的确有大于几百字节的，如果都是小于100字节的键值对，压缩可能反而带来膨胀，Memcached中都是按照固定大小分块存储的，最小也要88 B。所以对于过小数据带来的压缩膨胀并不是太大的问题；</p>
-<h3 id="内存管理机制（默认是使用Slab-Allocatoion机制分配、管理内存）"><a href="#内存管理机制（默认是使用Slab-Allocatoion机制分配、管理内存）" class="headerlink" title="内存管理机制（默认是使用Slab Allocatoion机制分配、管理内存）"></a>内存管理机制（默认是使用Slab Allocatoion机制分配、管理内存）</h3><ul>
-<li>将内存分割成各种尺寸的块(chunk),并把尺寸相同的块分成组(chunk的集合)</li>
-<li>page 是分配Slab的内存空间 默认是1M 根据Slab大小切分成chunk</li>
-<li>chunk:用户缓存记录的内存空间</li>
-<li>Slab class：特定chunk的组</li>
-</ul>
-<p>如何组织数据的呢？<br>内存分配流程</p>
-<p><img src="https://yeyute.github.io/assets/memcached.png" alt="memcached"></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">内存单位</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">slab</td>
-<td style="text-align:left">数据大小相似的为一类, 放在同一个slab中.(按照chunk分类)</td>
-</tr>
-<tr>
-<td style="text-align:left">page</td>
-<td style="text-align:left">每个page分配1M大小, 该类slab下的chunk用完, 重新申请一个page; 分配一次的大小. 如果没有page, 每次分配初始化一个chunk太浪费资源.</td>
-</tr>
-<tr>
-<td style="text-align:left">chunk</td>
-<td style="text-align:left">数据存放最小也是最大的单位, 一个key对应的数据不能跨chunk(默认最大为1M)</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">内存分配参数</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">used_chunks</td>
-<td style="text-align:left">已分配给item的chunk数量, 只分配, 不一定使用（初始化）</td>
-</tr>
-<tr>
-<td style="text-align:left">free_chunks</td>
-<td style="text-align:left">尚未分配的chunk数量, 由delete释放的chunk(get不到时也会释放)</td>
-</tr>
-<tr>
-<td style="text-align:left">free_chunks_end</td>
-<td style="text-align:left">分配后还没有被使用过的chunk</td>
-</tr>
-</tbody>
-</table>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>灵活性扩展性都很好</li>
+<li>将目标类和适配者类解耦</li>
+</ol>
+<h3 id="适配器所涉及的角色包括下面几种："><a href="#适配器所涉及的角色包括下面几种：" class="headerlink" title="适配器所涉及的角色包括下面几种："></a>适配器所涉及的角色包括下面几种：</h3><p>目标（Target）：定义一个客户端使用的特定接口。<br>客户端（Client）：使用目标接口，与和目标接口一致的对象合作。<br>被适配者（Adaptee）：一个现存需要适配的接口。<br>适配器（Adapter）：负责将Adaptee的接口转换为Target的接口。适配器是一个具体的类，这是该模式的核心。<br>适配器分为类适配器和对象适配器两种，下面将详细讲述。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * EuroCalc.php</div><div class="line"> * 美元 - 能累加购买的服务和产品的价格 来自于php 设计模式</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DollarCalc</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $dollar;</div><div class="line">    <span class="keyword">private</span> $product;</div><div class="line">    <span class="keyword">private</span> $service;</div><div class="line">    <span class="keyword">public</span> $rate = <span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCalc</span><span class="params">($productNow,$serviceNow)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;product = $productNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;service = $serviceNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;dollar = <span class="keyword">$this</span>-&gt;product + <span class="keyword">$this</span>-&gt;service;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;requestCount();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCount</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;dollar *= <span class="keyword">$this</span>-&gt;rate;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;dollar;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * EuroCalc.php</div><div class="line"> * 欧元 -  能累加购买的服务和产品的价格</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EuroCalc</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $euro;</div><div class="line">    <span class="keyword">private</span> $product;</div><div class="line">    <span class="keyword">private</span> $service;</div><div class="line">    <span class="keyword">public</span> $rate = <span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCalc</span><span class="params">($productNow,$serviceNow)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;product = $productNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;service = $serviceNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;euro = <span class="keyword">$this</span>-&gt;product + <span class="keyword">$this</span>-&gt;service;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;requestCount();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCount</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;euro *= <span class="keyword">$this</span>-&gt;rate;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;euro;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 接口 ITarget.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ITarget</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">requester</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 例：找一个合适的适配器来适合欧洲的插座一样，以下就是创建这个适配器</div><div class="line"> * EuroAdapter 实现了一个接口又扩展了一个类</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EuroAdapter</span> <span class="keyword">extends</span> <span class="title">EuroCalc</span> <span class="keyword">implements</span> <span class="title">ITarget</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;requester();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">requester</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;rate = <span class="number">0.8111</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;rate;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 用户</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $euroRequest;</div><div class="line">    <span class="keyword">private</span> $dollarRequest;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;euroRequest = <span class="keyword">new</span> EuroAdapter();</div><div class="line">        <span class="keyword">$this</span>-&gt;dollarRequest = <span class="keyword">new</span> DollarCalc();</div><div class="line"></div><div class="line">        $euros = <span class="string">"&amp;#8364;"</span>;</div><div class="line">        <span class="keyword">echo</span> <span class="string">"Euros:$euros"</span>.<span class="keyword">$this</span>-&gt;makeAdapterRequest(<span class="keyword">$this</span>-&gt;euroRequest).<span class="string">"&lt;br /&gt;"</span>;</div><div class="line">        <span class="keyword">echo</span> <span class="string">"dollar:"</span>.<span class="keyword">$this</span>-&gt;makeDollarRequest(<span class="keyword">$this</span>-&gt;dollarRequest);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">makeAdapterRequest</span><span class="params">(ITarget $req)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> $req-&gt;requestCalc(<span class="number">40</span>,<span class="number">50</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">makeDollarRequest</span><span class="params">(DollarCalc $req)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> $req-&gt;requestCalc(<span class="number">40</span>,<span class="number">50</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">$worker = <span class="keyword">new</span> Client();</div></pre></td></tr></table></figure>
+<p>运用于自动化抽奖活动的设计<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 未完待续</div><div class="line"> *</div><div class="line">*/</div></pre></td></tr></table></figure></p>
 
       
 
@@ -259,7 +209,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nosql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
         		</li>
       		
 		</ul>
@@ -326,7 +280,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2015/03/11/深入理解-Memcached/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/05/01/适配器模式/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -340,18 +294,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2015/05/11/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/03/10/hexo-命令/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">hexo 命令</div>
+    <a href="/2016/04/12/状态设计模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">状态设计模式</div>
       <i class="icon-circle-right"></i>
     </a>
   

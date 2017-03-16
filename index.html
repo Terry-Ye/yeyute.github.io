@@ -158,6 +158,101 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-适配器模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/01/适配器模式/">适配器设计模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/05/01/适配器模式/" class="archive-article-date">
+  	<time datetime="2016-05-01T15:44:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-05-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="适配器的适用场景"><a href="#适配器的适用场景" class="headerlink" title="适配器的适用场景"></a>适配器的适用场景</h3><ul>
+<li>代码的复用性需求多的。</li>
+<li>就像不同的手机充电一样，需要一个适配器使usb连接头和墙上插座相互兼容，分解问题可以得到 <ul>
+<li>usb连接头 -&gt;不变</li>
+<li>插座不变 -&gt;不变</li>
+<li>数据线 -&gt;变</li>
+</ul>
+</li>
+<li><p>活动专题，例抽奖，固定的规则是充值有抽奖机会，但是突然来了一个需求说充值还要分享才能有抽奖机会，这时可以运用上这个设计模式</p>
+<p>题目（来自于php 设计模式 书） - 假设一个企业网站同时销售软件服务和软件产品，目前所有的交易都在美国进行，后续业务决定向欧洲发展要增加货币换算（增加适配器）</p>
+</li>
+</ul>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>灵活性扩展性都很好</li>
+<li>将目标类和适配者类解耦</li>
+</ol>
+<h3 id="适配器所涉及的角色包括下面几种："><a href="#适配器所涉及的角色包括下面几种：" class="headerlink" title="适配器所涉及的角色包括下面几种："></a>适配器所涉及的角色包括下面几种：</h3><p>目标（Target）：定义一个客户端使用的特定接口。<br>客户端（Client）：使用目标接口，与和目标接口一致的对象合作。<br>被适配者（Adaptee）：一个现存需要适配的接口。<br>适配器（Adapter）：负责将Adaptee的接口转换为Target的接口。适配器是一个具体的类，这是该模式的核心。<br>适配器分为类适配器和对象适配器两种，下面将详细讲述。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * EuroCalc.php</div><div class="line"> * 美元 - 能累加购买的服务和产品的价格 来自于php 设计模式</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DollarCalc</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $dollar;</div><div class="line">    <span class="keyword">private</span> $product;</div><div class="line">    <span class="keyword">private</span> $service;</div><div class="line">    <span class="keyword">public</span> $rate = <span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCalc</span><span class="params">($productNow,$serviceNow)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;product = $productNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;service = $serviceNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;dollar = <span class="keyword">$this</span>-&gt;product + <span class="keyword">$this</span>-&gt;service;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;requestCount();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCount</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;dollar *= <span class="keyword">$this</span>-&gt;rate;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;dollar;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * EuroCalc.php</div><div class="line"> * 欧元 -  能累加购买的服务和产品的价格</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EuroCalc</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $euro;</div><div class="line">    <span class="keyword">private</span> $product;</div><div class="line">    <span class="keyword">private</span> $service;</div><div class="line">    <span class="keyword">public</span> $rate = <span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCalc</span><span class="params">($productNow,$serviceNow)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;product = $productNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;service = $serviceNow;</div><div class="line">        <span class="keyword">$this</span>-&gt;euro = <span class="keyword">$this</span>-&gt;product + <span class="keyword">$this</span>-&gt;service;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;requestCount();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">requestCount</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;euro *= <span class="keyword">$this</span>-&gt;rate;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;euro;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 接口 ITarget.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ITarget</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">requester</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 例：找一个合适的适配器来适合欧洲的插座一样，以下就是创建这个适配器</div><div class="line"> * EuroAdapter 实现了一个接口又扩展了一个类</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EuroAdapter</span> <span class="keyword">extends</span> <span class="title">EuroCalc</span> <span class="keyword">implements</span> <span class="title">ITarget</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;requester();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">requester</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;rate = <span class="number">0.8111</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;rate;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 用户</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $euroRequest;</div><div class="line">    <span class="keyword">private</span> $dollarRequest;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;euroRequest = <span class="keyword">new</span> EuroAdapter();</div><div class="line">        <span class="keyword">$this</span>-&gt;dollarRequest = <span class="keyword">new</span> DollarCalc();</div><div class="line"></div><div class="line">        $euros = <span class="string">"&amp;#8364;"</span>;</div><div class="line">        <span class="keyword">echo</span> <span class="string">"Euros:$euros"</span>.<span class="keyword">$this</span>-&gt;makeAdapterRequest(<span class="keyword">$this</span>-&gt;euroRequest).<span class="string">"&lt;br /&gt;"</span>;</div><div class="line">        <span class="keyword">echo</span> <span class="string">"dollar:"</span>.<span class="keyword">$this</span>-&gt;makeDollarRequest(<span class="keyword">$this</span>-&gt;dollarRequest);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">makeAdapterRequest</span><span class="params">(ITarget $req)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> $req-&gt;requestCalc(<span class="number">40</span>,<span class="number">50</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">makeDollarRequest</span><span class="params">(DollarCalc $req)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> $req-&gt;requestCalc(<span class="number">40</span>,<span class="number">50</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">$worker = <span class="keyword">new</span> Client();</div></pre></td></tr></table></figure>
+<p>运用于自动化抽奖活动的设计<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 未完待续</div><div class="line"> *</div><div class="line">*/</div></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/05/01/适配器模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-状态设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -237,6 +332,104 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/04/12/状态设计模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/11/单例模式/">单例模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/04/11/单例模式/" class="archive-article-date">
+  	<time datetime="2016-04-11T12:04:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="单例模式的特点"><a href="#单例模式的特点" class="headerlink" title="单例模式的特点"></a>单例模式的特点</h3><ul>
+<li>只能有一个实例</li>
+<li>必须自行创建这个实例</li>
+<li>必须给其他对象提供这一实例</li>
+</ul>
+<h3 id="单例类"><a href="#单例类" class="headerlink" title="单例类"></a>单例类</h3><ul>
+<li>构造函数需要标记为private（访问控制：防止外部代码使用new操作符创建对象），单例类不能在其他类中实例化，只能被其自身实例化；</li>
+<li>拥有一个保存类的实例的静态成员变量(非成静态员：所有没有加Static的成员都是非静态成员,当类被实例化之后,可以通过实例化的类名进行访问..非静态成员的生存期决定于该类的生存期..而静态成员则不存在生存期的概念,因为静态成员始终驻留在内容中..)</li>
+<li>拥有一个访问这个实例的公共的静态方法（常用getInstance()方法进行实例化单例类，通过instanceof操作符可以检测到类是否已经被实例化）</li>
+</ul>
+<h3 id="为什么要使用PHP单例模式？"><a href="#为什么要使用PHP单例模式？" class="headerlink" title="为什么要使用PHP单例模式？"></a>为什么要使用PHP单例模式？</h3><ul>
+<li>虽然PHP每次执行完页面都是会从内存中清理掉所有的资源. 因而PHP中的单例实际每次运行都是需要重新实例化的，但PHP一个主要应用场合就是应用程序与数据库打交道的场景，在一个应用中会存在大量的数据库操作，针对数据库句柄连接数据库的行为，使用单例模式可以避免大量的new操作。因为每一次new操作都会消耗系统和内存的资源。</li>
+</ul>
+<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul>
+<li>改进系统的设计</li>
+<li>是对全局变量的一种改进</li>
+</ul>
+<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ul>
+<li>难于调试</li>
+<li>隐藏的依赖关系</li>
+<li>无法用错误类型的数据覆写一个单例</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/04/11/单例模式/">展开全文 >></a>
         </p>
       
 
@@ -435,232 +628,9 @@
 
 
   
-    <article id="post-Mysql-字段类型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/03/Mysql-字段类型/">Mysql 字段类型</a>
-    </h1>
-  
-
-        
-        <a href="/2016/01/03/Mysql-字段类型/" class="archive-article-date">
-  	<time datetime="2016-01-03T12:16:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="CHAR"><a href="#CHAR" class="headerlink" title="CHAR"></a>CHAR</h3><ol>
-<li>类型是定长 删除末尾的空格，不会删除前面的空格</li>
-<li>适合存储很短的字符串，或者所有值都接近同一个长度。例如: 适合存储MD5的密码串</li>
-<li>定长的CHAR不容易产生碎片</li>
-<li>对于非常短的列，CHAR比VARCHAR在存储更有效率。例如: CHAR(1) 来存储只有Y 和 N 的值，VARCHAR需要2个字节，CHAR只需要一个字节</li>
-</ol>
-<h3 id="VARCHAR"><a href="#VARCHAR" class="headerlink" title="VARCHAR"></a>VARCHAR</h3><ol>
-<li>可变长的字符串 比定长类型CHAR更节省空间</li>
-<li>需要使用额外的1 个或2个字符串来记录字符串的长度，小于255 只使用一个字节，大于使用2个</li>
-</ol>
-<h3 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h3><ol>
-<li>TINYINT - 8 , SMALLINT - 16, MEDIUMINT - 24, INT - 32, BIGINT - 64 位的存储空间 -2的N-1次方到 2的N-1次方-1<br>2:可选 UNSIGNED属性 ，表示不允许负值 ，大致可以使正数上限提高一倍</li>
-</ol>
-<h3 id="实数类型"><a href="#实数类型" class="headerlink" title="实数类型"></a>实数类型</h3><ol>
-<li>实数是带有小数部分的数字，也可以使用BECIMAL 格式 create table ta (a float,b decimal(6,5));6为小数点左边的位数，5为小数点右边的位数，当插入的小数点右边的位数大于5 后面的将被截掉，当插入小数点左边的位数大于6时，将取 999999</li>
-<li>DECIMAL 是存储精确的小数，应该尽量只在小数进行精确计算时才使用，但数据量较大时，可以考虑使用BIGINT代替，要精确到万分之一的数据，可以把所有金额乘以一百万再存储进BIGINT里。</li>
-<li>FLOAT 占用4个字节 </li>
-<li>DOUBLE占用8个字节 相比FLOAT有更高的精度与更大的范围</li>
-</ol>
-<h3 id="DATETIME-和-TIMESAMP"><a href="#DATETIME-和-TIMESAMP" class="headerlink" title="DATETIME 和 TIMESAMP"></a>DATETIME 和 TIMESAMP</h3><ol>
-<li>都可以存储相同的数据，时间和日期</li>
-<li>TIMESAMP 只使用DATETIME一半的存储空间（4个字节与8个字节），并且根据时区变化，具有特殊的自动更新能力，但TIMESTAMP允许的时间范围小得多</li>
-<li>DATETIME 范围 1000-01-01 00:00:00 ~ 9999-12-31 23:59:59</li>
-<li>TIMESAMP 范围 1970-01-01 08:00:01到2038-01-19 11:14:07</li>
-<li>TIMESTAMP类型在默认情况下，insert、update 数据时，TIMESTAMP列会自动以当前时间（CURRENT_TIMESTAMP）填充/更新</li>
-<li>使用INT存时间戳在业务上不方便处理的情况下，不建议使用</li>
-</ol>
-<p>BLOB与TEXT 类型</p>
-<ol>
-<li>BLOB 和TEXT类型都是为了存储很大的数据而设计的，分别采用二进制和字符方式存储</li>
-<li>二进制类型有TINYBLOB,SMALLBLOB,BLOB,MEDIUMBLOB,LONGBLOB，字符类型是 TINYTEXT,SMALLTEXT,TEXT,MEDIUMTEXT,LONGTEXT，ENUM枚举与FIELD指定排序顺序</li>
-</ol>
-<h3 id="选择优化的数据类型"><a href="#选择优化的数据类型" class="headerlink" title="选择优化的数据类型"></a>选择优化的数据类型</h3><ol>
-<li>更小的数据类型通常更好,它们占用更小的磁盘，内存和CPU缓存，处理时需要的CPU周期更少</li>
-<li>简单就好,整型比字符操作代价更低，因为字符集和校对规则使字符比较整型比较更复杂</li>
-<li>尽量避免NULL<ol>
-<li>查询中包含可为NULL对MYSQL来说更难优化，因为可为NULL的列使得索引、索引统计和值 比较都较为复杂</li>
-<li>可为NULL 的列使使用更多的存储空间，MYSQL里也需要特殊处理，当可为NULL被索引时,每个索引记录需要额外的字节</li>
-<li>调优时，把可为NULL调为NOT NULL带来的性能提升比较小，除非确定此问题导致问题</li>
-</ol>
-</li>
-<li>使用VARCHAR(5) 与 VARCHAR(200)存储的区别<ol>
-<li>存储HELLO的空间开销是一样的，但是更长的列会消耗更多的内存，因为MYSQL通常会分配固定大小内存块来保存内部值</li>
-<li>尤其是使用内存临时表时表进行排序或操作时会更糟糕</li>
-</ol>
-</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/01/03/Mysql-字段类型/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-Mysql-覆盖索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/02/Mysql-覆盖索引/">Mysql 覆盖索引</a>
-    </h1>
-  
-
-        
-        <a href="/2016/01/02/Mysql-覆盖索引/" class="archive-article-date">
-  	<time datetime="2016-01-02T02:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
-<li>覆盖索引能够极大地提高性能。 考虑一下如果查询只需要扫描索引而无须回表，会带来多少好处 <ol>
-<li>索引的条目通常远小于数据行大小，所以如果只需要读取索引，那极大地减少数据访问量，所以更内容全部放在内存中</li>
-<li>索引是按照列值顺序存储的（至少单个页内是这样的）</li>
-<li>一些存储引擎如MyISAM 的内存只缓存索引。</li>
-<li>由于innodb 的聚簇索引，覆盖索引 对Innodb表特别有用。 Innodb的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询</li>
-</ol>
-</li>
-<li>mysql 只能用b-tree索引来做覆盖索引</li>
-<li>当发起一个被索引覆盖的查询时，在 EXPLAIN 的extra列可以看到 “Using index”的信息</li>
-</ol>
-<p>例子</p>
-<pre><code>explain select * from prodcuts where actor = &quot;yeyute&quot; and title like &apos; %aplollo%&apos;;
-</code></pre><ol>
-<li>没有任务索引能够覆盖这个查询，因为查询从表中选择了所有的列， 不过 where 条件中的表是有索引可以覆盖的</li>
-<li>mysql 不能在索引中执行like 操作 。 mysql5.5以为更早版本，只允许在索引中做简单操作（&gt; 和 &gt;= 和 !=  ）,这种情况，mysql 只能提取数据行的值而不是索引值来做比较</li>
-</ol>
-<h3 id="使用索引扫描来做排序"><a href="#使用索引扫描来做排序" class="headerlink" title="使用索引扫描来做排序"></a>使用索引扫描来做排序</h3><ul>
-<li>explain type列的值为“index”</li>
-<li>如果索引不能覆盖查询所需的全部列，就得扫描查询所需的全部列</li>
-<li>mysql 可以使用同一个索引既满足排序，又用于查找行</li>
-<li>关联多表时，只有当order by 子句引用的字段全部为第一个表时，才能使用索引做排序</li>
-<li>建立（sex,country），查询时不限制性别，可以在查询条件新增 sex in(‘m’,’f’) and country=’’ 来使用索引</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/01/02/Mysql-覆盖索引/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -751,7 +721,11 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -759,7 +733,7 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -768,10 +742,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">nosql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
