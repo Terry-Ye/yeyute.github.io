@@ -158,6 +158,470 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-实现通用的Facade外观设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/22/实现通用的Facade外观设计模式/">实现通用的Facade外观设计模式</a>
+    </h1>
+  
+
+        
+        <a href="/2017/01/22/实现通用的Facade外观设计模式/" class="archive-article-date">
+  	<time datetime="2017-01-22T07:38:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>把调用方法放在前面，方便理解<br>主要的思路</p>
+<ol>
+<li>Api类继承Facade，重写了getFacadeAccessor()该方法，目的是为了，</li>
+<li>代码使用在Facade类中使用了 __callStatic，<br>Api::apiTypeOne() 相当于实例化了 TypeOne类<br>api:apiTypeTwon() 相当于实例化了 TypeTwo 类<br>回调本实例，在署名函数中完成操作</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Admin</span>\<span class="title">Controllers</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Libraries</span>\<span class="title">Api</span>\<span class="title">apiTypeOne</span>;</div><div class="line"></div><div class="line">$content = Api::apiTypeOne($data, <span class="function"><span class="keyword">function</span> <span class="params">(apiTypeOne $apiTypeOne)</span> </span>&#123;</div><div class="line">            $header = <span class="string">'Accept:text/xml,</span></div><div class="line">                        application/xml,</div><div class="line">                        application/xhtml+xml,text/html;';</div><div class="line">            $apiTypeOne-&gt;setHeaders($header);</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+<p>Api.php 是外层的入口点，重写了getFacadeAccessor() 方法，根据自己的业务需求重写该方法，既可以通用的使用该设计模式</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// file Api.php </span></div><div class="line">namespace <span class="type">App</span>\<span class="type">Libraries</span>;</div><div class="line">use <span class="type">App</span>\<span class="type">Libraries</span>\<span class="type">Facade</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Api</span> <span class="keyword">extends</span> <span class="title">Facade</span> </span>&#123;</div><div class="line"></div><div class="line">	static public function getFacadeAccessor() &#123;</div><div class="line">		<span class="keyword">return</span> \<span class="type">App</span>\<span class="type">Libraries</span>\<span class="type">Api</span>\<span class="type">ApiImplement</span>::<span class="class"><span class="keyword">class</span></span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Facade.php 通过__callStatic 方法来实现通用 </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// file Facade.php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Libraries</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">RuntimeException</span>;</div><div class="line"></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Facade</span> </span>&#123;</div><div class="line">	<span class="keyword">static</span> <span class="keyword">public</span> $resolvedInstance;</div><div class="line">	<span class="keyword">static</span> <span class="keyword">public</span> $app;</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * [getFacadeAccessor 获取访问器]</div><div class="line">	 * <span class="doctag">@return</span> [type] [description]</div><div class="line">	 */</div><div class="line">	<span class="keyword">static</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getFacadeAccessor</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">'Facade does not implement getFacadeAccessor method.'</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * [getInstance 获取实例]</div><div class="line">	 * <span class="doctag">@return</span> [object] [instance]</div><div class="line">	 */</div><div class="line">	<span class="keyword">static</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getFacadeRoot</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">static</span>::resolveFacadeInstance(<span class="keyword">static</span>::getFacadeAccessor());</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">resolveFacadeInstance</span><span class="params">($name)</span> </span>&#123;</div><div class="line"></div><div class="line">		<span class="keyword">if</span>( is_object($name) ) &#123;</div><div class="line">			<span class="keyword">return</span> $name;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">static</span>::$resolvedInstance[$name])) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">static</span>::$resolvedInstance[$name];</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">static</span>::$resolvedInstance[$name] = <span class="keyword">new</span> $name();</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * [__callStatic 魔术方法]</div><div class="line">	 * <span class="doctag">@param</span>  [string] $method [调用的方法]</div><div class="line">	 * <span class="doctag">@param</span>  [array] $args   [参数]</div><div class="line">	 * <span class="doctag">@return</span> [mixed]         [mixed]</div><div class="line">	 */</div><div class="line">	<span class="keyword">static</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__callStatic</span><span class="params">($method,$args)</span> </span>&#123;</div><div class="line">		$instance = <span class="keyword">self</span>::getFacadeRoot();</div><div class="line"></div><div class="line">		<span class="keyword">if</span> (! $instance) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">'A facade root has not been set.'</span>);</div><div class="line">        &#125;</div><div class="line">     </div><div class="line">        <span class="keyword">return</span> $instance-&gt;$method(...$args);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>api 子系统实现<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//file ApiImplement.php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Libraries</span>\<span class="title">Api</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApiImplement</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * [apiTypeOne demo方法]</div><div class="line">	 * <span class="doctag">@param</span>  [type]  $data     [数据]</div><div class="line">	 * <span class="doctag">@param</span>  Closure $callable [匿名函数 的类.]</div><div class="line">	 * <span class="doctag">@return</span> [type]            [object]</div><div class="line">	 */</div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">apiTypeOne</span><span class="params">($data, Closure $callable)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> TypeOne($data, $callable); </div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * [apiTypTwo demo方法2]</div><div class="line">	 * <span class="doctag">@param</span>  [type]  $data     [数据]</div><div class="line">	 * <span class="doctag">@param</span>  Closure $callable [匿名函数的类.]</div><div class="line">	 * <span class="doctag">@return</span> [type]            [object]</div><div class="line">	 */</div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">apiTypTwo</span><span class="params">($data, Closure $callable)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> TypeTwo($data, $callable); </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// api 子系统 apiTypeOne.php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Libraries</span>\<span class="title">Api</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TypeOne</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">protected</span> $data;</div><div class="line">    <span class="keyword">protected</span> $callable;</div><div class="line">	<span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $data</div><div class="line">     * <span class="doctag">@param</span> callable $callback</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($data, Closure $callback)</span></span></div><div class="line">    &#123;</div><div class="line">		<span class="keyword">$this</span>-&gt;data     = $data;</div><div class="line">		<span class="keyword">$this</span>-&gt;callable = $callback;</div><div class="line">		$callback(<span class="keyword">$this</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setHeaders</span><span class="params">($header)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;header = $header;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Get the string contents of the view.</div><div class="line">     * <span class="doctag">@return</span> string</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;callable;</div><div class="line">  </div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// api 子系统2 apiTypeTwo.php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Libraries</span>\<span class="title">Api</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TypeTwo</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">protected</span> $data;</div><div class="line">    <span class="keyword">protected</span> $callable;</div><div class="line">	<span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $data</div><div class="line">     * <span class="doctag">@param</span> callable $callback</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($data, Closure $callback)</span></span></div><div class="line">    &#123;</div><div class="line">		<span class="keyword">$this</span>-&gt;data     = $data;</div><div class="line">      	<span class="keyword">$this</span>-&gt;callable = $callback;</div><div class="line">    	$callback(<span class="keyword">$this</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setHeaders</span><span class="params">($header)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;header = $header;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Get the string contents of the view.</div><div class="line">     * <span class="doctag">@return</span> string</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;callable;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>(未完成，待续)</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/01/22/实现通用的Facade外观设计模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-laravel后台框架laravel-admin-select框的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/">laravel后台框架laravel-admin select框的使用</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/" class="archive-article-date">
+  	<time datetime="2016-12-15T04:01:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="select-二级联动不能正常获取数据原因"><a href="#select-二级联动不能正常获取数据原因" class="headerlink" title="select 二级联动不能正常获取数据原因"></a>select 二级联动不能正常获取数据原因</h3><p><img src="https://yeyute.github.io/assets/laravel_admin1.png" alt="laravel_admin"><br>使用二级联动时调用的api时，api返回的代码如以下, </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//控制器文件controller.php</span></div><div class="line"><span class="keyword">$this</span>-&gt;form-&gt;select(<span class="string">'sort'</span>, <span class="string">'app'</span>)</div><div class="line">             -&gt;options($sort_type)</div><div class="line">             -&gt;load(<span class="string">'position_id'</span>, <span class="string">'/admin/api_general/get_position'</span>);</div><div class="line"></div><div class="line"><span class="comment">//api文件                     </span></div><div class="line">$data = [</div><div class="line">	&#123;<span class="string">"id"</span>=&gt;<span class="string">"111"</span>,<span class="string">"text"</span>=&gt;<span class="string">"index"</span>&#125;,</div><div class="line">	];</div><div class="line"><span class="keyword">return</span> json_encode($data);</div></pre></td></tr></table></figure>
+<p><img src="https://yeyute.github.io/assets/laravel_admin2.png" alt="laravel_admin"></p>
+<p>头部信息的格式为 Content-type:text/html;</p>
+<p> 即使在api文件补上header</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">header(<span class="string">"Content-type: application/json"</span>);</div><div class="line">$data = [</div><div class="line">	&#123;<span class="string">"id"</span>=&gt;<span class="string">"111"</span>,<span class="string">"text"</span>=&gt;<span class="string">"index"</span>&#125;,</div><div class="line">	];</div><div class="line"><span class="keyword">return</span> json_encode($data);</div></pre></td></tr></table></figure>
+<p>结果还是返回Content-type:text/html; 类型</p>
+<p>最后使用laravel封装方法解决问题</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$data = [</div><div class="line">	&#123;<span class="string">"id"</span>=&gt;<span class="string">"111"</span>,<span class="string">"text"</span>=&gt;<span class="string">"index"</span>&#125;,</div><div class="line">	];</div><div class="line"><span class="comment">// json 方法会自动将 Content-Type 头设置为 application/json，并使用 PHP 函数 json_encode 方法将给定数组转化为 JSON：</span></div><div class="line"><span class="keyword">return</span> response()-&gt;json($data);</div></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-windows与linux安装node-js" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/01/windows与linux安装node-js/">windows与linux安装node.js</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/01/windows与linux安装node-js/" class="archive-article-date">
+  	<time datetime="2016-12-01T08:03:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="window-安装"><a href="#window-安装" class="headerlink" title="window 安装"></a>window 安装</h3><ol>
+<li>安装git<br><a href="http://blog.csdn.net/shuyou612/article/details/53183683" target="_blank" rel="external">http://blog.csdn.net/shuyou612/article/details/53183683</a><br>官网安装过于慢的话可以考虑在 <a href="http://download.csdn.net/download/u010180815/9726804" target="_blank" rel="external">http://download.csdn.net/download/u010180815/9726804</a> 下载</li>
+</ol>
+<ol>
+<li>下载并安装 Node.js 。使用其 LTS（长期支持）版本。 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>windows 8以后的版本安装 msi 文件会 报 the installer has encountered…….. 2503 参考 <a href="http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html" target="_blank" rel="external">http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html</a></li>
+</ol>
+<p>现在开始安装相关环境<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// -g 代表全用户安装</div><div class="line">npm <span class="keyword">install</span> express -g</div><div class="line">npm <span class="keyword">install</span> jade -g </div><div class="line">npm <span class="keyword">install</span> mysql  -g</div></pre></td></tr></table></figure></p>
+<h3 id="linux-centOS-安装"><a href="#linux-centOS-安装" class="headerlink" title="linux centOS 安装"></a>linux centOS 安装</h3><p>下载需要的版本 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>参考 <a href="http://www.cnblogs.com/8765h/p/4777746.html" target="_blank" rel="external">http://www.cnblogs.com/8765h/p/4777746.html</a></p>
+<h3 id="创建一个工程"><a href="#创建一个工程" class="headerlink" title="创建一个工程"></a>创建一个工程</h3><p>创建一个工程</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">express ship </div><div class="line">// 如运行<span class="keyword">cmd</span><span class="bash"> 时没有使用管理员身份运行，会报以下错误 </span></div><div class="line">// Error: EPERM:operation not permitted,mkdir <span class="string">'C:\Program Files\nodejs\ship'</span> at Error(native)</div></pre></td></tr></table></figure>
+<p>如终端报错提示 express不是内部或外部命令<br>具体参数  <a href="http://jingyan.baidu.com/article/922554468a3466851648f419.html" target="_blank" rel="external">http://jingyan.baidu.com/article/922554468a3466851648f419.html</a></p>
+<p>复制node_modules到ship下面进行测试</p>
+<p>新建一个test.js 文件</p>
+<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var http = require(<span class="string">"http"</span>);  </div><div class="line">http.createServer(<span class="keyword">function</span>(<span class="built_in">request</span>, <span class="built_in">response</span>) &#123;    </div><div class="line">    <span class="built_in">response</span>.writeHead(<span class="number">200</span>, &#123;<span class="string">"Content-Type"</span>: <span class="string">"text/plain"</span>&#125;);    </div><div class="line">    <span class="built_in">response</span>.write(<span class="string">"Hello World"</span>);    </div><div class="line">    <span class="built_in">response</span>.<span class="keyword">end</span>();  </div><div class="line">&#125;).listen(<span class="number">8888</span>);  </div><div class="line">console.<span class="built_in">log</span>(<span class="string">"nodejs start listen 8888 port!"</span>);</div></pre></td></tr></table></figure>
+<p> 终端 cd 到C:\Program Files\nodejs\ship 执行</p>
+ <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">node</span> <span class="title">test</span>.js</div></pre></td></tr></table></figure>
+<p> 浏览器访问 <a href="http://127.0.0.1:8888/" target="_blank" rel="external">http://127.0.0.1:8888/</a>  即可</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">nodejs</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/01/windows与linux安装node-js/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-使用dockerfile-部署php环境" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/使用dockerfile-部署php环境/">使用dockerfile 部署php环境</a>
+    </h1>
+  
+
+        
+        <a href="/2016/11/03/使用dockerfile-部署php环境/" class="archive-article-date">
+  	<time datetime="2016-11-03T06:32:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="docker-各系统环境安装入门篇"><a href="#docker-各系统环境安装入门篇" class="headerlink" title="docker 各系统环境安装入门篇"></a>docker 各系统环境安装入门篇</h2><h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
+<p><strong>mac 使用docker toolbox</strong></p>
+<blockquote>
+<p><a href="https://github.com/widuu/chinese_docker/blob/master/installation/mac.md" target="_blank" rel="external">https://github.com/widuu/chinese_docker/blob/master/installation/mac.md</a> 参考使用该文章</p>
+</blockquote>
+<p><strong>linux</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum <span class="keyword">update</span></div><div class="line"></div><div class="line">sudo yum <span class="keyword">install</span> docker</div><div class="line">#安装程序将docker程序安装到/usr/<span class="keyword">bin</span>⺫⽬目录下，配置⽂文件安装在/etc/sysconfig/docker。安装好docker之后，可以 将docker加⼊入到启动服务组中 </div><div class="line">sudo systemctl <span class="keyword">enable</span> docker.service</div><div class="line"></div><div class="line">#手动启动docker服务器，使⽤用命令 sudo systemctl <span class="keyword">start</span> docker.service</div></pre></td></tr></table></figure>
+<h3 id="下载dockerfile"><a href="#下载dockerfile" class="headerlink" title="下载dockerfile"></a>下载dockerfile</h3><p>以下是目录结构，打包 github地址 <a href="https://github.com/yeyute/docker-php-.git" target="_blank" rel="external">https://github.com/yeyute/docker-php-.git</a></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">~/Dockerfiles</div><div class="line">├── mysql</div><div class="line">│   └── Dockerfile</div><div class="line">├── nginx</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── nginx<span class="selector-class">.conf</span></div><div class="line">│   └── sites-enabled</div><div class="line">│       ├── default<span class="selector-class">.conf</span></div><div class="line">│       └── evaengine<span class="selector-class">.conf</span></div><div class="line">├── php</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── composer<span class="selector-class">.phar</span></div><div class="line">│   ├── php-fpm<span class="selector-class">.conf</span></div><div class="line">│   ├── php<span class="selector-class">.ini</span></div><div class="line">│   ├── redis<span class="selector-class">.tgz</span></div><div class="line">└── redis</div><div class="line">    └── Dockerfile</div></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 使用pip 安装docker-compose</span></div><div class="line">pip install -U docker-compose</div></pre></td></tr></table></figure>
+<p>假设没安装pip，会报以下错误，windows 请参数 <a href="http://www.cnblogs.com/RSsky/articles/5525999.html" target="_blank" rel="external">http://www.cnblogs.com/RSsky/articles/5525999.html</a></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">bash:</span> <span class="string">pip:</span> command not found</div></pre></td></tr></table></figure>
+<p>环境部署完成后请cd 到 dockerfile文件 目录执行<br><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker-compose up  <span class="regexp">//</span> 如有报错信息请参考笔记 https:<span class="regexp">//</span>segmentfault.com<span class="regexp">/n/</span><span class="number">1330000008347862</span></div></pre></td></tr></table></figure></p>
+<p> 细节部分参考 <a href="http://www.open-open.com/lib/view/open1435671611966.html，主要学习该文章的做法，感谢有这么好的文章" target="_blank" rel="external">http://www.open-open.com/lib/view/open1435671611966.html，主要学习该文章的做法，感谢有这么好的文章</a></p>
+<h3 id="部署问题整理"><a href="#部署问题整理" class="headerlink" title="部署问题整理"></a>部署问题整理</h3><p> 请求php文件全部报502，只能访问静态文件，问题定位</p>
+<ol>
+<li>nginx 的php 配置有问题</li>
+<li><p>防火墙问题，因9000端口不通</p>
+<p>结果是容器之间关联的问题</p>
+</li>
+</ol>
+<p>nginx 配置文件<br><img src="https://yeyute.github.io/assets/docker_link.png" alt="docker_link"></p>
+<h3 id="附使用docker-toolbox-常见的命令-https-segmentfault-com-n-1330000008347886"><a href="#附使用docker-toolbox-常见的命令-https-segmentfault-com-n-1330000008347886" class="headerlink" title="附使用docker toolbox 常见的命令 https://segmentfault.com/n/1330000008347886"></a>附使用docker toolbox 常见的命令 <a href="https://segmentfault.com/n/1330000008347886" target="_blank" rel="external">https://segmentfault.com/n/1330000008347886</a></h3><blockquote>
+<p>是故胜兵先胜而后求战,败兵先战而后求胜 -《孙子兵法》</p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/11/03/使用dockerfile-部署php环境/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-mysql-主从配置原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/16/mysql-主从配置原理/">mysql 主从配置原理</a>
+    </h1>
+  
+
+        
+        <a href="/2016/05/16/mysql-主从配置原理/" class="archive-article-date">
+  	<time datetime="2016-05-15T16:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-05-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="复制概述"><a href="#复制概述" class="headerlink" title="复制概述"></a>复制概述</h3><ul>
+<li>主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环，这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，从服务器在日志中读取的最后一次成功更新的位置</li>
+</ul>
+<h3 id="复制类型"><a href="#复制类型" class="headerlink" title="复制类型"></a>复制类型</h3><ul>
+<li>基于语句的复制： 在主服务器上执行的SQL语句，在从服务器上执行同样的语句。MySQL默认采用基于语句的复制，效率比较高。一旦发现没法精确复制时，会自动选着基于行的复制。</li>
+<li>基于行的复制：把改变的内容复制过去，而不是把命令在从服务器上执行一遍. 从mysql5.0开始支持 　　</li>
+<li>混合类型的复制: 默认采用基于语句的复制，一旦发现基于语句的无法精确的复制时，就会采用基于行的复制。</li>
+</ul>
+<h3 id="复制解决的问题（-MySQL复制技术有以下一些特点-）"><a href="#复制解决的问题（-MySQL复制技术有以下一些特点-）" class="headerlink" title="复制解决的问题（ MySQL复制技术有以下一些特点 ）"></a>复制解决的问题（ MySQL复制技术有以下一些特点 ）</h3><ul>
+<li>数据分布 (Data distribution)</li>
+<li>负载平衡(load balancing)</li>
+<li>备份(Backups)</li>
+<li>高可用性和容错行 High availability and failover</li>
+</ul>
+<h3 id="复制如何工作"><a href="#复制如何工作" class="headerlink" title="复制如何工作"></a>复制如何工作</h3><ul>
+<li>master将改变记录到二进制日志(binary log)中（这些记录叫做二进制日志事件，binary log events）；</li>
+<li>slave将master的binary log events拷贝到它的中继日志(relay log)；</li>
+<li>slave重做中继日志中的事件，将改变反映它自己的数据。</li>
+</ul>
+<h3 id="描述了复制的过程"><a href="#描述了复制的过程" class="headerlink" title="描述了复制的过程"></a>描述了复制的过程</h3><p>该过程的第一部分就是master记录二进制日志。在每个事务更新数据完成之前，master在二日志记录这些改变。<br>MySQL将事务串行的写入二进制日志，即使事务中的语句都是交叉执行的。<br>在事件写入二进制日志完成后，master通知存储引擎提交事务。<br>下一步就是slave将master的binary log拷贝到它自己的中继日志。<br>首先，slave开始一个工作线程——I/O线程。I/O线程在master上打开一个普通的连接，然后开始binlog dump process。Binlog dump process从master的二进制日志中读取事件，<br>如果已经跟上master，它会睡眠并等待master产生新的事件。I/O线程将这些事件写入中继日志。<br>SQL slave thread（SQL从线程）处理该过程的最后一步。SQL线程从中继日志读取事件，并重放其中的事件而更新slave的数据，使其与master中的数据一致。<br>只要该线程与I/O线程保持一致，中继日志通常会位于OS的缓存中，所以中继日志的开销很小。<br>此外，在master中也有一个工作线程：和其它MySQL的连接一样，slave在master中打开一个连接也会使得master开始一个线程。复制过程有一个很重要的限制——复制在slave上是串行化的，也就是说master上的并行更新操作不能在slave上并行操作。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/05/16/mysql-主从配置原理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-适配器模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -254,462 +718,9 @@
 
 
   
-    <article id="post-状态设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/12/状态设计模式/">状态设计模式</a>
-    </h1>
-  
-
-        
-        <a href="/2016/04/12/状态设计模式/" class="archive-article-date">
-  	<time datetime="2016-04-12T14:59:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="什么时候适用状态设计模式"><a href="#什么时候适用状态设计模式" class="headerlink" title="什么时候适用状态设计模式"></a>什么时候适用状态设计模式</h3><ul>
-<li>有大量的判断状态的条件</li>
-<li>状态模式的作用就是允许对象在状态改变时改变其行为，所以根据业务需求进行分析。</li>
-</ul>
-<h3 id="最基本的场景例子-比起全部判断语句的做法，这不是更好么"><a href="#最基本的场景例子-比起全部判断语句的做法，这不是更好么" class="headerlink" title="最基本的场景例子(比起全部判断语句的做法，这不是更好么)"></a>最基本的场景例子(比起全部判断语句的做法，这不是更好么)</h3><ul>
-<li>开灯关灯</li>
-<li>扩展 开灯-&gt;加亮-&gt;再加亮-&gt;关灯</li>
-<li>九宫格的数字移动游戏</li>
-</ul>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>它将与特定状态相关的行为局部化，并且将不同状态的行为分割开来:</li>
-<li>代码清晰可见，扩展性好</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>状态模式的使用必然会增加系统类和对象的个数。</li>
-</ul>
-<p><strong>只做开灯关灯例子说明 学习于php 设计模式（强烈推荐这本书）</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * content.class.php</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">content</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $onState;</div><div class="line">    <span class="keyword">private</span> $offState;</div><div class="line">    <span class="keyword">private</span> $currentState;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;onState      = <span class="keyword">new</span> OnState(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;offState     = <span class="keyword">new</span> offState(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;currentState = <span class="keyword">$this</span>-&gt;offState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [trueOnLight 开灯]</div><div class="line">     * <span class="doctag">@return</span> [type] [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">trueOnLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;currentState-&gt;onLight();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [trueOffLight 关灯]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">trueOffLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;currentState-&gt;offLight();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [getState 取得关灯的实例]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOffState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;offState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [getOnState 取得开灯实例]</div><div class="line">     * <span class="doctag">@return</span> [type] [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOnState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;onState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [setState 设置当前的实例]</div><div class="line">     * <span class="doctag">@param</span> Istate $state [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setState</span><span class="params">(Istate $state)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;currentState = $state;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 接口 IState.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">interface</span>  <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 开灯状态 OnState.class.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OnState</span> <span class="keyword">implements</span> <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Content $content)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content =  $content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [onLight 开灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'已经开灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [offLight 关灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;content-&gt;setState(<span class="keyword">$this</span>-&gt;content-&gt;getOffState());</div><div class="line">        <span class="keyword">return</span> <span class="string">'关灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 关灯状态 OffState.class.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OffState</span> <span class="keyword">implements</span> <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Content $content)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content = $content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [onLight 开灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content-&gt;setState(<span class="keyword">$this</span>-&gt;content-&gt;getOnState());</div><div class="line">        <span class="keyword">return</span> <span class="string">'开灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [offLight 关灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'已经关灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 用户调用用例 </div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">client</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content = <span class="keyword">new</span> content();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOnLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOnLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOffLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOffLight();<span class="keyword">exit</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$client = <span class="keyword">new</span> client();</div><div class="line"><span class="meta">?&gt;</span></div><div class="line"><span class="comment">/** </span></div><div class="line"> * 实例化一个Context 实例之后，初始请求是打开灯，因为灯默认是关的 ，请求显示的结果如下</div><div class="line"> * 开灯了</div><div class="line"> * 已经开灯了</div><div class="line"> * 关灯了</div><div class="line"> * 已经关灯了</div><div class="line"> */</div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>每一个行动中，我们必须把目光放到我们的过去、现在和将来的行动之外，<br>还要超越这些行为影响到的其他人，而看到所有这一切之间的关系，<br>这样一来，我们就会非常的谨慎</p>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/04/12/状态设计模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/11/单例模式/">单例模式</a>
-    </h1>
-  
-
-        
-        <a href="/2016/04/11/单例模式/" class="archive-article-date">
-  	<time datetime="2016-04-11T12:04:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="单例模式的特点"><a href="#单例模式的特点" class="headerlink" title="单例模式的特点"></a>单例模式的特点</h3><ul>
-<li>只能有一个实例</li>
-<li>必须自行创建这个实例</li>
-<li>必须给其他对象提供这一实例</li>
-</ul>
-<h3 id="单例类"><a href="#单例类" class="headerlink" title="单例类"></a>单例类</h3><ul>
-<li>构造函数需要标记为private（访问控制：防止外部代码使用new操作符创建对象），单例类不能在其他类中实例化，只能被其自身实例化；</li>
-<li>拥有一个保存类的实例的静态成员变量(非成静态员：所有没有加Static的成员都是非静态成员,当类被实例化之后,可以通过实例化的类名进行访问..非静态成员的生存期决定于该类的生存期..而静态成员则不存在生存期的概念,因为静态成员始终驻留在内容中..)</li>
-<li>拥有一个访问这个实例的公共的静态方法（常用getInstance()方法进行实例化单例类，通过instanceof操作符可以检测到类是否已经被实例化）</li>
-</ul>
-<h3 id="为什么要使用PHP单例模式？"><a href="#为什么要使用PHP单例模式？" class="headerlink" title="为什么要使用PHP单例模式？"></a>为什么要使用PHP单例模式？</h3><ul>
-<li>虽然PHP每次执行完页面都是会从内存中清理掉所有的资源. 因而PHP中的单例实际每次运行都是需要重新实例化的，但PHP一个主要应用场合就是应用程序与数据库打交道的场景，在一个应用中会存在大量的数据库操作，针对数据库句柄连接数据库的行为，使用单例模式可以避免大量的new操作。因为每一次new操作都会消耗系统和内存的资源。</li>
-</ul>
-<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul>
-<li>改进系统的设计</li>
-<li>是对全局变量的一种改进</li>
-</ul>
-<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ul>
-<li>难于调试</li>
-<li>隐藏的依赖关系</li>
-<li>无法用错误类型的数据覆写一个单例</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/04/11/单例模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-秒杀活动的架构设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/09/秒杀活动的架构设计/">秒杀活动的架构设计</a>
-    </h1>
-  
-
-        
-        <a href="/2016/03/09/秒杀活动的架构设计/" class="archive-article-date">
-  	<time datetime="2016-03-09T09:04:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="业务的基本说明"><a href="#业务的基本说明" class="headerlink" title="业务的基本说明"></a>业务的基本说明</h3><ol>
-<li>运营评估最高的并发会达到  10W（根据推广的力度，以及以往的经验）</li>
-<li>业务现有的服务器架构 反向代理 4台，前端机 8台， db 2台（主从），redis 2台（主从）以下是服务器架构图</li>
-</ol>
-<p><img src="https://yeyute.github.io/assets/msjgt.jpg" alt="服务器架构图"></p>
-<h3 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h3><p>html 等静态文件上CDN ，这方面压力不大<br>后台程序动态接口，必须支持高并发，用户体验必须做好<br>后端程序优化点（欢迎大家补充）</p>
-<ul>
-<li>程序尽可能的减少加载的文件</li>
-<li>程序减少不必要的网络请求</li>
-<li>redis 队列来作 异步方式实现</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 后台进程消费队列 个人使用brpoplpush方法 取出数据并用存入另外队列作数据备份</span></div><div class="line">$block_expire_time = <span class="number">0</span>; <span class="comment"># 设置阻塞等待时间为永久</span></div><div class="line">$redis-&gt;brpoplpush($key, $backup_key, $block_expire_time);</div></pre></td></tr></table></figure>
-<ul>
-<li>redis 缓存</li>
-<li>前端点击按钮请求后变灰，防止用户重复点击</li>
-<li>静态文件上CDN </li>
-<li>nginx的最大连接数设置为550，防止连接数过大时全部到php，导致php服务挂了</li>
-<li>针对每个用户加并发锁（redis），防止高并发情况判断条件被绕过,程序执行完后解锁。</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$lock_status = $redis-&gt;set($lock_key, <span class="number">1</span>, <span class="keyword">array</span>(<span class="string">"NX"</span>, <span class="string">"EX"</span>=&gt;$expire_time));</div></pre></td></tr></table></figure>
-<h3 id="高并发下奖品超发问题"><a href="#高并发下奖品超发问题" class="headerlink" title="高并发下奖品超发问题"></a>高并发下奖品超发问题</h3><p>个人设计的方案：提前把每个奖品放入 redis队列，每个key一个奖品，队列的长度是奖品的数量，可以保证奖品不会超发放<br>另外，假设使用<br>悲观锁，在更新数据的时候加锁，其它的都为等待状态，不合适秒杀场景<br>乐观锁 基本是采用带版本号更新，版本号匹配才能更新，其它的回滚，虽然保证的数据的安全不超发放，但是在高并发场景下，DB只有两台的时候，超过mysql 进程堆积肯定会的， 超过最大连接数是怎么办，一系列的问题需要解决，所以该方案不合适</p>
-<h3 id="程序压测结果分析服务器能抗的并发"><a href="#程序压测结果分析服务器能抗的并发" class="headerlink" title="程序压测结果分析服务器能抗的并发"></a>程序压测结果分析服务器能抗的并发</h3><p>在平均响应时间300ms内，单台qps 750 左右（保持300ms是公司压测试的规范指标）<br>10台机器（后面新增2台到 8+2）一秒钟能处理： 10 * 750/0.3 = 25000<br>但是系统在高并发的状态下，响应时间有可能从300ms 变成500ms，所以在做评估，需要预留一定的空间<br>那么问题来了，<br>保守的并发只有1.5W,与10w 差距大，需要在执行方案上解决，公司不可无限的申请web机器。<br>解决10W并发问题(资源有限的情况)方案<br>在代理层做处理，根据权重挡掉90%的量，返回800（自定义），前端判断是否为800，是则提示火爆用户重试（对应的方案设置友好一些）</p>
-<h3 id="活动的序列图及说明"><a href="#活动的序列图及说明" class="headerlink" title="活动的序列图及说明"></a>活动的序列图及说明</h3><ol>
-<li>接口程序不连接查询mysql数据库</li>
-<li>奖品的数据存放redis队列，每个奖品一个key，队列长度是奖品的数量</li>
-<li>用户成功领取红包（或抢购）时的代码流程（不包括业务限制与防刷），从队列获取奖品成功，再入队列（此队列后台消费入库），返回给用户领取成功。在用户体验上有所提升，但如果后台队列堆积太多，未能消费完成，用户查看的红包时是没有对应记录的，所以针对自己的需求作对应的优化。</li>
-</ol>
-<p><img src="https://yeyute.github.io/assets/xlt.jpg" alt="活动流程图"></p>
-<h3 id="活动流程图（开爷画的）"><a href="#活动流程图（开爷画的）" class="headerlink" title="活动流程图（开爷画的）"></a>活动流程图（开爷画的）</h3><p><img src="https://yeyute.github.io/assets/lct.png" alt="活动流程图"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">架构设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/03/09/秒杀活动的架构设计/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-用脚步丈量家乡-汕尾" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/22/用脚步丈量家乡-汕尾/">用脚步丈量家乡 - 汕尾</a>
-    </h1>
-  
-
-        
-        <a href="/2016/02/22/用脚步丈量家乡-汕尾/" class="archive-article-date">
-  	<time datetime="2016-02-22T10:00:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="汕尾"><a href="#汕尾" class="headerlink" title="汕尾"></a>汕尾</h3><p>或许汕尾这个城市鲜为人知，一般情况下说汕尾，对方都会复读一次是“汕头”来确认，但汕尾确实是以后可以养老的好地方，空气质量好，生活节奏慢.</p>
-<p>不过大家都为了理想而各奔东西，每年回家乡的次数也有限，借着春节的假期，各种聚会的疯狂过后，去认真的体会一下家乡的自然与空气，这种熟悉且又有了陌生的感觉，让人心平气静。</p>
-<p>沿着汕尾海边街，一路顶着海风飞（man）奔（pao）起来，想知道在海边跑步是什么感受的话，我来告诉你，就一个字，爽。</p>
-<h3 id="下面贴个跑步的小地图"><a href="#下面贴个跑步的小地图" class="headerlink" title="下面贴个跑步的小地图"></a>下面贴个跑步的小地图</h3><p><img src="https://yeyute.github.io/assets/pbdt.jpg" alt=""></p>
-<h3 id="海边街"><a href="#海边街" class="headerlink" title="海边街"></a>海边街</h3><p>相比广州珠江边，这里更具有清新的气息，看着这条路上运动的人越来越多，个人感觉是汕尾人民对自我生活的一种提升吧。</p>
-<p><img src="https://yeyute.github.io/assets/hbj.jpg" alt=""></p>
-<p>跑步有一片蓝天，像玩家有着好的游戏体验一样，跑步真是一项最简单的运动</p>
-<p><img src="https://yeyute.github.io/assets/lt.jpg" alt=""></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">生活</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life/" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/02/22/用脚步丈量家乡-汕尾/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-Mysql 查询今天、昨天、最近7天、最近30天的优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/">Mysql 查询今天、昨天、最近7天、最近30天的优化</a>
-    </h1>
-  
-
-        
-        <a href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/" class="archive-article-date">
-  	<time datetime="2016-01-10T15:48:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>表结构<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`student`</span> (</div><div class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</div><div class="line">  <span class="string">`createtime`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span>,</div><div class="line">  <span class="string">`price`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</div><div class="line">  <span class="keyword">KEY</span> <span class="string">`createtime`</span> (<span class="string">`createtime`</span>) <span class="keyword">USING</span> BTREE</div><div class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure></p>
-<p>查询分析 今天、昨天、最近7天、最近30天的收入总数<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">to_days</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>))=<span class="keyword">to_days</span>(<span class="keyword">now</span>()) </div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> <span class="keyword">TO_DAYS</span>( <span class="keyword">NOW</span>( ) ) - <span class="keyword">TO_DAYS</span>( <span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>)) &lt;= <span class="number">1</span> &amp;&amp; <span class="keyword">to_days</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>))!=<span class="keyword">to_days</span>(<span class="keyword">now</span>()) </div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">DATE_SUB</span>(<span class="keyword">CURDATE</span>(), <span class="built_in">INTERVAL</span> <span class="number">7</span> <span class="keyword">DAY</span>) &lt;= <span class="built_in">date</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>)) </div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">DATE_SUB</span>(<span class="keyword">CURDATE</span>(), <span class="built_in">INTERVAL</span> <span class="number">30</span> <span class="keyword">DAY</span>) &lt;= <span class="built_in">date</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>))</div></pre></td></tr></table></figure></p>
-<p>加了索引的情况下用不到索引</p>
-<p>这里是图片</p>
-<p>使用php程序时使用<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">from</span> student <span class="keyword">where</span> <span class="keyword">to_days</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>))=<span class="keyword">to_days</span>(<span class="keyword">now</span>()) </div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> <span class="keyword">TO_DAYS</span>( <span class="keyword">NOW</span>( ) ) - <span class="keyword">TO_DAYS</span>( <span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>)) &lt;= <span class="number">1</span> &amp;&amp; <span class="keyword">to_days</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>))!=<span class="keyword">to_days</span>(<span class="keyword">now</span>()) </div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> student <span class="keyword">where</span> <span class="keyword">DATE_SUB</span>(<span class="keyword">CURDATE</span>(), <span class="built_in">INTERVAL</span> <span class="number">7</span> <span class="keyword">DAY</span>) &lt;= <span class="built_in">date</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>)) </div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> student <span class="keyword">where</span> <span class="keyword">DATE_SUB</span>(<span class="keyword">CURDATE</span>(), <span class="built_in">INTERVAL</span> <span class="number">30</span> <span class="keyword">DAY</span>) &lt;= <span class="built_in">date</span>(<span class="keyword">date_format</span>(FROM_UNIXTIME(<span class="string">`createtime`</span>),<span class="string">'%Y-%m-%d'</span>))</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">from</span> student <span class="keyword">where</span> createtime&gt;=<span class="string">'1489161600'</span></div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> createtime&gt;=<span class="string">'1489075200'</span> &amp;&amp; createtime&lt;=<span class="string">'1489161600'</span></div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> student <span class="keyword">where</span> createtime&gt;=<span class="string">'1488556800'</span> &amp;&amp; createtime&lt;=<span class="string">'1489247999'</span></div><div class="line"><span class="keyword">UNION</span> ALL </div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">sum</span>(price) <span class="keyword">as</span> <span class="built_in">number</span> <span class="keyword">FROM</span> student <span class="keyword">where</span> createtime&gt;=<span class="string">'1486483200'</span> &amp;&amp; createtime&lt;=<span class="string">'1489247999'</span></div></pre></td></tr></table></figure></p>
-<h3 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h3><p>后续补</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -800,10 +811,6 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
@@ -816,15 +823,27 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nosql</a>
+                <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">生活</a>
+                <a href="javascript:void(0)" class="js-tag color1">nosql</a>
               </li>
              
               <li class="article-tag-list-item">
