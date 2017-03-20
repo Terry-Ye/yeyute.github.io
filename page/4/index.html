@@ -158,6 +158,105 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/11/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/">CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单分析</a>
+    </h1>
+  
+
+        
+        <a href="/2015/05/11/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/" class="archive-article-date">
+  	<time datetime="2015-05-11T02:12:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-05-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单总结"><a href="#CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单总结" class="headerlink" title="CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单总结"></a>CGI、FastCGI、PHP-CGI、PHP-FPM 关系简单总结</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">value</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CGI</td>
+<td style="text-align:left">抽象来说是通用的服务网关， 标准的CGI对每个请求都会解析php.ini文件，初始化执行环境</td>
+</tr>
+<tr>
+<td style="text-align:left">PHP-CGI</td>
+<td style="text-align:left">php-cgi只是解释PHP脚本的程序而已</td>
+</tr>
+<tr>
+<td style="text-align:left">FastCGI</td>
+<td style="text-align:left">一种管理php-cgi的协议(抽象)，一套由操作系统管理的php-cgi管理程序(具体) ，是用来提高CGI程序性能的</td>
+</tr>
+<tr>
+<td style="text-align:left">PHP-FPM</td>
+<td style="text-align:left">实现fast-cgi协议的具体程序</td>
+</tr>
+</tbody>
+</table>
+<p>例：mvc与tp框架的关系， mvc是一种设计模式，tp框架是实现mvc模式的具体程序。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2015/05/11/CGI、FastCGI、PHP-CGI、PHP-FPM-关系简单分析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-深入理解-Memcached" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -473,7 +572,7 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -481,19 +580,19 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -506,6 +605,10 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
               </li>
             
             <div class="clearfix"></div>
