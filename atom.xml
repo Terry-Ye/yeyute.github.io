@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-19T11:46:50.000Z</updated>
+  <updated>2017-03-20T09:18:24.806Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,13 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>实现通用的Facade外观设计模式</title>
-    <link href="http://yoursite.com/2017/01/22/%E5%AE%9E%E7%8E%B0%E9%80%9A%E7%94%A8%E7%9A%84Facade%E5%A4%96%E8%A7%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    <id>http://yoursite.com/2017/01/22/实现通用的Facade外观设计模式/</id>
+    <title>Facade外观设计模式</title>
+    <link href="http://yoursite.com/2017/01/22/Facade%E5%A4%96%E8%A7%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://yoursite.com/2017/01/22/Facade外观设计模式/</id>
     <published>2017-01-22T07:38:31.000Z</published>
-    <updated>2017-03-19T11:46:50.000Z</updated>
+    <updated>2017-03-20T09:18:24.806Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>用于全部api的统一调用方式，规范化代码，后续维护方便<br>在 apiImplement类 做接口接入的扩展，例： apiImplement类中的mango 方法 实例化 MangoApi类，调用方式如下</p>
+    <content type="html"><![CDATA[<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>用于全部api的统一调用方式，规范化代码，后续维护方便<br>具有独立性 和可移植性<br>在 apiImplement类 做接口接入的扩展，例： apiImplement类中的mango 方法 实例化 MangoApi类，调用方式如下</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Admin</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Libraries</span>\<span class="title">Api</span>;</div><div class="line"><span class="comment">// Api::mango() 实例化了 MangoApi类  requestUrl是MangoApi类的方法</span></div><div class="line">$rs = Api::mango($data[<span class="string">'api_info'</span>] , <span class="function"><span class="keyword">function</span> <span class="params">(MangoApi $MangoApi)</span> <span class="title">use</span> <span class="params">($data)</span>  </span>&#123;</div><div class="line">            $MangoApi-&gt;requestUrl($data[<span class="string">'api_info'</span>], $data[<span class="string">'data'</span>]);</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
 <p>扩展规范<br>apiImplement类 添加对应的方法，去实例化需要的对象</p>
 <p>以下是各文件的类<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// file Api.php </span></div><div class="line">namespace <span class="type">App</span>\<span class="type">Libraries</span>;</div><div class="line">use <span class="type">App</span>\<span class="type">Libraries</span>\<span class="type">Facade</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Api</span> <span class="keyword">extends</span> <span class="title">Facade</span> </span>&#123;</div><div class="line"></div><div class="line">	static public function getFacadeAccessor() &#123;</div><div class="line"></div><div class="line">		<span class="keyword">return</span> \<span class="type">App</span>\<span class="type">Libraries</span>\<span class="type">Api</span>\<span class="type">ApiImplement</span>::<span class="class"><span class="keyword">class</span></span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -127,33 +127,113 @@
     <link href="http://yoursite.com/2016/11/03/%E4%BD%BF%E7%94%A8dockerfile-%E9%83%A8%E7%BD%B2php%E7%8E%AF%E5%A2%83/"/>
     <id>http://yoursite.com/2016/11/03/使用dockerfile-部署php环境/</id>
     <published>2016-11-03T06:32:44.000Z</published>
-    <updated>2017-03-19T08:05:54.000Z</updated>
+    <updated>2017-04-10T06:46:09.647Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="docker-各系统环境安装入门篇"><a href="#docker-各系统环境安装入门篇" class="headerlink" title="docker 各系统环境安装入门篇"></a>docker 各系统环境安装入门篇</h2><h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
+    <content type="html"><![CDATA[<h3 id="docker-简介"><a href="#docker-简介" class="headerlink" title="docker 简介"></a>docker 简介</h3><p>docker 可以运行于任何安装现在linux 内核 的x64主机上，推荐内核版本3.8及以上</p>
+<h3 id="为什么使用docker"><a href="#为什么使用docker" class="headerlink" title="为什么使用docker"></a>为什么使用docker</h3><ol>
+<li>加速本地的开发和构建流程，容器可以在开发环境构建，然后轻松地提交到测试环境，并最终进入生产环境</li>
+<li>能够在让独立的服务或应用程序在不同的环境中得到相同的运行结果</li>
+<li>创建隔离的环境来进行测试</li>
+<li>高性能、超大规划的宿主机部署</li>
+</ol>
+<h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
 <p><strong>mac 使用docker toolbox</strong></p>
 <blockquote>
 <p><a href="https://github.com/widuu/chinese_docker/blob/master/installation/mac.md" target="_blank" rel="external">https://github.com/widuu/chinese_docker/blob/master/installation/mac.md</a> 参考使用该文章</p>
 </blockquote>
 <p><strong>linux</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum <span class="keyword">update</span></div><div class="line"></div><div class="line">sudo yum <span class="keyword">install</span> docker</div><div class="line">#安装程序将docker程序安装到/usr/<span class="keyword">bin</span>⺫⽬目录下，配置⽂文件安装在/etc/sysconfig/docker。安装好docker之后，可以 将docker加⼊入到启动服务组中 </div><div class="line">sudo systemctl <span class="keyword">enable</span> docker.service</div><div class="line"></div><div class="line">#手动启动docker服务器，使⽤用命令 sudo systemctl <span class="keyword">start</span> docker.service</div></pre></td></tr></table></figure>
-<h3 id="下载dockerfile"><a href="#下载dockerfile" class="headerlink" title="下载dockerfile"></a>下载dockerfile</h3><p>以下是目录结构，打包 github地址 <a href="https://github.com/yeyute/docker-php-.git" target="_blank" rel="external">https://github.com/yeyute/docker-php-.git</a></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">~/Dockerfiles</div><div class="line">├── mysql</div><div class="line">│   └── Dockerfile</div><div class="line">├── nginx</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── nginx<span class="selector-class">.conf</span></div><div class="line">│   └── sites-enabled</div><div class="line">│       ├── default<span class="selector-class">.conf</span></div><div class="line">│       └── evaengine<span class="selector-class">.conf</span></div><div class="line">├── php</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── composer<span class="selector-class">.phar</span></div><div class="line">│   ├── php-fpm<span class="selector-class">.conf</span></div><div class="line">│   ├── php<span class="selector-class">.ini</span></div><div class="line">│   ├── redis<span class="selector-class">.tgz</span></div><div class="line">└── redis</div><div class="line">    └── Dockerfile</div></pre></td></tr></table></figure>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 使用pip 安装docker-compose</span></div><div class="line">pip install -U docker-compose</div></pre></td></tr></table></figure>
-<p>假设没安装pip，会报以下错误，windows 请参数 <a href="http://www.cnblogs.com/RSsky/articles/5525999.html" target="_blank" rel="external">http://www.cnblogs.com/RSsky/articles/5525999.html</a></p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">bash:</span> <span class="string">pip:</span> command not found</div></pre></td></tr></table></figure>
-<p>环境部署完成后请cd 到 dockerfile文件 目录执行<br><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker-compose up  <span class="regexp">//</span> 如有报错信息请参考笔记 https:<span class="regexp">//</span>segmentfault.com<span class="regexp">/n/</span><span class="number">1330000008347862</span></div></pre></td></tr></table></figure></p>
-<p> 细节部分参考 <a href="http://www.open-open.com/lib/view/open1435671611966.html，主要学习该文章的做法，感谢有这么好的文章" target="_blank" rel="external">http://www.open-open.com/lib/view/open1435671611966.html，主要学习该文章的做法，感谢有这么好的文章</a></p>
-<h3 id="部署问题整理"><a href="#部署问题整理" class="headerlink" title="部署问题整理"></a>部署问题整理</h3><p> 请求php文件全部报502，只能访问静态文件，问题定位</p>
-<ol>
-<li>nginx 的php 配置有问题</li>
-<li><p>防火墙问题，因9000端口不通</p>
-<p>结果是容器之间关联的问题</p>
+<p>目录结构 github地址 <a href="https://github.com/yeyute/docker-lnmpr" target="_blank" rel="external">https://github.com/yeyute/docker-lnmpr</a> </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">docker_lnmpr</div><div class="line">├── mysql</div><div class="line">│   └── Dockerfile</div><div class="line">	└── mysqld<span class="selector-class">.cnf</span></div><div class="line">├── nginx</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── nginx<span class="selector-class">.conf</span></div><div class="line">│   └── vhost</div><div class="line">│       └── www<span class="selector-class">.texixi</span><span class="selector-class">.com</span><span class="selector-class">.conf</span></div><div class="line">├── php</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── composer<span class="selector-class">.phar</span></div><div class="line">│   ├── php-fpm<span class="selector-class">.conf</span></div><div class="line">│   ├── php<span class="selector-class">.ini</span></div><div class="line">│   ├── redis-<span class="number">3.0</span>.<span class="number">0</span><span class="selector-class">.tgz</span></div><div class="line">└── redis</div><div class="line">    └── Dockerfile</div><div class="line">    └── redis.conf</div></pre></td></tr></table></figure>
+<h3 id="建立镜像与容器"><a href="#建立镜像与容器" class="headerlink" title="建立镜像与容器"></a>建立镜像与容器</h3><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># <span class="keyword">build</span></div><div class="line"><span class="symbol">docker</span> <span class="keyword">build </span>-t centos/nginx:<span class="built_in">v1</span>.<span class="number">11</span>.<span class="number">5</span> -v /www:/www -v /<span class="meta">data</span>:/<span class="meta">data</span>  ./nginx</div><div class="line"><span class="symbol">docker</span> <span class="keyword">build </span>-t centos/mysql:<span class="built_in">v5</span>.<span class="number">7</span> -v /<span class="meta">data</span>/mysql:/var/lib/mysql -v /<span class="meta">data</span>/logs/mysql:/var/log/mysql  ./mysql</div><div class="line"><span class="symbol">docker</span> <span class="keyword">build </span>-t centos/php:<span class="built_in">v7</span>.<span class="number">0</span>.<span class="number">12</span> -v /www:/www -v /<span class="meta">data</span>:/<span class="meta">data</span>  ./php</div><div class="line"><span class="symbol">docker</span> <span class="keyword">build </span>-t centos/redis:<span class="built_in">v3</span>.<span class="number">2</span>.<span class="number">6</span> -v /<span class="meta">data</span>:/<span class="meta">data</span>  ./redis</div><div class="line"></div><div class="line">#备注：这里选取了<span class="number">172</span>.<span class="number">172</span>.<span class="number">0</span>.<span class="number">0</span>网段，也可以指定其他任意空闲的网段</div><div class="line"><span class="symbol">docker</span> network create --<span class="keyword">subnet=172.171.0.0/16 </span>docker-at</div><div class="line"></div><div class="line"># run</div><div class="line"><span class="symbol">docker</span> run --name mysql57 --net docker-at --<span class="built_in">ip</span> <span class="number">172</span>.<span class="number">171</span>.<span class="number">0</span>.<span class="number">9</span> -d -p <span class="number">3306</span>:<span class="number">3306</span> -v /<span class="meta">data</span>/mysql:/var/lib/mysql -v /<span class="meta">data</span>/logs/mysql:/var/log/mysql -v /<span class="meta">data</span>/run/mysqlmysqld:/var/run/mysqld  -e MYSQL_ROOT_PASSWORD<span class="number">=123456</span> -<span class="keyword">it </span>centos/mysql:<span class="built_in">v5</span>.<span class="number">7</span></div><div class="line"><span class="symbol">docker</span> run --name redis326 --net docker-at --<span class="built_in">ip</span> <span class="number">172</span>.<span class="number">171</span>.<span class="number">0</span>.<span class="number">10</span> -d -p <span class="number">6379</span>:<span class="number">6379</span>  -v /<span class="meta">data</span>:/<span class="meta">data</span> -<span class="keyword">it </span>centos/redis:<span class="built_in">v3</span>.<span class="number">2</span>.<span class="number">6</span></div><div class="line"><span class="symbol">docker</span> run --name php7 --net docker-at --<span class="built_in">ip</span> <span class="number">172</span>.<span class="number">171</span>.<span class="number">0</span>.<span class="number">8</span> -d -p <span class="number">9000</span>:<span class="number">9000</span> -v /www:/www -v /<span class="meta">data</span>:/<span class="meta">data</span> --link mysql57:mysql57 --link redis326:redis326 -<span class="keyword">it </span>centos/php:<span class="built_in">v7</span>.<span class="number">0</span>.<span class="number">12</span> </div><div class="line"><span class="symbol">docker</span> run --name nginx11 --net docker-at --<span class="built_in">ip</span> <span class="number">172</span>.<span class="number">171</span>.<span class="number">0</span>.<span class="number">7</span> -p <span class="number">80</span>:<span class="number">80</span> -d -v /www:/www -v /<span class="meta">data</span>:/<span class="meta">data</span> --link php7:php7 -<span class="keyword">it </span>centos/nginx:<span class="built_in">v1</span>.<span class="number">11</span>.<span class="number">5</span></div></pre></td></tr></table></figure>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li>docker start 容器名（容器ID也可以）</li>
+<li>docker stop 容器名（容器ID也可以）</li>
+<li>docker run 命令加 -d 参数，docker 会将容器放到后台运行</li>
+<li>docker ps 正在运行的容器</li>
+<li>docker logs –tail 10 -tf 容器名    查看容器的日志文件,加-t是加上时间戳，f是跟踪某个容器的最新日志而不必读整个日志文件</li>
+<li>docker top 容器名 查看容器内部运行的进程</li>
+<li>docker exec -d 容器名 touch /etc/new_config_file  通过后台命令创建一个空文件</li>
+<li>docker run –restart=always –name 容器名 -d ubuntu /bin/sh -c “while true;do echo hello world; sleep 1; done” 无论退出代码是什么，docker都会自动重启容器，可以设置 –restart=on-failure:5 自动重启的次数</li>
+<li>docker inspect 容器名   对容器进行详细的检查，可以加 –format=’{(.State.Running)}’ 来获取指定的信息</li>
+<li>docker rm 容器ID  删除容器，注，运行中的容器无法删除</li>
+<li>docker rm <code>docker ps -a -q</code> 这样可以删除所有的容器</li>
+<li>docker images 列出镜像</li>
+<li>docker pull 镜像名:标签 拉镜像</li>
+<li>docker search  查找docker Hub 上公共的可用镜像 </li>
+<li>docker build -t=’AT/web_server:v1’  命令后面可以直接加上github仓库的要目录下存在的Dockerfile文件。 命令是编写Dockerfile 之后使用的。-t选项为新镜像设置了仓库和名称:标签</li>
+<li>docker login  登陆到Docker Hub，个人认证信息将会保存到$HOME/.dockercfg, </li>
+<li>docker commit -m=”comment “ –author=”AT”  容器ID 镜像的用户名/仓库名:标签 不推荐这种方法，推荐dockerfile</li>
+<li>docker history 镜像ID 深入探求镜像是如何构建出来的</li>
+<li>docker port 镜像ID 端口    查看映射情况的容器的ID和容器的端口号，假设查询80端口对应的映射的端口</li>
+<li>run 运行一个容器，  -p 8080:80  将容器内的80端口映射到docker宿主机的某一特定端口，将容器的80端口绑定到宿主机的8080端口，另 127.0.0.1:80:80 是将容器的80端口绑定到宿主机这个IP的80端口上，-P 是将容器内的80端口对本地的宿主机公开</li>
+<li><a href="http://docs.docker.com/reference/builder/" target="_blank" rel="external">http://docs.docker.com/reference/builder/</a> 查看更多的命令</li>
+<li>docker push 镜像名 将镜像推送到 Docker Hub</li>
+<li>docker rmi 镜像名  删除镜像</li>
+<li>docker attach 容器ID   进入容器</li>
+</ul>
+<p><strong>删除所有容器和镜像的命令</strong></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">docker</span> rm `docker ps -a |awk <span class="string">'&#123;print <span class="variable">$1</span>&#125;'</span> | grep [<span class="number">0</span>-9a-z]` 删除停止的容器</div><div class="line">docker rmi $(docker images | awk <span class="string">'/^&lt;none&gt;/ &#123; print <span class="variable">$3</span> &#125;'</span>)</div></pre></td></tr></table></figure>
+<p><strong>进入容器的命令</strong></p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root<span class="symbol">@iZ287mq5dooZ</span> nginx]<span class="meta"># docker inspect --format <span class="string">"&#123;&#123; .State.Pid &#125;&#125;"</span> 54a454b827e5(容器ID)</span></div><div class="line"><span class="number">20426</span></div><div class="line">[root<span class="symbol">@iZ287mq5dooZ</span> nginx]<span class="meta"># nsenter --target 20426 --mount --uts --ipc --net --pid</span></div><div class="line">[root<span class="symbol">@bcb14764a7a3</span> /]<span class="meta">#</span></div></pre></td></tr></table></figure>
+<h3 id="dockerfile-语法"><a href="#dockerfile-语法" class="headerlink" title="dockerfile 语法"></a>dockerfile 语法</h3><ul>
+<li>MAINTAINER  标识镜像的作者和联系方式</li>
+<li>EXPOSE 可以指定多个EXPOSE向外部公开多个端口，可以帮助多个容器链接</li>
+<li>FROM   指令指定一个已经存在的镜像</li>
+<li>#号代表注释</li>
+<li>RUN 运行命令,会在shell 里使用命令包装器 /bin/sh -c 来执行。如果是在一个不支持shell 的平台上运行或者不希望在shell 中运行，也可以 使用exec 格式 的RUN指令</li>
+<li>ENV REFRESHED_AT 环境变量 这个环境亦是用来表明镜像模板最后的更新时间</li>
+<li>VOLUME 容器添加卷。一个卷是可以 存在于一个或多个容器内的特定的目录，对卷的修改是立刻生效的，对卷的修改不会对更新镜像产品影响，例:VOLUME[“/opt/project”,”/data”]</li>
+<li>ADD 将构建环境 下的文件 和目录复制到镜像 中。例 ADD nginx.conf /conf/nginx.conf 也可以是取url 的地址文件，如果是压缩包，ADD命令会自动解压、</li>
+<li>USER 指定镜像用那个USER 去运行</li>
+<li>COPY 是复制本地文件，而不会去做文件提取（解压包不会自动解压） 例：COPY conf.d/ /etc/apache2/  将本地conf.d目录中的文件复制到/etc/apache2/目录中</li>
+</ul>
+<h3 id="问题点整理"><a href="#问题点整理" class="headerlink" title="问题点整理"></a>问题点整理</h3><ul>
+<li><p><strong>docker 服务没启动</strong><br>启动并设置为开机自动启动docker服务</p>
+  <figure class="highlight livescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ docker-php]<span class="comment"># docker info</span></div><div class="line">Cannot connect <span class="keyword">to</span> the Docker daemon. Is the docker daemon running <span class="literal">on</span> <span class="keyword">this</span> host?</div><div class="line">[root@iZ287mq5dooZ docker-php]<span class="comment"># ps aux | grep docker</span></div><div class="line">root      <span class="number">7902</span>  <span class="number">0.0</span>  <span class="number">0.0</span> <span class="number">112648</span>   <span class="number">956</span> pts/<span class="number">0</span>    S+   <span class="number">13</span>:<span class="number">54</span>   <span class="number">0</span>:<span class="number">00</span> grep --color=auto docker</div><div class="line">[root@iZ287mq5dooZ docker-php]<span class="comment"># service docker start</span></div><div class="line">Redirecting <span class="keyword">to</span> /bin/systemctl start  docker.service</div><div class="line">[root@iZ287mq5dooZ redis]<span class="comment"># systemctl start docker</span></div></pre></td></tr></table></figure>
 </li>
-</ol>
-<p>nginx 配置文件<br><img src="https://yeyute.github.io/assets/docker_link.png" alt="docker_link"></p>
-<h3 id="附使用docker-toolbox-常见的命令-https-segmentfault-com-n-1330000008347886"><a href="#附使用docker-toolbox-常见的命令-https-segmentfault-com-n-1330000008347886" class="headerlink" title="附使用docker toolbox 常见的命令 https://segmentfault.com/n/1330000008347886"></a>附使用docker toolbox 常见的命令 <a href="https://segmentfault.com/n/1330000008347886" target="_blank" rel="external">https://segmentfault.com/n/1330000008347886</a></h3><blockquote>
-<p>是故胜兵先胜而后求战,败兵先战而后求胜 -《孙子兵法》</p>
-</blockquote>
+<li><p><strong>注意挂载目录的权限问题，不然容器成功启动几秒后立刻关闭</strong><br>例：以下/data/run/mysql 目录没权限的情况下就会出现刚才那种情况</p>
+<pre><code><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --name mysql57 -d -p <span class="number">3306</span>:<span class="number">3306</span> -v <span class="regexp">/data/</span><span class="string">mysql:</span><span class="regexp">/var/</span>lib<span class="regexp">/mysql -v /</span>data<span class="regexp">/logs/</span><span class="string">mysql:</span><span class="regexp">/var/</span>log<span class="regexp">/mysql -v /</span>data<span class="regexp">/run/</span><span class="string">mysql:</span><span class="regexp">/var/</span>run<span class="regexp">/mysqld -e MYSQL_ROOT_PASSWORD=123456 -it centos/</span><span class="string">mysql:</span>v5<span class="number">.7</span></div></pre></td></tr></table></figure>
+</code></pre></li>
+<li><p><strong>需要注意php.ini 中的目录对应  mysql 的配置的目录需要挂载才能获取文件内容，不然php连接mysql失败</strong></p>
+<pre><code><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># php.ini</span></div><div class="line">mysql.default_socket = /data/<span class="keyword">run</span><span class="bash">/mysql/mysqld.sock</span></div><div class="line">mysqli.default_socket = /data/<span class="keyword">run</span><span class="bash">/mysql/mysqld.sock</span></div><div class="line">pdo_mysql.default_socket = /data/<span class="keyword">run</span><span class="bash">/mysql/mysqld.sock</span></div><div class="line"></div><div class="line"><span class="comment"># mysqld.cnf</span></div><div class="line">pid-file       = /var/<span class="keyword">run</span><span class="bash">/mysqld/mysqld.pid</span></div><div class="line">socket         = /var/<span class="keyword">run</span><span class="bash">/mysqld/mysqld.sock</span></div></pre></td></tr></table></figure>
+</code></pre></li>
+<li><p><strong>宿主机 无法访问docker的容器（nginx）</strong> <a href="https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面" target="_blank" rel="external">https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面</a></p>
+</li>
+<li><p><strong>使用php连接不上redis</strong> </p>
+  <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 错误的</span></div><div class="line">$redis = <span class="keyword">new</span> Redis;</div><div class="line">$rs = $redis-&gt;connect(<span class="string">'127.0.0.1'</span>, <span class="number">6379</span>);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>php连接不上，查看错误日志
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PHP Fatal <span class="string">error:</span>  Uncaught <span class="string">RedisException:</span> Redis server went away <span class="keyword">in</span> <span class="regexp">/www/</span>index.<span class="string">php:</span><span class="number">7</span></div></pre></td></tr></table></figure>
+
+考虑到docker 之间的通信应该不可以用127.0.0.1 应该使用容器里面的ip，所以查看redis 容器的ip
+
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ php]# docker ps </div><div class="line">CONTAINER ID        IMAGE                  COMMAND                   CREATED             STATUS              PORTS                         NAMES</div><div class="line">5fb4b1904f1c        centos/nginx:v1<span class="meta">.11</span><span class="meta">.5</span>   <span class="string">"/usr/local/nginx/sbi"</span>    About an hour ago   <span class="meta">Up</span> About an hour    <span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>:<span class="number">80</span>-&gt;<span class="number">80</span>/tcp, <span class="number">443</span>/tcp   nginx11</div><div class="line">2bf7ad9f44f9        centos/php:v7<span class="meta">.0</span><span class="meta">.12</span>     <span class="string">"/usr/local/php/sbin/"</span>    About an hour ago   <span class="meta">Up</span> About an hour    <span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>:<span class="number">9000</span>-&gt;<span class="number">9000</span>/tcp        php7</div><div class="line">4b84858ea4e4        centos/redis:v3<span class="meta">.2</span><span class="meta">.6</span>    <span class="string">"/bin/sh -c '\"/usr/lo"</span>   <span class="number">18</span> hours ago        <span class="meta">Up</span> About an hour    <span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>:<span class="number">6379</span>-&gt;<span class="number">6379</span>/tcp        redis326</div><div class="line">158c67aa178c        centos/mysql:v5<span class="meta">.7</span>      <span class="string">"docker-entrypoint.sh"</span>    <span class="number">6</span> days ago          <span class="meta">Up</span> About an hour    <span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>:<span class="number">3306</span>-&gt;<span class="number">3306</span>/tcp        mysql57</div><div class="line">[root@iZ287mq5dooZ php]# docker inspect 4b84858ea4e4</div></pre></td></tr></table></figure>
+
+结果是为 192.168.0.4，测试连接，成功
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = <span class="keyword">new</span> Redis;</div><div class="line">$rs = $redis-&gt;connect(<span class="string">'192.168.0.4'</span>, <span class="number">6379</span>);</div></pre></td></tr></table></figure>
+
+问题是重启容器ip为动态的，解决该问题
+第一步：创建自定义网络
+
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#备注：这里选取了<span class="number">172.172</span><span class="meta">.0</span><span class="meta">.0</span>网段，也可以指定其他任意空闲的网段</div><div class="line">docker network create --subnet=<span class="number">172.171</span><span class="meta">.0</span><span class="meta">.0</span>/<span class="number">16</span> docker-<span class="meta">at</span></div><div class="line">docker run --name redis326 --net docker-<span class="meta">at</span> --<span class="built_in">ip</span> <span class="number">172.171</span><span class="meta">.0</span><span class="meta">.10</span> -d -p <span class="number">6379</span>:<span class="number">6379</span>  -v /data:/data -it centos/redis:v3<span class="meta">.2</span><span class="meta">.6</span></div></pre></td></tr></table></figure>
+
+
+连接redis 就可以配置对应的ip地址了，连接成功
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = <span class="keyword">new</span> Redis;</div><div class="line">$rs = $redis-&gt;connect(<span class="string">'172.171.0.10'</span>, <span class="number">6379</span>);</div></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p><strong>使用docker-compose 报错</strong></p>
+  <figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 使用pip 安装docker-compose</span></div><div class="line">pip install -U docker-compose</div></pre></td></tr></table></figure>
+<p>  假设没安装pip，会报以下错误，windows 请参数 <a href="http://www.cnblogs.com/RSsky/articles/5525999.html" target="_blank" rel="external">http://www.cnblogs.com/RSsky/articles/5525999.html</a></p>
+  <figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">bash:</span> <span class="string">pip:</span> command not found</div></pre></td></tr></table></figure>
+<p>  linux 请执行</p>
+  <figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum <span class="keyword">install</span> python-pip</div></pre></td></tr></table></figure>
+</li>
+</ul>
 ]]></content>
     
     <summary type="html">
@@ -220,20 +300,14 @@
     <link href="http://yoursite.com/2016/05/01/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2016/05/01/适配器模式/</id>
     <published>2016-05-01T15:44:52.000Z</published>
-    <updated>2017-03-16T10:58:27.748Z</updated>
+    <updated>2017-03-22T00:16:28.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="适配器的适用场景"><a href="#适配器的适用场景" class="headerlink" title="适配器的适用场景"></a>适配器的适用场景</h3><ul>
-<li>代码的复用性需求多的。</li>
-<li>就像不同的手机充电一样，需要一个适配器使usb连接头和墙上插座相互兼容，分解问题可以得到 <ul>
-<li>usb连接头 -&gt;不变</li>
-<li>插座不变 -&gt;不变</li>
-<li>数据线 -&gt;变</li>
+<li>代码的复用性强。</li>
+<li>我们一直在使用适配器，如果 只有USB连接头，无法将手机插到标准的插座上面充电 ，这时需要的一个适配器，一端接USB连接头，另一端接插座</li>
+<li>活动专题，例抽奖，固定的规则是充值有抽奖机会，但是突然来了一个需求说充值还要分享才能有抽奖机会，这时可以运用上这个设计模式</li>
 </ul>
-</li>
-<li><p>活动专题，例抽奖，固定的规则是充值有抽奖机会，但是突然来了一个需求说充值还要分享才能有抽奖机会，这时可以运用上这个设计模式</p>
-<p>题目（来自于php 设计模式 书） - 假设一个企业网站同时销售软件服务和软件产品，目前所有的交易都在美国进行，后续业务决定向欧洲发展要增加货币换算（增加适配器）</p>
-</li>
-</ul>
+<p>题目一（来自于php 设计模式 书） - 假设一个企业网站同时销售软件服务和软件产品，目前所有的交易都在美国进行，后续业务决定向欧洲发展要增加货币换算（增加适配器）<br>题目二是自已设计于活动专题业务上，只是将逻辑摘取出来，代码不可直接运行</p>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
 <li>灵活性扩展性都很好</li>
 <li>将目标类和适配者类解耦</li>

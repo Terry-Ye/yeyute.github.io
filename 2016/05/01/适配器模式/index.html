@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/05/01/适配器模式/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="php,适配器设计模式,设计模式">
-<meta property="og:updated_time" content="2017-03-16T10:58:27.748Z">
+<meta property="og:updated_time" content="2017-03-22T00:16:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="适配器设计模式">
 <meta name="twitter:description" content="php,适配器设计模式,设计模式">
@@ -174,17 +174,11 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="适配器的适用场景"><a href="#适配器的适用场景" class="headerlink" title="适配器的适用场景"></a>适配器的适用场景</h3><ul>
-<li>代码的复用性需求多的。</li>
-<li>就像不同的手机充电一样，需要一个适配器使usb连接头和墙上插座相互兼容，分解问题可以得到 <ul>
-<li>usb连接头 -&gt;不变</li>
-<li>插座不变 -&gt;不变</li>
-<li>数据线 -&gt;变</li>
+<li>代码的复用性强。</li>
+<li>我们一直在使用适配器，如果 只有USB连接头，无法将手机插到标准的插座上面充电 ，这时需要的一个适配器，一端接USB连接头，另一端接插座</li>
+<li>活动专题，例抽奖，固定的规则是充值有抽奖机会，但是突然来了一个需求说充值还要分享才能有抽奖机会，这时可以运用上这个设计模式</li>
 </ul>
-</li>
-<li><p>活动专题，例抽奖，固定的规则是充值有抽奖机会，但是突然来了一个需求说充值还要分享才能有抽奖机会，这时可以运用上这个设计模式</p>
-<p>题目（来自于php 设计模式 书） - 假设一个企业网站同时销售软件服务和软件产品，目前所有的交易都在美国进行，后续业务决定向欧洲发展要增加货币换算（增加适配器）</p>
-</li>
-</ul>
+<p>题目一（来自于php 设计模式 书） - 假设一个企业网站同时销售软件服务和软件产品，目前所有的交易都在美国进行，后续业务决定向欧洲发展要增加货币换算（增加适配器）<br>题目二是自已设计于活动专题业务上，只是将逻辑摘取出来，代码不可直接运行</p>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
 <li>灵活性扩展性都很好</li>
 <li>将目标类和适配者类解耦</li>
@@ -410,15 +404,15 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -430,6 +424,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
               </li>
              
@@ -438,15 +436,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
             
             <div class="clearfix"></div>
@@ -582,6 +576,16 @@
     </div>
 
 </div>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?76d9be1d356d916926b0256b5dbe884b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
   </div>
 </body>
 </html>
