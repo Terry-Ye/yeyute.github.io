@@ -6,18 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Mysql 查询今天、昨天、最近7天、最近30天的优化 | AT的博客</title>
+  <title>Tag: golang | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="mysql">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Mysql 查询今天、昨天、最近7天、最近30天的优化">
-<meta property="og:url" content="http://yoursite.com/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/index.html">
+  <meta name="description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AT的博客">
+<meta property="og:url" content="http://yoursite.com/tags/golang/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="mysql">
-<meta property="og:updated_time" content="2017-03-16T09:13:27.296Z">
+<meta property="og:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mysql 查询今天、昨天、最近7天、最近30天的优化">
-<meta name="twitter:description" content="mysql">
+<meta name="twitter:title" content="AT的博客">
+<meta name="twitter:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -153,52 +152,48 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Mysql 查询今天、昨天、最近7天、最近30天的优化" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      Mysql 查询今天、昨天、最近7天、最近30天的优化
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/03/03/golang-排序练习题学习/" class="archive-article-date">
+  	<time datetime="2017-03-03T05:38:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/03/03/golang-排序练习题学习/">golang 排序练习题学习</a>
     </h1>
   
 
-        
-        <a href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/" class="archive-article-date">
-  	<time datetime="2016-01-10T15:48:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>表结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE `student` (</div><div class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</div><div class="line">  `createtime` int(11) NOT NULL DEFAULT &apos;0&apos;,</div><div class="line">  `price` varchar(32) NOT NULL,</div><div class="line">  PRIMARY KEY (`id`),</div><div class="line">  KEY `createtime` (`createtime`) USING BTREE</div><div class="line">) ENGINE=InnoDB  CHARSET=utf8;</div></pre></td></tr></table></figure></p>
-<p>查询分析 今天、昨天、最近7天、最近30天的收入总数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">explain select sum(price) as number from table where to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table WHERE TO_DAYS( NOW( ) ) - TO_DAYS( date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) &lt;= 1 &amp;&amp; to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))!=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table where DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))</div></pre></td></tr></table></figure></p>
-<p>加了索引的情况下用不到索引</p>
-<p>这里是图片</p>
-<p>使用php程序时使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">explain select sum(price) as number from student where to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student WHERE TO_DAYS( NOW( ) ) - TO_DAYS( date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) &lt;= 1 &amp;&amp; to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))!=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))</div><div class="line"></div><div class="line"></div><div class="line">explain select sum(price) as number from student where createtime&gt;=&apos;1489161600&apos;</div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student WHERE createtime&gt;=&apos;1489075200&apos; &amp;&amp; createtime&lt;=&apos;1489161600&apos;</div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where createtime&gt;=&apos;1488556800&apos; &amp;&amp; createtime&lt;=&apos;1489247999&apos;</div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where createtime&gt;=&apos;1486483200&apos; &amp;&amp; createtime&lt;=&apos;1489247999&apos;</div></pre></td></tr></table></figure></p>
-<h3 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h3><p>后续补</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">golang</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -211,95 +206,17 @@
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2016/02/22/用脚步丈量家乡-汕尾/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          用脚步丈量家乡 - 汕尾
-        
-      </div>
-    </a>
   
   
-    <a href="/2016/01/08/mysql-数据阻塞，进程数满/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mysql 数据阻塞，进程数满，服务挂了</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-
-
-
-
-  
-    <div class="duoshuo"></div>
+    </div></section>
   
 
-
+    
 
 
           </div>
@@ -322,9 +239,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",

@@ -6,18 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Mysql 查询今天、昨天、最近7天、最近30天的优化 | AT的博客</title>
+  <title>golang 排序练习题学习 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="mysql">
+  <meta name="description" content="golang 排序练习题学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mysql 查询今天、昨天、最近7天、最近30天的优化">
-<meta property="og:url" content="http://yoursite.com/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/index.html">
+<meta property="og:title" content="golang 排序练习题学习">
+<meta property="og:url" content="http://yoursite.com/2017/03/03/golang-排序练习题学习/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="mysql">
-<meta property="og:updated_time" content="2017-03-16T09:13:27.296Z">
+<meta property="og:description" content="golang 排序练习题学习">
+<meta property="og:updated_time" content="2017-05-03T05:40:46.723Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mysql 查询今天、昨天、最近7天、最近30天的优化">
-<meta name="twitter:description" content="mysql">
+<meta name="twitter:title" content="golang 排序练习题学习">
+<meta name="twitter:description" content="golang 排序练习题学习">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -153,32 +153,41 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Mysql 查询今天、昨天、最近7天、最近30天的优化" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-golang-排序练习题学习" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Mysql 查询今天、昨天、最近7天、最近30天的优化
+      golang 排序练习题学习
     </h1>
   
 
         
-        <a href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/" class="archive-article-date">
-  	<time datetime="2016-01-10T15:48:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-10</time>
+        <a href="/2017/03/03/golang-排序练习题学习/" class="archive-article-date">
+  	<time datetime="2017-03-03T05:38:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>表结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE `student` (</div><div class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</div><div class="line">  `createtime` int(11) NOT NULL DEFAULT &apos;0&apos;,</div><div class="line">  `price` varchar(32) NOT NULL,</div><div class="line">  PRIMARY KEY (`id`),</div><div class="line">  KEY `createtime` (`createtime`) USING BTREE</div><div class="line">) ENGINE=InnoDB  CHARSET=utf8;</div></pre></td></tr></table></figure></p>
-<p>查询分析 今天、昨天、最近7天、最近30天的收入总数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">explain select sum(price) as number from table where to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table WHERE TO_DAYS( NOW( ) ) - TO_DAYS( date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) &lt;= 1 &amp;&amp; to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))!=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table where DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))</div></pre></td></tr></table></figure></p>
-<p>加了索引的情况下用不到索引</p>
-<p>这里是图片</p>
-<p>使用php程序时使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">explain select sum(price) as number from student where to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student WHERE TO_DAYS( NOW( ) ) - TO_DAYS( date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) &lt;= 1 &amp;&amp; to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))!=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))</div><div class="line"></div><div class="line"></div><div class="line">explain select sum(price) as number from student where createtime&gt;=&apos;1489161600&apos;</div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student WHERE createtime&gt;=&apos;1489075200&apos; &amp;&amp; createtime&lt;=&apos;1489161600&apos;</div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where createtime&gt;=&apos;1488556800&apos; &amp;&amp; createtime&lt;=&apos;1489247999&apos;</div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM student where createtime&gt;=&apos;1486483200&apos; &amp;&amp; createtime&lt;=&apos;1489247999&apos;</div></pre></td></tr></table></figure></p>
-<h3 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h3><p>后续补</p>
+        <blockquote>
+<p>练习题目来源于 go 语言编程  一书,程序自己测试完成通过</p>
+</blockquote>
+<p>我们将该函数分为两类：主程序和排序算法函数。每个排序算法都包装成一个静态库，虽然现在看起来似乎有些多此一举，但这只是为了顺便演示包之间的依赖方法<br>注：环境变量需要指定到该根目录执行程序，另外文章只是简单的说明构建流程，主要自己看代码理解</p>
+<h3 id="目录结构代码-https-github-com-yeyute-go-git"><a href="#目录结构代码-https-github-com-yeyute-go-git" class="headerlink" title="目录结构代码 (https://github.com/yeyute/go.git)"></a>目录结构代码 (<a href="https://github.com/yeyute/go.git" target="_blank" rel="external">https://github.com/yeyute/go.git</a>)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">├─&lt;src&gt;</div><div class="line">	├─&lt;sorter&gt;</div><div class="line">		├─sorter.go</div><div class="line">	├─&lt;algorithms&gt;</div><div class="line">		├─&lt;qsort&gt;</div><div class="line">			├─qsort.go</div><div class="line">			├─qsort_test.go</div><div class="line">		├─&lt;bubblesort&gt;</div><div class="line">			├─bubblesort.go</div><div class="line">			├─bubblesort_test.go</div><div class="line">	├─&lt;pkg&gt;(程序构建时自动创建)</div><div class="line">	├─&lt;bin&gt;(程序构建时自动创建)</div></pre></td></tr></table></figure>
+<p>其中sorter.go是主程序<br>qsort.go用于实现快速排序<br>bubblesort.go用于实现冒泡排序</p>
+<h3 id="构建程序"><a href="#构建程序" class="headerlink" title="构建程序"></a>构建程序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ go build algorithm/qsort</div><div class="line">$ go build algorithm/bubblesort</div><div class="line">$ go test algorithm/qsort</div><div class="line">ok algorithm/qsort0.007s</div><div class="line">$ go test algorithm/bubblesort</div><div class="line">ok algorithm/bubblesort0.013s</div><div class="line">$ go install algorithm/qsort</div><div class="line">$ go install algorithm/bubblesort</div><div class="line">$ go build sorter</div><div class="line">$ go install sorter</div></pre></td></tr></table></figure>
+<p>执行安装这些命令，我们应该能够在src的同一级目录下看到两个目录——bin和pkg,然后在bin目录新建unsorted.dat，执行以下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ cd bin</div><div class="line">$ vim unsorted.dat</div><div class="line">123</div><div class="line">3064</div><div class="line">3</div><div class="line">64</div><div class="line">490</div><div class="line">1</div><div class="line">23</div><div class="line">5331</div><div class="line">2</div><div class="line">7</div><div class="line">4</div><div class="line">2</div><div class="line">132</div></pre></td></tr></table></figure>
+<p>:wq 保存退出</p>
+<p>再执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ ./sorter -i unsorted.dat -o sorted.dat -a qsort infile = unsorted.dat outfile = sorted.dat algorithm = qsort</div><div class="line">The sorting process costs 3us to complete.</div><div class="line">$ ./sorter -i unsorted.dat -o sorted.dat -a bubblesort infile = unsorted.dat outfile = sorted.dat algorithm = bubblesort</div><div class="line">The sorting process costs 2us to complete.</div><div class="line">$ cat sorted.dat</div><div class="line">1</div><div class="line">2</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">7</div><div class="line">23</div><div class="line">64</div><div class="line">123</div><div class="line">132</div><div class="line">490</div><div class="line">3064</div><div class="line">5331</div></pre></td></tr></table></figure></p>
+<p>结果已经被正确排序并写入到sorted.dat文件中,，至此我们的程序也算是完整了</p>
+<blockquote>
+<p>如果有您有帮助，请给个start</p>
+</blockquote>
 
       
 
@@ -192,7 +201,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">golang</a>
         		</li>
       		
 		</ul>
@@ -259,7 +268,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/03/03/golang-排序练习题学习/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -273,18 +282,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2016/02/22/用脚步丈量家乡-汕尾/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          用脚步丈量家乡 - 汕尾
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/08/mysql-数据阻塞，进程数满/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mysql 数据阻塞，进程数满，服务挂了</div>
+    <a href="/2017/01/22/Facade外观设计模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Facade外观设计模式</div>
       <i class="icon-circle-right"></i>
     </a>
   
