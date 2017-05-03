@@ -6,21 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>laravel后台框架laravel-admin select框的使用 | AT的博客</title>
+  <title>golang 环境搭建笔记 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="php">
+  <meta name="description" content="golang环境安装">
 <meta property="og:type" content="article">
-<meta property="og:title" content="laravel后台框架laravel-admin select框的使用">
-<meta property="og:url" content="http://yoursite.com/2016/12/15/laravel后台框架laravel-admin-select框的使用/index.html">
+<meta property="og:title" content="golang 环境搭建笔记">
+<meta property="og:url" content="http://yoursite.com/2017/02/25/go-安装笔记/index.html">
 <meta property="og:site_name" content="AT的博客">
-<meta property="og:description" content="php">
-<meta property="og:image" content="https://yeyute.github.io/assets/laravel_admin1.png">
-<meta property="og:image" content="https://yeyute.github.io/assets/laravel_admin2.png">
-<meta property="og:updated_time" content="2017-03-19T08:19:10.000Z">
+<meta property="og:description" content="golang环境安装">
+<meta property="og:image" content="https://yeyute.github.io/assets/go_path.png">
+<meta property="og:updated_time" content="2017-05-03T09:47:48.947Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="laravel后台框架laravel-admin select框的使用">
-<meta name="twitter:description" content="php">
-<meta name="twitter:image" content="https://yeyute.github.io/assets/laravel_admin1.png">
+<meta name="twitter:title" content="golang 环境搭建笔记">
+<meta name="twitter:description" content="golang环境安装">
+<meta name="twitter:image" content="https://yeyute.github.io/assets/go_path.png">
   
     <link rel="alternative" href="/atom.xml" title="AT的博客" type="application/atom+xml">
   
@@ -156,36 +155,33 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-laravel后台框架laravel-admin-select框的使用" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-go-安装笔记" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      laravel后台框架laravel-admin select框的使用
+      golang 环境搭建笔记
     </h1>
   
 
         
-        <a href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/" class="archive-article-date">
-  	<time datetime="2016-12-15T04:01:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-15</time>
+        <a href="/2017/02/25/go-安装笔记/" class="archive-article-date">
+  	<time datetime="2017-02-25T06:12:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-25</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="select-二级联动不能正常获取数据原因"><a href="#select-二级联动不能正常获取数据原因" class="headerlink" title="select 二级联动不能正常获取数据原因"></a>select 二级联动不能正常获取数据原因</h3><p><img src="https://yeyute.github.io/assets/laravel_admin1.png" alt="laravel_admin"><br>使用二级联动时调用的api时，api返回的代码如以下, </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//控制器文件controller.php</div><div class="line">$this-&gt;form-&gt;select(&apos;sort&apos;, &apos;app&apos;)</div><div class="line">             -&gt;options($sort_type)</div><div class="line">             -&gt;load(&apos;position_id&apos;, &apos;/admin/api_general/get_position&apos;);</div><div class="line"></div><div class="line">//api文件                     </div><div class="line">$data = [</div><div class="line">	&#123;&quot;id&quot;=&gt;&quot;111&quot;,&quot;text&quot;=&gt;&quot;index&quot;&#125;,</div><div class="line">	];</div><div class="line">return json_encode($data);</div></pre></td></tr></table></figure>
-<p><img src="https://yeyute.github.io/assets/laravel_admin2.png" alt="laravel_admin"></p>
-<p>头部信息的格式为 Content-type:text/html;</p>
-<p> 即使在api文件补上header</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">header(&quot;Content-type: application/json&quot;);</div><div class="line">$data = [</div><div class="line">	&#123;&quot;id&quot;=&gt;&quot;111&quot;,&quot;text&quot;=&gt;&quot;index&quot;&#125;,</div><div class="line">	];</div><div class="line">return json_encode($data);</div></pre></td></tr></table></figure>
-<p>结果还是返回Content-type:text/html; 类型</p>
-<p>最后使用laravel封装方法解决问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$data = [</div><div class="line">	&#123;&quot;id&quot;=&gt;&quot;111&quot;,&quot;text&quot;=&gt;&quot;index&quot;&#125;,</div><div class="line">	];</div><div class="line">// json 方法会自动将 Content-Type 头设置为 application/json，并使用 PHP 函数 json_encode 方法将给定数组转化为 JSON：</div><div class="line">return response()-&gt;json($data);</div></pre></td></tr></table></figure>
-
+        <h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>下载地址：<a href="https://golang.org/dl/" target="_blank" rel="external">https://golang.org/dl/</a></p>
+<h3 id="mac-安装"><a href="#mac-安装" class="headerlink" title="mac 安装"></a>mac 安装</h3><p>版本：1.8.1<br>MAC 系统下你可以使用 .pkg 结尾的安装包直接双击来完成安装，安装目录在 /usr/local/go/ 下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 没有bash_profile 则新建</div><div class="line">vim ~/.bash_profile</div><div class="line"></div><div class="line"># 项目路径</div><div class="line">export GOPATH=/Users/AT/Dropbox/htdocs/go</div><div class="line"># go执行的执行位置 默认是</div><div class="line">export GOBIN=/usr/local/go/bin</div><div class="line">export PATH=$PATH:$GOBIN</div><div class="line">:wq</div><div class="line"></div><div class="line"># 编译</div><div class="line">source .bash_profile</div><div class="line"># 查看 go 环境变量是否成功</div><div class="line">go env</div></pre></td></tr></table></figure>
+<h3 id="windows-安装"><a href="#windows-安装" class="headerlink" title="windows 安装"></a>windows 安装</h3><p>下载windodws对应的安装版本（msi结尾的），安装完成配置对应的环境变量即可<br>GOROOT: go的安装路径,官方包路径根据这个设置自动匹配<br>GOPATH: 工作路径(其实不应该用中文翻译解释，直接说GOPATH更合适)<br><img src="https://yeyute.github.io/assets/go_path.png" alt="配置环境变量"></p>
+<h3 id="输出第一条语句"><a href="#输出第一条语句" class="headerlink" title="输出第一条语句"></a>输出第一条语句</h3><p>在环境变量 GOPATH的目录下新建 hello.go。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import &quot;fmt&quot;</div><div class="line"></div><div class="line">func main() &#123;</div><div class="line">	fmt.Println(&quot;Hello, World!&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>个人使用sublime的插件执行 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go run hello.go</div></pre></td></tr></table></figure>
       
 
       
@@ -198,11 +194,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">golang</a>
         		</li>
       		
 		</ul>
@@ -269,7 +265,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/12/15/laravel后台框架laravel-admin-select框的使用/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/02/25/go-安装笔记/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -283,18 +279,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/01/22/Facade外观设计模式/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/03/03/golang-排序练习题学习/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Facade外观设计模式
+          golang 排序练习题学习
         
       </div>
     </a>
   
   
-    <a href="/2016/12/01/windows与linux安装node-js/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">windows与linux安装node.js</div>
+    <a href="/2017/01/22/Facade外观设计模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Facade外观设计模式</div>
       <i class="icon-circle-right"></i>
     </a>
   
