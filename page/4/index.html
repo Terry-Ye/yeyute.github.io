@@ -154,6 +154,278 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Mysql-覆盖索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/02/Mysql-覆盖索引/">Mysql 覆盖索引</a>
+    </h1>
+  
+
+        
+        <a href="/2016/01/02/Mysql-覆盖索引/" class="archive-article-date">
+  	<time datetime="2016-01-02T02:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
+<li>覆盖索引能够极大地提高性能。 考虑一下如果查询只需要扫描索引而无须回表，会带来多少好处 <ol>
+<li>索引的条目通常远小于数据行大小，所以如果只需要读取索引，那极大地减少数据访问量，所以更内容全部放在内存中</li>
+<li>索引是按照列值顺序存储的（至少单个页内是这样的）</li>
+<li>一些存储引擎如MyISAM 的内存只缓存索引。</li>
+<li>由于innodb 的聚簇索引，覆盖索引 对Innodb表特别有用。 Innodb的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询</li>
+</ol>
+</li>
+<li>mysql 只能用b-tree索引来做覆盖索引</li>
+<li>当发起一个被索引覆盖的查询时，在 EXPLAIN 的extra列可以看到 “Using index”的信息</li>
+</ol>
+<p>例子</p>
+<pre><code>explain select * from prodcuts where actor = &quot;yeyute&quot; and title like &apos; %aplollo%&apos;;
+</code></pre><ol>
+<li>没有任务索引能够覆盖这个查询，因为查询从表中选择了所有的列， 不过 where 条件中的表是有索引可以覆盖的</li>
+<li>mysql 不能在索引中执行like 操作 。 mysql5.5以为更早版本，只允许在索引中做简单操作（&gt; 和 &gt;= 和 !=  ）,这种情况，mysql 只能提取数据行的值而不是索引值来做比较</li>
+</ol>
+<h3 id="使用索引扫描来做排序"><a href="#使用索引扫描来做排序" class="headerlink" title="使用索引扫描来做排序"></a>使用索引扫描来做排序</h3><ul>
+<li>explain type列的值为“index”</li>
+<li>如果索引不能覆盖查询所需的全部列，就得扫描查询所需的全部列</li>
+<li>mysql 可以使用同一个索引既满足排序，又用于查找行</li>
+<li>关联多表时，只有当order by 子句引用的字段全部为第一个表时，才能使用索引做排序</li>
+<li>建立（sex,country），查询时不限制性别，可以在查询条件新增 sex in(‘m’,’f’) and country=’’ 来使用索引</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/01/02/Mysql-覆盖索引/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-Mysql-聚簇索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/01/Mysql-聚簇索引/">Mysql 聚簇索引(Clustered Index)</a>
+    </h1>
+  
+
+        
+        <a href="/2016/01/01/Mysql-聚簇索引/" class="archive-article-date">
+  	<time datetime="2016-01-01T06:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
+<li>每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放，但是，一个表可以有不止一个非聚簇索引。例:你翻到新华字典的汉字“爬”那一页就是P开头的部分，这就是物理存储顺序（聚簇索引）；而不用你到目录，找到汉字“爬”所在的页码，然后根据页码找到这个字（非聚簇索引）</li>
+<li>如果需要该索引,只要将索引指定为主键(primary key)就可以，根据主键创建聚簇索引</li>
+<li>如果正在使用Innodb 表并且没有什么数据需要聚集，那么可以定义一个代理键作为主键，这种主键的数据应该和应用无关，最简单的方法是使用AUTO_INCREMENT 自增列。这样可以保证数据行是按顺序写入，对于根据主键做关联操作的性能也会更好。 </li>
+<li>顺序的主键会造成什么坏的结果？ 在高并发插入可能导致间隙锁竞争，可以考虑重新设计表，或者更改innodb_autoinc_lock_mode参数（innodb在语句1的实际插入操作执行前就预分配给该语句三个自增值，当有一个新的insert语句2要执行时，读取的AUTO_INCREMENT=4，这样虽然语句1可能还没有执行完，语句2就可直接执行无需等待语句2。）</li>
+</ol>
+<h3 id="什么时候用到聚簇索引"><a href="#什么时候用到聚簇索引" class="headerlink" title="什么时候用到聚簇索引"></a>什么时候用到聚簇索引</h3><p>以下将id设置为主键时，mysql 会根据主键创建聚簇索引,例：如果没设置主键，自增，where id=’1000’，是扫描全表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE `test_user` (</div><div class="line">	`id` int(11) NOT NULL AUTO_INCREMENT,</div><div class="line">	`user_name` VARCHAR(32) NOT NULL DEFAULT &apos;&apos;,</div><div class="line">	`password` CHAR(32) NOT NULL DEFAULT &apos;&apos;,</div><div class="line">	PRIMARY KEY (`id`)</div><div class="line">) ENGINE=InnoDB  CHARSET=utf8;</div></pre></td></tr></table></figure></p>
+<p>设置id为主键，自增，以下是对应的分析数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EXPLAIN select * from test_user where id=&apos;16000000&apos; ;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">值</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">select_type</td>
+<td style="text-align:left">simple</td>
+<td style="text-align:left">简单的 select 查询,不使用 union 及子查询</td>
+</tr>
+<tr>
+<td style="text-align:left">table</td>
+<td style="text-align:left">test_user</td>
+<td style="text-align:left">表名</td>
+</tr>
+<tr>
+<td style="text-align:left">partitions</td>
+<td style="text-align:left">null</td>
+<td style="text-align:left">列代表给定表所使用的分区</td>
+</tr>
+<tr>
+<td style="text-align:left">type</td>
+<td style="text-align:left">const</td>
+<td style="text-align:left">是说明只有一条匹配值，</td>
+</tr>
+<tr>
+<td style="text-align:left">possible_keys</td>
+<td style="text-align:left">PRIMARY</td>
+<td style="text-align:left">指出 MySQL 能在该表中使用哪些索引有助于 查询。如果为空,说明没有可用的索引</td>
+</tr>
+<tr>
+<td style="text-align:left">key</td>
+<td style="text-align:left">PRIMARY</td>
+<td style="text-align:left">MySQL 实际从 possible_key 选择使用的索引</td>
+</tr>
+<tr>
+<td style="text-align:left">key_len</td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">使用的索引的长度。在不损失精确性的情况 下,长度越短越好</td>
+</tr>
+<tr>
+<td style="text-align:left">ref</td>
+<td style="text-align:left">const</td>
+<td style="text-align:left">where 条件筛选后表上至多有一条元组匹配时</td>
+</tr>
+<tr>
+<td style="text-align:left">rows</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">MYSQL 认为必须检查的用来返回请求数据的行数</td>
+</tr>
+<tr>
+<td style="text-align:left">filtered</td>
+<td style="text-align:left">100</td>
+<td style="text-align:left">列给出了一个百分比的值，这个百分比值和rows列的值一起使用，可以估计出那些将要和QEP中的前一个表进行连接的行的数目。前一个表就是指id列的值比当前表的id小的表</td>
+</tr>
+</tbody>
+</table>
+<h3 id="主键设置为那个字段合适"><a href="#主键设置为那个字段合适" class="headerlink" title="主键设置为那个字段合适"></a>主键设置为那个字段合适</h3><p>情况分析</p>
+<ol>
+<li>选择聚簇索引应基于where子句和连接操作的类型。</li>
+<li>在聚簇索引中不要包含经常修改的列，因为值修改后，数据行必须移动到新的位置。</li>
+<li>大多数表都应该有聚簇索引或使用分区来降低对表尾页的竞争，在一个高事务的环境中，对最后一页的封锁严重影响系统的吞吐量</li>
+<li>在聚簇索引下，数据在物理上按顺序排在数据页上，重复值也排在一起，因而在那些包含范围检查(between、&lt;、&lt;=、&amp; gt;、&gt;=)或使用group by或order by的查询时，一旦找到具有范围中第一个键值的行，具有后续索引值的行保证物理上毗连在一起而不必进一步搜索，避免了大范围扫描，可以大大提高查询速度。</li>
+<li>在一个频繁发生插入操作的表上建立聚簇索引时，不要建在具有单调上升值的列(如IDENTITY)上，否则会经常引起封锁冲突。</li>
+</ol>
+<p>用户名字段，可以设置为主键，但是不推荐<br>1.用户名是比较规则字母数字序列，这可能导致性能上有所差别<br>2.假如以用户名作为主键并与其他表关联，当删除用户时，再创建一个同名的用户，可能导致这些关联紊乱。而绝对唯一的ID则不会。<br>3.有的系统可能会允许修改用户名，如果以用户名为主键，将带来很多麻烦。而如果以ID为主键进行关联，则没有此问题。</p>
+<h3 id="聚簇索引中的记录是如何存放"><a href="#聚簇索引中的记录是如何存放" class="headerlink" title="聚簇索引中的记录是如何存放"></a>聚簇索引中的记录是如何存放</h3><ol>
+<li>节点页只包含了索引列，叶子页包含了行的全部数据，就是既存储索引值,又在叶子中存储行的数据</li>
+<li>Innodb是通过主键聚集数据，如果没有主键，Innodb会选择一个唯一的非空索引代替。如果没有这样的索引，会隐式定义一个主键来作为聚簇索引。</li>
+<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列<br><img src="https://yeyute.github.io/assets/jcsy.png" alt=""></li>
+</ol>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>可以把相关的数据保存在一起。 例如电子邮件，可以根据用户ID来聚集数据，这样只需要从磁盘读取少数的数据页就能获取某个用户的全部邮件。如果没有使用聚簇索引，则每封邮件都可能导致一次磁盘的I/O.</li>
+<li>数据访问更快。将索引和数据保存在同一个B-Tree中，因此从聚簇索引中获取数据通常比非聚簇索引查找更快</li>
+<li>使用覆盖索引扫描的查询可以直接使用页节点中的主键值</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<li>聚簇数据最大限度地提高了I/O密集型应用的性能，但如果数据全部都放在内存中，则访问的顺序就没那么重要了，聚会簇索引也就没什么优势</li>
+<li>更新索引列代价很大，因为innodb 强制将每个被更新的行移动到新的位置</li>
+<li>插入的速度严重依赖于插入顺充，按照主键的顺序插入是加载数据到INNODB表中速度最快的方式，如果不是，那么加载完成后最好 使用optimize table命令重新排序</li>
+<li>对于插入新行，或主键更新，导致需要移动行的时候，可能面临“页分裂”问题。 当行的主键值要求必须将这一行插入到某个已满的页中时，存储引擎会将该页分裂成两个页面来容纳该行，会导致表占用更大的磁盘空间</li>
+<li>可能会导致全表扫描变慢，尤其是行比较稀疏 或者 页分裂 存储不连续的时候</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/01/01/Mysql-聚簇索引/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-http-请求信息详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -738,88 +1010,9 @@
 
 
   
-    <article id="post-hexo-命令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/10/hexo-命令/">hexo 命令</a>
-    </h1>
-  
-
-        
-        <a href="/2015/03/10/hexo-命令/" class="archive-article-date">
-  	<time datetime="2015-03-10T02:06:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 全局安装安装</div><div class="line">npm install hexo -g</div><div class="line"># 升级  </div><div class="line">npm update hexo -g  </div><div class="line"># 初始化 </div><div class="line">hexo init</div></pre></td></tr></table></figure>
-<h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 本地启动服务</div><div class="line">hexo s == hexo server  </div><div class="line"># 生成静态文件</div><div class="line">hexo g = hexo generate </div><div class="line"># 部署,将代码上传到配置的服务器</div><div class="line">hexo d == hexo deploy</div></pre></td></tr></table></figure>
-<h3 id="新建"><a href="#新建" class="headerlink" title="新建"></a>新建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 新建文章</div><div class="line">hexo new &quot;postName&quot;</div><div class="line"># 新建页面 </div><div class="line">hexo new page &quot;pageName&quot;</div></pre></td></tr></table></figure>
-<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>删除 ./source/_posts/里对应的md文件. ps:不能全部删除，会报错。<br>然后对应执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo g == hexo generate#生成</div><div class="line">hexo s == hexo server #启动服务预览</div><div class="line">hexo d == hexo deploy#部署</div></pre></td></tr></table></figure>
-<p>hexo clean,直接把public下的所有文章和分类目录都删除了,tags,archices,categories也会重新布局,请小心操作</p>
-<h3 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># Hexo 会监视文件变动并自动更新，您无须重启服务器。</div><div class="line">hexo server </div><div class="line"># 静态模式</div><div class="line">hexo server -s </div><div class="line"># 更改端口</div><div class="line">hexo server -p 5000 </div><div class="line"># 自定义 IP</div><div class="line">hexo server -i 192.168.1.1</div><div class="line"></div><div class="line"># 清除缓存 网页正常情况下可以忽略此条命令,public 文件夹内容将全部删除</div><div class="line">hexo clean </div><div class="line"># 生成静态网页</div><div class="line">hexo g </div><div class="line"># 开始部署</div><div class="line">hexo d</div></pre></td></tr></table></figure>
-<h3 id="监视文件变动"><a href="#监视文件变动" class="headerlink" title="监视文件变动"></a>监视文件变动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 使用 Hexo 生成静态文件快速而且简单</div><div class="line">hexo generate</div><div class="line"># 监视文件变动</div><div class="line">hexo generate --watch</div></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015/03/10/hexo-命令/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
   
 
@@ -942,19 +1135,19 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">生活</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>

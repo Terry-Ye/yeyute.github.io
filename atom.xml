@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-05-03T05:40:46.723Z</updated>
+  <updated>2017-06-18T09:02:45.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,362 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>使用php swoole扩展实现IM系统</title>
+    <link href="http://yoursite.com/2017/06/18/%E4%BD%BF%E7%94%A8php-swoole%E6%89%A9%E5%B1%95%E5%AE%9E%E7%8E%B0IM%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://yoursite.com/2017/06/18/使用php-swoole扩展实现IM系统/</id>
+    <published>2017-06-18T08:17:49.000Z</published>
+    <updated>2017-06-18T09:02:45.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><ol>
+<li>php7 + predis 扩展 + swoole2.0.7 扩展 + swoole framework框架</li>
+<li>mysql5.7 + redis 3.2.1  </li>
+<li>supervisor（进程监控，自动重启进程等功能）</li>
+<li><a href="https://github.com/yeyute/php-swoole-IM.git" target="_blank" rel="external">https://github.com/yeyute/php-swoole-IM.git</a> 后端代码，README.md 有前端接入方法（ps:如果对你开发有帮助，请来个start）</li>
+</ol>
+<h3 id="使用swoole-framework开发-IM-系统"><a href="#使用swoole-framework开发-IM-系统" class="headerlink" title="使用swoole framework开发 IM 系统"></a>使用swoole framework开发 IM 系统</h3><p>优点：</p>
+<ol>
+<li>简单易用且开发效率高</li>
+<li>有大平台选用案例，例：虎牙直播，yy语音</li>
+<li>纯C编写性能强等</li>
+</ol>
+<h4 id="supervisor-进程监控-说明"><a href="#supervisor-进程监控-说明" class="headerlink" title="supervisor 进程监控 说明"></a>supervisor 进程监控 说明</h4><p>查看<a href="http://www.cnblogs.com/shijingjing07/p/6024066.html" target="_blank" rel="external">http://www.cnblogs.com/shijingjing07/p/6024066.html</a> 文章，清晰</p>
+<h3 id="系统架构逻辑"><a href="#系统架构逻辑" class="headerlink" title="系统架构逻辑"></a>系统架构逻辑</h3><p>以下是 微信端 用户通讯信息的逻辑架构示例：</p>
+<p><img src="http://yeyute.github.io/img/im3.jpeg" alt=""></p>
+<p>注： </p>
+<ol>
+<li>有区分不同的直播频道，每个频道的用户都写入在不同的redis集合中，每次发信息广播时，都会在web层广播该频道的所有用户。 </li>
+<li>图中*号代表每次广播给所有用户 </li>
+<li>ios手机关屏会断会断开链接</li>
+</ol>
+<h3 id="系统性能-根据官方给的压测信息"><a href="#系统性能-根据官方给的压测信息" class="headerlink" title="系统性能(根据官方给的压测信息)"></a>系统性能(根据官方给的压测信息)</h3><p>根据开发环境的压测结果（cpu:2, 内存:4G），只进行消息通讯（未连接redis,mysql等），结果准确性待考验。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">并发数</th>
+<th style="text-align:left">总请求数</th>
+<th style="text-align:left">qps</th>
+<th style="text-align:left">平均响应/ms</th>
+<th style="text-align:left">请求失败数量</th>
+<th style="text-align:left">请求成功数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">2949</td>
+<td style="text-align:left">0.339</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+<tr>
+<td style="text-align:left">2000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">1574</td>
+<td style="text-align:left">0.635</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+<tr>
+<td style="text-align:left">3000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">1089</td>
+<td style="text-align:left">0.917</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+<tr>
+<td style="text-align:left">4000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">807</td>
+<td style="text-align:left">1.238</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+</tbody>
+</table>
+<p>测试机压开发环境，结果如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">并发数</th>
+<th style="text-align:left">总请求数</th>
+<th style="text-align:left">qps</th>
+<th style="text-align:left">平均响应/ms</th>
+<th style="text-align:left">请求失败数量</th>
+<th style="text-align:left">请求成功数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">800</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">1461</td>
+<td style="text-align:left">0.684</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+<tr>
+<td style="text-align:left">1000</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">1209</td>
+<td style="text-align:left">0.826</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+<tr>
+<td style="text-align:left">1200</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">1032</td>
+<td style="text-align:left">0.968</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+<tr>
+<td style="text-align:left">2000</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">628</td>
+<td style="text-align:left">1.592</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+</tbody>
+</table>
+<p>在可控的并发请求情况下，性能尚可。</p>
+<h3 id="系统健壮性"><a href="#系统健壮性" class="headerlink" title="系统健壮性"></a>系统健壮性</h3><h4 id="监控方案"><a href="#监控方案" class="headerlink" title="监控方案"></a>监控方案</h4><p>发生情况：在某些情况下，如系统负载过大swoole无法申请到内存而挂掉、swoole底层发生段错误、Server占用内存过大被内核Kill，或者被某些程序误杀的情况，</p>
+<p>监控原理：supervisor 进程管理工具，检测server的master进程是否存活，如果存在则跳过。如果发现主进程已经挂掉，则执行restart逻辑，先kill掉所有残留的子进程，然后重新启动Server。</p>
+<p>保证服务进程挂后可以重新启动</p>
+<h4 id="聊天频率限制"><a href="#聊天频率限制" class="headerlink" title="聊天频率限制"></a>聊天频率限制</h4><ol>
+<li>限制 1秒内1条信息(条件信息可改)</li>
+</ol>
+<h3 id="数据表结构"><a href="#数据表结构" class="headerlink" title="数据表结构"></a>数据表结构</h3><h4 id="消息表"><a href="#消息表" class="headerlink" title="消息表"></a>消息表</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">主键</td>
+</tr>
+<tr>
+<td style="text-align:left">client_id</td>
+<td style="text-align:left">用户id</td>
+</tr>
+<tr>
+<td style="text-align:left">user_name</td>
+<td style="text-align:left">用户名</td>
+</tr>
+<tr>
+<td style="text-align:left">user_id</td>
+<td style="text-align:left">用户id</td>
+</tr>
+<tr>
+<td style="text-align:left">message</td>
+<td style="text-align:left">消息内容</td>
+</tr>
+<tr>
+<td style="text-align:left">type</td>
+<td style="text-align:left">业务类型</td>
+</tr>
+<tr>
+<td style="text-align:left">activity_id</td>
+<td style="text-align:left">直播活动id</td>
+</tr>
+<tr>
+<td style="text-align:left">create_time</td>
+<td style="text-align:left">创建时间</td>
+</tr>
+<tr>
+<td style="text-align:left">ip</td>
+<td style="text-align:left">用户ip</td>
+</tr>
+</tbody>
+</table>
+<h4 id="直播活动表"><a href="#直播活动表" class="headerlink" title="直播活动表"></a>直播活动表</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">主键</td>
+</tr>
+<tr>
+<td style="text-align:left">title</td>
+<td style="text-align:left">标题</td>
+</tr>
+<tr>
+<td style="text-align:left">details</td>
+<td style="text-align:left">活动详情</td>
+</tr>
+<tr>
+<td style="text-align:left">share_title</td>
+<td style="text-align:left">分享title</td>
+</tr>
+<tr>
+<td style="text-align:left">share_digest</td>
+<td style="text-align:left">分享摘要</td>
+</tr>
+<tr>
+<td style="text-align:left">start_time</td>
+<td style="text-align:left">开始时间</td>
+</tr>
+<tr>
+<td style="text-align:left">end_time</td>
+<td style="text-align:left">结束时间</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      hexo
+    
+    </summary>
+    
+      <category term="Technology" scheme="http://yoursite.com/categories/Technology/"/>
+    
+    
+      <category term="php" scheme="http://yoursite.com/tags/php/"/>
+    
+      <category term="笔记" scheme="http://yoursite.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>golang 学习笔记一(基础部分)</title>
+    <link href="http://yoursite.com/2017/05/03/go-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80/"/>
+    <id>http://yoursite.com/2017/05/03/go-学习笔记一/</id>
+    <published>2017-05-03T02:08:15.000Z</published>
+    <updated>2017-05-03T09:48:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="Go语言最主要的特性"><a href="#Go语言最主要的特性" class="headerlink" title="Go语言最主要的特性"></a>Go语言最主要的特性</h3><p>自动垃圾回收<br>更丰富的内置类型<br>函数多返回值<br>错误处理<br>匿名函数和闭包<br>类型和接口<br>并发编程<br>反射<br>语言交互性</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>windows 版<br>GOROOT: go的安装路径,官方包路径根据这个设置自动匹配<br>GOPATH: 工作路径(其实不应该用中文翻译解释，直接说GOPATH更合适)</p>
+<p><img src="https://yeyute.github.io/assets/go_path.png" alt="配置环境变量"></p>
+<h3 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h3><ol>
+<li>go语言中所有类型的命名都必须以一个字母或下划线开发，后面可以 跟字母、数字、下划线，且区分大小写</li>
+<li>关键字不能用于自定义名字,以下是关键字25个</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># 关键字</div><div class="line">break      default       func</div><div class="line">case       defer         go</div><div class="line">chan       else          goto</div><div class="line">const      fallthrough   if</div><div class="line">interface</div><div class="line">map</div><div class="line">package</div><div class="line">range</div><div class="line">select</div><div class="line">struct</div><div class="line">switch</div><div class="line">type</div><div class="line">continue for</div><div class="line">import   return      var</div></pre></td></tr></table></figure>
+<ol>
+<li>预定义名字30多个，可以再定义中使用他们，注意避免过度而引起语义混乱 </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">内建常量: true false iota nil</div><div class="line">内建类型: int int8 int16 int32 int64</div><div class="line">         uint uint8 uint16 uint32 uint64 uintptr</div><div class="line">         float32 float64 complex128 complex64</div><div class="line">         bool byte rune string error</div><div class="line">内建函数: make len cap new append copy close delete complex real imag</div><div class="line">          panic recover</div></pre></td></tr></table></figure>
+<ol>
+<li>函数内部定义的名字，那么只在函数内部有效</li>
+<li>函数外部定义，那么当前包的所有文件都有效</li>
+<li>名字开头字母大写决定 （必须在函数外部定义的包级名字），大小写决定包外的可见性，大写为可以被外部访问</li>
+<li>推荐驼峰命名</li>
+</ol>
+<h3 id="声明（4种类型）"><a href="#声明（4种类型）" class="headerlink" title="声明（4种类型）"></a>声明（4种类型）</h3><ul>
+<li>变量</li>
+<li>常量</li>
+<li>类型</li>
+<li>函数</li>
+</ul>
+<h4 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var 变量名字 类型 = 表达式</div></pre></td></tr></table></figure>
+<p>其中的 类型 或 “= 表达式” 两个部分可以省略其中的一个，类型被省略的话会根据表达式来推导变量的类型， 表达式被省略的话，数值的类型为0，布尔类型对应为false,字符串是空，接口或引用类型（slice、map、chan和函数）亦是对应的是nil</p>
+<p>简短声明语句<br>变量 := 表达式， 同时也可以声明一组变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i,j := 0,1</div></pre></td></tr></table></figure></p>
+<p>而交换变量的语法，不要和上面的声明混一起了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i, j = j, i</div></pre></td></tr></table></figure></p>
+<p>和普通var形式的变量声明语句一样,可以用函数的返回值来声明和初始化，像下面os.Open函数调用将返回两个值，如果简短的变量声明过，就是赋值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">f, err := os.Open(name)</div><div class="line">if err != nil &#123;</div><div class="line">	return err</div><div class="line">&#125;</div><div class="line">// ...use f...</div><div class="line">f.Close()</div></pre></td></tr></table></figure></p>
+<p>注意的是，简短的变量声明必须有一个新的变量，否则不能通过，例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">f, err := os.Open(infile)</div><div class="line">// ...</div><div class="line">f, err := os.Create(outfile) // compile error: no new variables</div></pre></td></tr></table></figure></p>
+<p>解决的方法是第二个简短变量声明语句改用普通的多重赋值语言</p>
+<h4 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h4><p>一个变量对应一个保存了变量对应类型值的内存空间<br>一般 <em>p  表达式读取指针指向的变量的值，这里<br>为int类型的值，同时因为 </em>p  对应一个变量，所以该表达式也可以出现在赋值语句的左边，表<br>示更新指针所指向的变量的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">x := 1</div><div class="line">p := &amp;x // p, of type *int, points to x</div><div class="line">fmt.Println(*p) // &quot;1&quot;</div><div class="line">*p = 2 // equivalent to x = 2</div><div class="line">fmt.Println(x) // &quot;2&quot;</div></pre></td></tr></table></figure></p>
+<p>任何类型的指针的零值都是nil</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var x, y int</div><div class="line">fmt.Println(&amp;x == &amp;x, &amp;x == &amp;y, &amp;x == nil) // &quot;true false false&quot;</div></pre></td></tr></table></figure>
+<h4 id="new-函数"><a href="#new-函数" class="headerlink" title="new 函数"></a>new 函数</h4><p>可以用new函数来创建变量，和普通的变量声明一样，没区别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">p := new(int) // p, *int 类型, 指向署名的int变量</div><div class="line">fmt.Println(*p) // &quot;0&quot;</div><div class="line">*p=2 // 设 int  变  值为 2 </div><div class="line">fmt.Println(*p) // &quot;2&quot;</div></pre></td></tr></table></figure></p>
+<p>每次new函数都是返回一个新的变量的地址，因此下面两个变量是不同的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p := new(int)</div><div class="line">q := new(int)</div><div class="line">fmt.Println(p == q) // &quot;false&quot;</div></pre></td></tr></table></figure></p>
+<p>当然有特殊情况，两个类型都为空，也就是说类型的大小是0，例如 struct{} 和 [0]int,有可能有相同的地址，（谨慎使用大小为0的类型）</p>
+<p>由于new是一个预定义的函数，它并不是一个关键字，因此我们可以将new名字重新定义为别的类型。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">func delta(old, new int) int &#123; return new - old&#125;</div></pre></td></tr></table></figure>
+<p>由于new 被定义为 int类型的变量名，因此在delta 函数内部无法使用内置的new函数</p>
+<h4 id="变量的生命周期"><a href="#变量的生命周期" class="headerlink" title="变量的生命周期"></a>变量的生命周期</h4><ol>
+<li>在包一级声明的变量来说，它们的生命周期和整个程序的运行周期是一致的</li>
+<li>局部变量的声明周期是动态的：从每次创建一个新变量的声明语句开始，到变量不再被引用，然后变量的存储空间可能被回收，函数的参数变量和返回值变量都是局部变量，它们在函数被调用时创建</li>
+</ol>
+<h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h4><p>一个类型声明语句创建了一个新的类型名称，和现有类型具有相同的底层结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">type 类型名字 底层类型</div></pre></td></tr></table></figure>
+<p>类型声明语句一般出现在包一级，首字母大写则在外部包也可以使用</p>
+<h3 id="第一个go"><a href="#第一个go" class="headerlink" title="第一个go"></a>第一个go</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 每个Go源代码文件的开头都是一个 package 声明，表示该Go代码所属的包</div><div class="line">package main</div><div class="line"># import 语句，用于导入该程序所依赖的包。由于本示例程序用到了 Println() 函数，所以需要导入该函数所属的 fmt 包</div><div class="line">import &quot;fmt&quot;// 我们需要使用fmt包中的Println()函数</div><div class="line"></div><div class="line">func main() &#123;</div><div class="line">    fmt.Println(&quot;Hello, world. 你好，世界！&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>要生成Go可执行程序，必须建立一个名字为 main 的包，并且在该包中包含一个叫 main() 的函数（该函数是Go可执行程序的执行起点）<br>Go语言的 main() 函数不能带参数，也不能定义返回值。</p>
+<h3 id="函数格式"><a href="#函数格式" class="headerlink" title="函数格式"></a>函数格式</h3><p>所有Go函数（包括在对象编程中会提到的类型成员函数）以关键字 func 开头。Go支持多个返回值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">func 函数名(参数列表)(返回值列表) &#123;</div><div class="line">// 函数体</div><div class="line">&#125;</div><div class="line"># 对应的一个实例如下</div><div class="line">func Compute(value1 int, value2 float64)(result float64, err error) &#123;</div><div class="line">// 函数体</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="开发规范"><a href="#开发规范" class="headerlink" title="开发规范"></a>开发规范</h3><p>Go语言很可能是第一个将代码风格强制统一的语言，例如Go语言要求 public 的变量必须以大写字母开头， private 变量则以小写字母开头，这种做法不仅免除了 public 、 private 关键字，更重要的是统一了命名风格<br>Go语言对 { } 应该怎么写进行了强制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 正确</div><div class="line">if expression &#123;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以下错误的示例将报错 syntax error: unexpected semicolon or newline before {<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if expression</div><div class="line">&#123;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="string-类型"><a href="#string-类型" class="headerlink" title="string  类型"></a>string  类型</h3><p>+ 运算符是连接字符串 (跟js一样)</p>
+<h3 id="循环格式（Go语言只有for循环这一种循环语句）"><a href="#循环格式（Go语言只有for循环这一种循环语句）" class="headerlink" title="循环格式（Go语言只有for循环这一种循环语句）"></a>循环格式（Go语言只有for循环这一种循环语句）</h3><p>循环索引变量i在for循环的第一部分中定义。符号 :=  是短变量声明（short variable<br>declaration）的一部分, 这是定义一个或多个变量并根据它们的初始值为这些变量赋予适当类<br>型的语句。<br>for循环三个部分不需括号包围。大括号强制要求, 左大括号必须和post语句在同一行。例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for initialization; condition; post &#123;</div><div class="line">// zero or more statements</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// a traditional &quot;while&quot; loop 一个无限循环</div><div class="line">for condition &#123;</div><div class="line">// ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果连 condition  也省略了，像下面这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// a traditional infinite loop 一个无限循环</div><div class="line">for &#123;</div><div class="line">// ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>另外<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    s, sep := &quot;&quot;, &quot;&quot;</div><div class="line">    // _ 为空标识符 用于任何语法需要变量名但程序逻辑不需要的时候 </div><div class="line">    for _, arg := range os.Args[1:] &#123;</div><div class="line">        s += sep + arg</div><div class="line">        sep = &quot; &quot;</div><div class="line">    &#125;</div><div class="line">    fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="变量声明-1"><a href="#变量声明-1" class="headerlink" title="变量声明"></a>变量声明</h3><p>Go语言引入了关键字 var ，而类型信息放在变量名之后，示例如下<br>数值类型是0，字符串类型是空字符串””<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var v1 int</div><div class="line">var v2 string // 依赖于字符串的默认初始化零值机制，被初始化为&quot;&quot;。</div><div class="line">var v3 [10]int  // 数组</div><div class="line">var v4 []int // 数组切片</div><div class="line">var v5 struct &#123;</div><div class="line">f int</div><div class="line">&#125;</div><div class="line">var v6 *int // 指针</div><div class="line">var v7 map[string]int  // map，key为string类型，value为int类型</div><div class="line">var v8 func(a int) int</div></pre></td></tr></table></figure></p>
+<p>var 关键字的另一种用法是可以将若干个需要声明的变量放置在一起<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var (</div><div class="line">    v1 int</div><div class="line">    v2 string</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>变量时需要进行初始化的场景,var 关键字可以保留，但不再是必要的元素，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var v1 int = 10 // 正确的使用方式1</div><div class="line">var v2 = 10  // 正确的使用方式2，编译器可以自动推导出v2的类型</div><div class="line">v3 := 10  // 正确的使用方式3，编译器可以自动推导出v3的类型</div></pre></td></tr></table></figure></p>
+<p>出现在 := 左侧的变量不应该是已经被声明过的，否则会导致编译错误,例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var i int</div><div class="line">i := 2</div><div class="line">// 会导致类似如下的编译错误：</div><div class="line">no new variables on left side of :=a</div></pre></td></tr></table></figure></p>
+<h3 id="变量赋值（多重赋值功能）"><a href="#变量赋值（多重赋值功能）" class="headerlink" title="变量赋值（多重赋值功能）"></a>变量赋值（多重赋值功能）</h3><p>在不支持多重赋值的语言中,交互两个变量的内容需要引入一个中间变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">t = i; i = j; j = t;</div></pre></td></tr></table></figure></p>
+<p>支持多重赋值,交互两个变量的内容 的语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i, j = j, i</div></pre></td></tr></table></figure>
+<h3 id="匿名变量（有点意思）"><a href="#匿名变量（有点意思）" class="headerlink" title="匿名变量（有点意思）"></a>匿名变量（有点意思）</h3><p>为解决在调用函数时为了获取一个值 ，却返回多个值而不得不定义一堆没用的变量的时候，go的优雅写法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">func GetName() (firstName, lastName, nickName string) &#123;</div><div class="line">    return &quot;May&quot;, &quot;Chan&quot;, &quot;Chibi Maruko&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>若只想获取nickName，则函数调用语句可以 用如下方式编写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">_, _, nickName :=GetName()</div></pre></td></tr></table></figure>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>const 关键字定义<br>go 常量定义可以 限定常量类型，但不是必须的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">const (</div><div class="line">    size int64 = 1024 // 有类型</div><div class="line">    eof = -1  // 无类型</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<h3 id="预定义常量"><a href="#预定义常量" class="headerlink" title="预定义常量"></a>预定义常量</h3><p>go 语言预定义了这些常量： true、false和iota<br>iota 比较特殊，可以认为是一个可被编译器修改的常量，在每一个const 关键字出现时重置为0，每出现一次iota,其代表的数字会自动增1.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">const (          // iota 被重置为0</div><div class="line">    c0 = iota    // co = 0</div><div class="line">    c1 = iota    // co = 1           </div><div class="line">    c2 = iota   // co = 2</div><div class="line">)</div></pre></td></tr></table></figure>
+<h3 id="类型-1"><a href="#类型-1" class="headerlink" title="类型"></a>类型</h3><h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><p>布尔类型不能接受其它类型的赋值，不支持自动或强制的类型转换，以下错误的用户，会导致编译错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var b bool</div><div class="line">b = 1 // 编译错误 </div><div class="line">了= bool(1) // 编译错误</div></pre></td></tr></table></figure>
+<p>以下是正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var b bool</div><div class="line">b = (1 != 0 ) //编译正确</div><div class="line">fmt.Println(b) 打印结果为true</div></pre></td></tr></table></figure>
+<h4 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h4><p>需要注意的是int和int32 在go 语言里被认为是两种不同的类型，编译器不会帮你自动做类型转换，例下 有编译错误 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var value2 int32</div><div class="line">value1 := 64 // value1 将会被自动推导为int 类型</div><div class="line">value2 = value1 // 编译错误</div></pre></td></tr></table></figure>
+<p>错误类似于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cannot use value1 (type int ) as type int32 in assignment</div></pre></td></tr></table></figure>
+<p>使用强制类型转换可以解决</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value2 = int32(value1) // 编译通过</div></pre></td></tr></table></figure>
+<p>另外不同类型的整形数不能直接比较 ，例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var i int32</div><div class="line">var j int64</div><div class="line">if i == j &#123; // 编译出错</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">if i == 1 || j == 2 &#123; // 编译通过 </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h3><p>go定义了两个 float32（c语言中的float） 和float64(c 语言中double类型)，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var fvalue1 float32</div><div class="line">fvalue2 := 12.0 // 类型自动被设为float64, 如果不加小数点，fvalue2 会被推导为整形而不是浮点型</div><div class="line"></div><div class="line">fvalue1 = fvalue2 // 不同类型会编译出错</div><div class="line">fvalue1 = float32(fvalue2)</div></pre></td></tr></table></figure></p>
+<p>另注意浮点数不能像整形那样直接用==来判断两个浮点数是否相等，推荐替代的方案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">import &quot;math&quot;</div><div class="line"></div><div class="line">// p 为用户自定义的比较精度，比如 0.0000001</div><div class="line">func IsEqual(f1, f2, p float64) bool &#123;</div><div class="line">    return math.Fdim(f1, f2) &lt; p</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>声明方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[32]byte                    // 长度为32的数组，每个元素为一个字节 </div><div class="line">[2*N] struct &#123; x, y int32 &#125; // 复杂类型数组</div><div class="line">[1000]*float64              // 指针数组</div><div class="line">[3][5]int                   // 二维数组</div><div class="line">[2][2][2]float64            // 等同于[2]([2]([2]float64))</div></pre></td></tr></table></figure>
+<p>例 [3][5] 表达是3行5表的二维整数数组，总共可以 放15个整型元素<br>注： 在go 数组长度在定义后就不可更改</p>
+<p>另外go有一个关键字 range,用于便捷地遍历容器中的元素，range 具有两个返回 值，一个是数组下标，一个是元素的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for i,v := range array &#123;</div><div class="line">    fmt.Println(&quot;Array element[&quot;, i, &quot;]=&quot;, v)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>需注意的是<br>go 数组是一个值类型。所有的值类型变量在赋值和作为参数传递时都将产生一次复制动作。如果将数组作为函数的参数类型，则在函数调用时该 参数将发生数据复制。因此，在函数体中无法修改传入的数组的内容，因为函数内操作的只是所 传入数组的一个副本</p>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line">import &quot;fmt&quot;</div><div class="line">// PersonInfo是一个包含个人详细信息的类型 type PersonInfo struct &#123;</div><div class="line">    ID string</div><div class="line">    Name string Address string</div><div class="line">&#125;</div><div class="line">func main() &#123;</div><div class="line">    var personDB map[string] PersonInfo</div><div class="line">    personDB = make(map[string] PersonInfo)</div><div class="line">    // 往这个map里插入几条数据</div><div class="line">    personDB[&quot;12345&quot;] = PersonInfo&#123;&quot;12345&quot;, &quot;Tom&quot;, &quot;Room 203,...&quot;&#125; personDB[&quot;1&quot;] = PersonInfo&#123;&quot;1&quot;, &quot;Jack&quot;, &quot;Room 101,...&quot;&#125;</div><div class="line">    // 从这个map查找键为&quot;1234&quot;的信息 person, ok := personDB[&quot;1234&quot;]</div><div class="line">    // ok是一个返回的bool型，返回true表示找到了对应的数据 if ok &#123;</div><div class="line">            fmt.Println(&quot;Found person&quot;, person.Name, &quot;with ID 1234.&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    fmt.Println(&quot;Did not find person with ID 1234.&quot;)</div><div class="line">&#125; &#125;</div></pre></td></tr></table></figure>
+<p>make() 内置函数 来创建一个新map </p>
+<h3 id="注释格式"><a href="#注释格式" class="headerlink" title="注释格式"></a>注释格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">块注释</div><div class="line">*/</div><div class="line">// 行注释</div></pre></td></tr></table></figure>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 正确</div><div class="line">if expression &#123;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"># 错误</div><div class="line">if expression</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"># 则报错</div><div class="line"></div><div class="line">syntax error: unexpected semicolon or newline before &#123;</div></pre></td></tr></table></figure>
+<h3 id="后续复习"><a href="#后续复习" class="headerlink" title="后续复习"></a>后续复习</h3><ol>
+<li>&lt;&lt; 运算符</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      golang基础
+    
+    </summary>
+    
+      <category term="Technology" scheme="http://yoursite.com/categories/Technology/"/>
+    
+    
+      <category term="笔记" scheme="http://yoursite.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="golang" scheme="http://yoursite.com/tags/golang/"/>
+    
+  </entry>
+  
+  <entry>
     <title>golang 排序练习题学习</title>
     <link href="http://yoursite.com/2017/03/03/golang-%E6%8E%92%E5%BA%8F%E7%BB%83%E4%B9%A0%E9%A2%98%E5%AD%A6%E4%B9%A0/"/>
     <id>http://yoursite.com/2017/03/03/golang-排序练习题学习/</id>
     <published>2017-03-03T05:38:54.000Z</published>
-    <updated>2017-05-03T05:40:46.723Z</updated>
+    <updated>2017-05-03T05:40:46.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>练习题目来源于 go 语言编程  一书,程序自己测试完成通过</p>
@@ -57,7 +408,7 @@
     <link href="http://yoursite.com/2017/02/25/go-%E5%AE%89%E8%A3%85%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2017/02/25/go-安装笔记/</id>
     <published>2017-02-25T06:12:46.000Z</published>
-    <updated>2017-05-03T09:47:48.947Z</updated>
+    <updated>2017-05-03T09:47:48.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>下载地址：<a href="https://golang.org/dl/" target="_blank" rel="external">https://golang.org/dl/</a></p>
 <h3 id="mac-安装"><a href="#mac-安装" class="headerlink" title="mac 安装"></a>mac 安装</h3><p>版本：1.8.1<br>MAC 系统下你可以使用 .pkg 结尾的安装包直接双击来完成安装，安装目录在 /usr/local/go/ 下。</p>
@@ -87,7 +438,7 @@
     <link href="http://yoursite.com/2017/01/22/Facade%E5%A4%96%E8%A7%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2017/01/22/Facade外观设计模式/</id>
     <published>2017-01-22T07:38:31.000Z</published>
-    <updated>2017-03-20T09:18:24.806Z</updated>
+    <updated>2017-03-20T09:18:24.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>用于全部api的统一调用方式，规范化代码，后续维护方便<br>具有独立性 和可移植性<br>在 apiImplement类 做接口接入的扩展，例： apiImplement类中的mango 方法 实例化 MangoApi类，调用方式如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">namespace App\Admin\Controllers;</div><div class="line"></div><div class="line">use App\Libraries\Api;</div><div class="line">// Api::mango() 实例化了 MangoApi类  requestUrl是MangoApi类的方法</div><div class="line">$rs = Api::mango($data[&apos;api_info&apos;] , function (MangoApi $MangoApi) use ($data)  &#123;</div><div class="line">            $MangoApi-&gt;requestUrl($data[&apos;api_info&apos;], $data[&apos;data&apos;]);</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
@@ -194,7 +545,7 @@
     <link href="http://yoursite.com/2016/11/03/%E4%BD%BF%E7%94%A8dockerfile-%E9%83%A8%E7%BD%B2php%E7%8E%AF%E5%A2%83/"/>
     <id>http://yoursite.com/2016/11/03/使用dockerfile-部署php环境/</id>
     <published>2016-11-03T06:32:44.000Z</published>
-    <updated>2017-04-10T06:46:09.647Z</updated>
+    <updated>2017-04-10T06:46:09.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="docker-简介"><a href="#docker-简介" class="headerlink" title="docker 简介"></a>docker 简介</h3><p>docker 可以运行于任何安装现在linux 内核 的x64主机上，推荐内核版本3.8及以上</p>
 <h3 id="为什么使用docker"><a href="#为什么使用docker" class="headerlink" title="为什么使用docker"></a>为什么使用docker</h3><ol>
@@ -405,7 +756,7 @@
     <link href="http://yoursite.com/2016/04/27/Redis-%E8%BF%90%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%8E%E4%BB%8B%E7%BB%8D/"/>
     <id>http://yoursite.com/2016/04/27/Redis-运用场景与介绍/</id>
     <published>2016-04-27T13:38:58.000Z</published>
-    <updated>2017-03-20T08:54:24.382Z</updated>
+    <updated>2017-03-20T08:54:24.000Z</updated>
     
     <content type="html"><![CDATA[<p>声明：该文章整理于公司redis培训的ppt</p>
 <h3 id="redis-数据结构"><a href="#redis-数据结构" class="headerlink" title="redis 数据结构"></a>redis 数据结构</h3><ol>
@@ -676,7 +1027,7 @@
     <link href="http://yoursite.com/2016/04/12/%E7%8A%B6%E6%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2016/04/12/状态设计模式/</id>
     <published>2016-04-12T14:59:32.000Z</published>
-    <updated>2017-03-16T09:29:24.240Z</updated>
+    <updated>2017-03-16T09:29:24.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="什么时候适用状态设计模式"><a href="#什么时候适用状态设计模式" class="headerlink" title="什么时候适用状态设计模式"></a>什么时候适用状态设计模式</h3><ul>
 <li>有大量的判断状态的条件</li>
@@ -720,7 +1071,7 @@
     <link href="http://yoursite.com/2016/04/11/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2016/04/11/单例模式/</id>
     <published>2016-04-11T12:04:54.000Z</published>
-    <updated>2017-03-16T09:08:38.361Z</updated>
+    <updated>2017-03-16T09:08:38.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="单例模式的特点"><a href="#单例模式的特点" class="headerlink" title="单例模式的特点"></a>单例模式的特点</h3><ul>
 <li>只能有一个实例</li>
@@ -766,7 +1117,7 @@
     <link href="http://yoursite.com/2016/03/09/%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
     <id>http://yoursite.com/2016/03/09/秒杀活动的架构设计/</id>
     <published>2016-03-09T09:04:18.000Z</published>
-    <updated>2017-03-09T07:14:05.230Z</updated>
+    <updated>2017-03-09T07:14:05.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="业务的基本说明"><a href="#业务的基本说明" class="headerlink" title="业务的基本说明"></a>业务的基本说明</h3><ol>
 <li>运营评估最高的并发会达到  10W（根据推广的力度，以及以往的经验）</li>
@@ -817,7 +1168,7 @@
     <link href="http://yoursite.com/2016/02/22/%E7%94%A8%E8%84%9A%E6%AD%A5%E4%B8%88%E9%87%8F%E5%AE%B6%E4%B9%A1-%E6%B1%95%E5%B0%BE/"/>
     <id>http://yoursite.com/2016/02/22/用脚步丈量家乡-汕尾/</id>
     <published>2016-02-22T10:00:11.000Z</published>
-    <updated>2017-03-10T09:58:50.322Z</updated>
+    <updated>2017-03-10T09:58:50.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="汕尾"><a href="#汕尾" class="headerlink" title="汕尾"></a>汕尾</h3><p>或许汕尾这个城市鲜为人知，一般情况下说汕尾，对方都会复读一次是“汕头”来确认，但汕尾确实是以后可以养老的好地方，空气质量好，生活节奏慢.</p>
 <p>不过大家都为了理想而各奔东西，每年回家乡的次数也有限，借着春节的假期，各种聚会的疯狂过后，去认真的体会一下家乡的自然与空气，这种熟悉且又有了陌生的感觉，让人心平气静。</p>
@@ -847,7 +1198,7 @@
     <link href="http://yoursite.com/2016/01/10/Mysql%20%E6%9F%A5%E8%AF%A2%E4%BB%8A%E5%A4%A9%E3%80%81%E6%98%A8%E5%A4%A9%E3%80%81%E6%9C%80%E8%BF%917%E5%A4%A9%E3%80%81%E6%9C%80%E8%BF%9130%E5%A4%A9%E7%9A%84%E4%BC%98%E5%8C%96/"/>
     <id>http://yoursite.com/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/</id>
     <published>2016-01-10T15:48:47.000Z</published>
-    <updated>2017-03-16T09:13:27.296Z</updated>
+    <updated>2017-03-16T09:13:27.000Z</updated>
     
     <content type="html"><![CDATA[<p>表结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE `student` (</div><div class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</div><div class="line">  `createtime` int(11) NOT NULL DEFAULT &apos;0&apos;,</div><div class="line">  `price` varchar(32) NOT NULL,</div><div class="line">  PRIMARY KEY (`id`),</div><div class="line">  KEY `createtime` (`createtime`) USING BTREE</div><div class="line">) ENGINE=InnoDB  CHARSET=utf8;</div></pre></td></tr></table></figure></p>
 <p>查询分析 今天、昨天、最近7天、最近30天的收入总数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">explain select sum(price) as number from table where to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table WHERE TO_DAYS( NOW( ) ) - TO_DAYS( date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) &lt;= 1 &amp;&amp; to_days(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))!=to_days(now()) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;)) </div><div class="line">UNION ALL </div><div class="line">SELECT sum(price) as number FROM table where DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(date_format(FROM_UNIXTIME(`createtime`),&apos;%Y-%m-%d&apos;))</div></pre></td></tr></table></figure></p>
@@ -910,7 +1261,7 @@
     <link href="http://yoursite.com/2016/01/03/Mysql-%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B/"/>
     <id>http://yoursite.com/2016/01/03/Mysql-字段类型/</id>
     <published>2016-01-03T12:16:38.000Z</published>
-    <updated>2017-03-10T01:55:44.308Z</updated>
+    <updated>2017-03-10T01:55:44.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="CHAR"><a href="#CHAR" class="headerlink" title="CHAR"></a>CHAR</h3><ol>
 <li>类型是定长 删除末尾的空格，不会删除前面的空格</li>
@@ -981,7 +1332,7 @@
     <link href="http://yoursite.com/2016/01/02/Mysql-%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95/"/>
     <id>http://yoursite.com/2016/01/02/Mysql-覆盖索引/</id>
     <published>2016-01-02T02:53:13.000Z</published>
-    <updated>2017-03-10T01:39:46.435Z</updated>
+    <updated>2017-03-10T01:39:46.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
 <li>覆盖索引能够极大地提高性能。 考虑一下如果查询只需要扫描索引而无须回表，会带来多少好处 <ol>
@@ -1029,7 +1380,7 @@
     <link href="http://yoursite.com/2016/01/01/Mysql-%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95/"/>
     <id>http://yoursite.com/2016/01/01/Mysql-聚簇索引/</id>
     <published>2016-01-01T06:18:32.000Z</published>
-    <updated>2017-03-10T09:24:57.137Z</updated>
+    <updated>2017-03-10T09:24:57.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
 <li>每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放，但是，一个表可以有不止一个非聚簇索引。例:你翻到新华字典的汉字“爬”那一页就是P开头的部分，这就是物理存储顺序（聚簇索引）；而不用你到目录，找到汉字“爬”所在的页码，然后根据页码找到这个字（非聚簇索引）</li>
@@ -1141,250 +1492,6 @@
       <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
     
       <category term="笔记" scheme="http://yoursite.com/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>http 请求报文详解</title>
-    <link href="http://yoursite.com/2015/09/03/http-%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E8%AF%A6%E8%A7%A3/"/>
-    <id>http://yoursite.com/2015/09/03/http-请求信息详解/</id>
-    <published>2015-09-02T16:51:24.000Z</published>
-    <updated>2017-03-16T09:09:05.601Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="两类报文"><a href="#两类报文" class="headerlink" title="两类报文"></a>两类报文</h3><ol>
-<li>请求报文</li>
-<li>响应报文</li>
-</ol>
-<h3 id="报文分三部分"><a href="#报文分三部分" class="headerlink" title="报文分三部分"></a>报文分三部分</h3><h4 id="对报文进行描述的起始行（start-line）"><a href="#对报文进行描述的起始行（start-line）" class="headerlink" title="对报文进行描述的起始行（start line）"></a>对报文进行描述的起始行（start line）</h4><p>请求报文 GET /php.info HTTP/1.1</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">报文内容</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">GET</td>
-<td style="text-align:left">请求的方法</td>
-</tr>
-<tr>
-<td style="text-align:left">/php.info</td>
-<td style="text-align:left">请求的地址</td>
-</tr>
-<tr>
-<td style="text-align:left">HTTP/1.1</td>
-<td style="text-align:left">请求版本</td>
-</tr>
-</tbody>
-</table>
-<p>响应报文 HTTP/1.1 200 OK</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">报文内容</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">HTTP/1.1</td>
-<td style="text-align:left">响应版本</td>
-</tr>
-<tr>
-<td style="text-align:left">200 OK</td>
-<td style="text-align:left">响应的状态码 内容</td>
-</tr>
-</tbody>
-</table>
-<h4 id="包含属性的首部（header）块"><a href="#包含属性的首部（header）块" class="headerlink" title="包含属性的首部（header）块"></a>包含属性的首部（header）块</h4><p><strong>请求报文</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">报文内容</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">accept(接收)</td>
-<td style="text-align:left">指定客户端能够接收的内容类型 text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,<em>/</em>;q=0.8</td>
-</tr>
-<tr>
-<td style="text-align:left">Accept-Encoding</td>
-<td style="text-align:left">gzip(数据格式 ), deflate(默认且目前仅使用deflate算法压缩data部分，此法用于压缩传输), sdch(即通过字典压缩算法对各个页面中相同的内容进行压缩，减少相同的内容的传输。如：一个网站中一般都是共同的头部和尾部，甚至一些侧边栏也是共同的。之前的方式每个页面打开的时候这些共同的信息都要重新加载，但使用SDCH压缩方式的话，那些共同的内容只用传输一次就可以了)</td>
-</tr>
-<tr>
-<td style="text-align:left">Accept-Language</td>
-<td style="text-align:left">zh-cn ,zh; q=0.8   接收语言Cache-Control:</td>
-</tr>
-<tr>
-<td style="text-align:left">Cache-Control</td>
-<td style="text-align:left">值为private、no-cache、must-revalidate，那么打开新窗口访问时都会重新访问服务器。 而如果指定了max-age值，那么在此值内的时间里就不会重新访问服务器，例如： Cache-control: max-age=5(表示当访问此网页后的5秒 内再次访问不会去服务器)</td>
-</tr>
-<tr>
-<td style="text-align:left">connection</td>
-<td style="text-align:left">keep-alive 默认是长连接 其优点是、在资源包含多个元素是(比如web页面中的图片)将减少下载时间，当Connection为Keep-Alive时、表示在Keep-Alive时间内不会断开连接。而非KeepAlive模式时、请求之后都将会断开</td>
-</tr>
-<tr>
-<td style="text-align:left">host</td>
-<td style="text-align:left">域名或ip</td>
-</tr>
-<tr>
-<td style="text-align:left">If-Modified-Since</td>
-<td style="text-align:left">使用If-Modified-Since标签，把上次服务器告诉它的文件最后修改时间返回到服务器端了，文件没有改动过，所以服务器返回的HTTP状态码是304，没有发送页面的内容</td>
-</tr>
-<tr>
-<td style="text-align:left">Upgrade-Insecure-Requests</td>
-<td style="text-align:left">值为1 则是告诉服务器，自己支持这种操作，也就是我能读懂你服务器发过来的上面这条信息，并且在以后发请求的时候不用http而用https</td>
-</tr>
-<tr>
-<td style="text-align:left">User-Agent:</td>
-<td style="text-align:left">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 表示请求的客户端浏览器详细信息</td>
-</tr>
-</tbody>
-</table>
-<p><strong>响应报文</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">报文内容</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Connection</td>
-<td style="text-align:left">keep-alive* 默认是长连接 其优点是、在资源包含多个元素是(比如web页面中的图片)将减少下载时间，当Connection为Keep-Alive时、表示在Keep-Alive时间内不会断开连接。而非KeepAlive模式时、请求之后都将会断开</td>
-</tr>
-<tr>
-<td style="text-align:left">Content-Encoding</td>
-<td style="text-align:left">响应正文使用的数据压缩格式</td>
-</tr>
-<tr>
-<td style="text-align:left">Content-language</td>
-<td style="text-align:left">响应正文使用的语言</td>
-</tr>
-<tr>
-<td style="text-align:left">Content-Type</td>
-<td style="text-align:left">响应正文的类型（是图片还是二进制字符串）</td>
-</tr>
-<tr>
-<td style="text-align:left">Date</td>
-<td style="text-align:left">服务器响应的时间</td>
-</tr>
-<tr>
-<td style="text-align:left">Last-Modified</td>
-<td style="text-align:left">Sun, 26 Jun 2016 04:14:32 GMT* 最后修改的时间</td>
-</tr>
-<tr>
-<td style="text-align:left">Server</td>
-<td style="text-align:left">nginx/1.6.2* http服务器的类型/版本 这个有时会造成有人专门利用特定版本网页服务器漏洞进行攻击，nginx可以在配置文件中增加或修改server_tokens off 来去除版本号</td>
-</tr>
-<tr>
-<td style="text-align:left">Link</td>
-<td style="text-align:left">Accept-Encoding 响应头，明确告知缓存服务器按照 Accept-Encoding 字段的内容，分别缓存不同的版本</td>
-</tr>
-<tr>
-<td style="text-align:left">Set-Cookie</td>
-<td style="text-align:left">AST_LANG=zh; expires=Mon, 26-Jun-2015 14:37:17 GMT; Max-Age=31536000; path=/; domain=.php.net*</td>
-</tr>
-<tr>
-<td style="text-align:left">Transfer-Encoding</td>
-<td style="text-align:left">chunked 分块编码 表示输出的内容长度不能确定，报文中的实体需要改为用一系列分块来传输，每个分块包含十六进制的长度值和数据，长度值独占一行，长度不包括它结尾的 CRLF(\r\n)，也不包括分块数据结尾的 CRLF。最后一个分块长度值必须为 0，对应的分块数据没有内容，表示实体结束</td>
-</tr>
-<tr>
-<td style="text-align:left">Vary</td>
-<td style="text-align:left">参考此文章 <a href="https://imququ.com/post/vary-header-in-http.html" target="_blank" rel="external">https://imququ.com/post/vary-header-in-http.html</a></td>
-</tr>
-<tr>
-<td style="text-align:left">X-Frame-Options</td>
-<td style="text-align:left">DENY：浏览器拒绝当前页面加载任何Frame页面，SAMEORIGIN：frame页面的地址只能为同源域名下的页面，ALLOW-FROM：origin为允许frame加载的页面地址</td>
-</tr>
-<tr>
-<td style="text-align:left">X-Powered-By</td>
-<td style="text-align:left">PHP/5.2.1，可在php.ini中增加或修改 expose_php = Off关闭,使用了ThinkPHP会输出 ThinkPHP 2.0，可修改相关类文件关闭</td>
-</tr>
-<tr>
-<td style="text-align:left">Cache-Control</td>
-<td style="text-align:left">max-age=600 表示当访问此网页后的600秒内 告诉浏览器再次访问不去访问服务器</td>
-</tr>
-<tr>
-<td style="text-align:left">Expires</td>
-<td style="text-align:left">HTTP控制缓存的基本手段，这个属性告诉缓存器：相关副本在多长时间内是新鲜的。过了这个时间，缓存器就会向源服务器发送请求，检查文档是否被修 改。几乎所有的缓存服务器</td>
-</tr>
-<tr>
-<td style="text-align:left">Content-Length</td>
-<td style="text-align:left">实体长度 通常如果 Content-Length 比实际长度短，会造成内容被截断;如果比实体内容长，会造成 pending</td>
-</tr>
-</tbody>
-</table>
-<h4 id="可选的、包含数据的主体（body）"><a href="#可选的、包含数据的主体（body）" class="headerlink" title="可选的、包含数据的主体（body）"></a>可选的、包含数据的主体（body）</h4><p>就是http 要传输的内容</p>
-]]></content>
-    
-    <summary type="html">
-    
-      http 报文
-    
-    </summary>
-    
-      <category term="Technology" scheme="http://yoursite.com/categories/Technology/"/>
-    
-    
-      <category term="http" scheme="http://yoursite.com/tags/http/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>http 代理</title>
-    <link href="http://yoursite.com/2015/07/03/http-%E4%BB%A3%E7%90%86%E8%AF%A6%E8%A7%A3/"/>
-    <id>http://yoursite.com/2015/07/03/http-代理详解/</id>
-    <published>2015-07-02T17:16:49.000Z</published>
-    <updated>2017-03-10T01:10:18.697Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="web-代理-proxy"><a href="#web-代理-proxy" class="headerlink" title="web 代理(proxy)"></a>web 代理(proxy)</h3><p>代理位于客户端和服务器之间，扮演“中间人”的角色，对web客户端来说是扮演服务器的角色，对服务器来说是扮演客户端的角色</p>
-<h3 id="代理与网关的对比"><a href="#代理与网关的对比" class="headerlink" title="代理与网关的对比"></a>代理与网关的对比</h3><p>代理连接的是两个或多个使用相同协议的应用程序<br>网关扮演的是“协议转换器”的角色，即使客户端和服务器使用的是不同的协议，客户端也可以通过网关完成与服务器之间的事务处理，例：浏览器&lt;-&gt;web/e-mail 网关(pop) &lt;-&gt; e-mail服务器 ，网关将不同的协议连接起来</p>
-<h3 id="为什么使用代理，运用的场景"><a href="#为什么使用代理，运用的场景" class="headerlink" title="为什么使用代理，运用的场景"></a>为什么使用代理，运用的场景</h3><ol>
-<li>代理服务器可以看到并接触到所有流过的http流量，所以代理可以监视流量并对其进行修改<br>应用的场景</li>
-<li>集中式访问控制代理(对禁止的站点强行禁止访问)</li>
-<li>集中式文档访问控制代理</li>
-<li>安全防火墙(提高安全性，以便对流量进行详细的检查)</li>
-<li>web 缓存</li>
-<li>反向代理，以制作于分布式网络</li>
-<li>内容路由器（根据网络流量状态以及内容类型将请求导向特定的服务器）</li>
-<li>转码器 例：可以在传输gif图片时，将其转换成jpeg图片，减少尺寸，也可以对图片进行压缩，同样可以对文本压缩</li>
-<li>匿名者（主动从http报文中删除身份特性，例ip，from头部，referer(请求报头，告知服务器用户的来源页面)首部，cookie,uri的会话id）</li>
-</ol>
-<h3 id="反向代理与正向代理"><a href="#反向代理与正向代理" class="headerlink" title="反向代理与正向代理"></a>反向代理与正向代理</h3><p>反射代理 - 保护和隐藏原始资源服务器</p>
-<p>情景- 用户 c -&gt;代理 a -&gt;机器 b</p>
-<ol>
-<li>正向代理 - 主体是 c，a是c的代理</li>
-<li>反向代理 - 主体是 c，a是b的代理</li>
-</ol>
-<h3 id="代理服务器的部署的几种方式"><a href="#代理服务器的部署的几种方式" class="headerlink" title="代理服务器的部署的几种方式"></a>代理服务器的部署的几种方式</h3><ol>
-<li>出口代理  控制本地网络与大型因特网之间的流量，公司部分网站控制访问等</li>
-<li>访问（入口）代理  用于处理客户的聚合请求，。ISP使用缓存代理来存储常用文档的副本来提高用户的下载速度</li>
-<li>反向代理</li>
-<li>网络交换代理 将具有足够能力的代理放在网络之间的因特网对等交换点上，通过缓存来减轻因特网节点的拥塞，并对流量进行监视</li>
-</ol>
-<h3 id="代理如何获取流量的"><a href="#代理如何获取流量的" class="headerlink" title="代理如何获取流量的"></a>代理如何获取流量的</h3><ol>
-<li>修改客户端 - 手动或自动修改浏览器代理配置，客户端的http请求直接发给代理</li>
-<li>修改网络 - 在客户端不知道的情况下，拦截网络流量并将其导入代理，这种拦截称为拦截代理。例：连接使用公共wifi时，会有将所有的站点修改到本地的hosts,获取拦截的流量信息后再请求问点返回。</li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      http 代理详解
-    
-    </summary>
-    
-      <category term="Technology" scheme="http://yoursite.com/categories/Technology/"/>
-    
-    
-      <category term="笔记" scheme="http://yoursite.com/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="http" scheme="http://yoursite.com/tags/http/"/>
     
   </entry>
   

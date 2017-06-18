@@ -154,6 +154,461 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-使用php-swoole扩展实现IM系统" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/18/使用php-swoole扩展实现IM系统/">使用php swoole扩展实现IM系统</a>
+    </h1>
+  
+
+        
+        <a href="/2017/06/18/使用php-swoole扩展实现IM系统/" class="archive-article-date">
+  	<time datetime="2017-06-18T08:17:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><ol>
+<li>php7 + predis 扩展 + swoole2.0.7 扩展 + swoole framework框架</li>
+<li>mysql5.7 + redis 3.2.1  </li>
+<li>supervisor（进程监控，自动重启进程等功能）</li>
+<li><a href="https://github.com/yeyute/php-swoole-IM.git" target="_blank" rel="external">https://github.com/yeyute/php-swoole-IM.git</a> 后端代码，README.md 有前端接入方法（ps:如果对你开发有帮助，请来个start）</li>
+</ol>
+<h3 id="使用swoole-framework开发-IM-系统"><a href="#使用swoole-framework开发-IM-系统" class="headerlink" title="使用swoole framework开发 IM 系统"></a>使用swoole framework开发 IM 系统</h3><p>优点：</p>
+<ol>
+<li>简单易用且开发效率高</li>
+<li>有大平台选用案例，例：虎牙直播，yy语音</li>
+<li>纯C编写性能强等</li>
+</ol>
+<h4 id="supervisor-进程监控-说明"><a href="#supervisor-进程监控-说明" class="headerlink" title="supervisor 进程监控 说明"></a>supervisor 进程监控 说明</h4><p>查看<a href="http://www.cnblogs.com/shijingjing07/p/6024066.html" target="_blank" rel="external">http://www.cnblogs.com/shijingjing07/p/6024066.html</a> 文章，清晰</p>
+<h3 id="系统架构逻辑"><a href="#系统架构逻辑" class="headerlink" title="系统架构逻辑"></a>系统架构逻辑</h3><p>以下是 微信端 用户通讯信息的逻辑架构示例：</p>
+<p><img src="http://yeyute.github.io/img/im3.jpeg" alt=""></p>
+<p>注： </p>
+<ol>
+<li>有区分不同的直播频道，每个频道的用户都写入在不同的redis集合中，每次发信息广播时，都会在web层广播该频道的所有用户。 </li>
+<li>图中*号代表每次广播给所有用户 </li>
+<li>ios手机关屏会断会断开链接</li>
+</ol>
+<h3 id="系统性能-根据官方给的压测信息"><a href="#系统性能-根据官方给的压测信息" class="headerlink" title="系统性能(根据官方给的压测信息)"></a>系统性能(根据官方给的压测信息)</h3><p>根据开发环境的压测结果（cpu:2, 内存:4G），只进行消息通讯（未连接redis,mysql等），结果准确性待考验。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">并发数</th>
+<th style="text-align:left">总请求数</th>
+<th style="text-align:left">qps</th>
+<th style="text-align:left">平均响应/ms</th>
+<th style="text-align:left">请求失败数量</th>
+<th style="text-align:left">请求成功数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">2949</td>
+<td style="text-align:left">0.339</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+<tr>
+<td style="text-align:left">2000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">1574</td>
+<td style="text-align:left">0.635</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+<tr>
+<td style="text-align:left">3000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">1089</td>
+<td style="text-align:left">0.917</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+<tr>
+<td style="text-align:left">4000</td>
+<td style="text-align:left">10000</td>
+<td style="text-align:left">807</td>
+<td style="text-align:left">1.238</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">10000</td>
+</tr>
+</tbody>
+</table>
+<p>测试机压开发环境，结果如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">并发数</th>
+<th style="text-align:left">总请求数</th>
+<th style="text-align:left">qps</th>
+<th style="text-align:left">平均响应/ms</th>
+<th style="text-align:left">请求失败数量</th>
+<th style="text-align:left">请求成功数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">800</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">1461</td>
+<td style="text-align:left">0.684</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+<tr>
+<td style="text-align:left">1000</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">1209</td>
+<td style="text-align:left">0.826</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+<tr>
+<td style="text-align:left">1200</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">1032</td>
+<td style="text-align:left">0.968</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+<tr>
+<td style="text-align:left">2000</td>
+<td style="text-align:left">5000</td>
+<td style="text-align:left">628</td>
+<td style="text-align:left">1.592</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">5000</td>
+</tr>
+</tbody>
+</table>
+<p>在可控的并发请求情况下，性能尚可。</p>
+<h3 id="系统健壮性"><a href="#系统健壮性" class="headerlink" title="系统健壮性"></a>系统健壮性</h3><h4 id="监控方案"><a href="#监控方案" class="headerlink" title="监控方案"></a>监控方案</h4><p>发生情况：在某些情况下，如系统负载过大swoole无法申请到内存而挂掉、swoole底层发生段错误、Server占用内存过大被内核Kill，或者被某些程序误杀的情况，</p>
+<p>监控原理：supervisor 进程管理工具，检测server的master进程是否存活，如果存在则跳过。如果发现主进程已经挂掉，则执行restart逻辑，先kill掉所有残留的子进程，然后重新启动Server。</p>
+<p>保证服务进程挂后可以重新启动</p>
+<h4 id="聊天频率限制"><a href="#聊天频率限制" class="headerlink" title="聊天频率限制"></a>聊天频率限制</h4><ol>
+<li>限制 1秒内1条信息(条件信息可改)</li>
+</ol>
+<h3 id="数据表结构"><a href="#数据表结构" class="headerlink" title="数据表结构"></a>数据表结构</h3><h4 id="消息表"><a href="#消息表" class="headerlink" title="消息表"></a>消息表</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">主键</td>
+</tr>
+<tr>
+<td style="text-align:left">client_id</td>
+<td style="text-align:left">用户id</td>
+</tr>
+<tr>
+<td style="text-align:left">user_name</td>
+<td style="text-align:left">用户名</td>
+</tr>
+<tr>
+<td style="text-align:left">user_id</td>
+<td style="text-align:left">用户id</td>
+</tr>
+<tr>
+<td style="text-align:left">message</td>
+<td style="text-align:left">消息内容</td>
+</tr>
+<tr>
+<td style="text-align:left">type</td>
+<td style="text-align:left">业务类型</td>
+</tr>
+<tr>
+<td style="text-align:left">activity_id</td>
+<td style="text-align:left">直播活动id</td>
+</tr>
+<tr>
+<td style="text-align:left">create_time</td>
+<td style="text-align:left">创建时间</td>
+</tr>
+<tr>
+<td style="text-align:left">ip</td>
+<td style="text-align:left">用户ip</td>
+</tr>
+</tbody>
+</table>
+<h4 id="直播活动表"><a href="#直播活动表" class="headerlink" title="直播活动表"></a>直播活动表</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">主键</td>
+</tr>
+<tr>
+<td style="text-align:left">title</td>
+<td style="text-align:left">标题</td>
+</tr>
+<tr>
+<td style="text-align:left">details</td>
+<td style="text-align:left">活动详情</td>
+</tr>
+<tr>
+<td style="text-align:left">share_title</td>
+<td style="text-align:left">分享title</td>
+</tr>
+<tr>
+<td style="text-align:left">share_digest</td>
+<td style="text-align:left">分享摘要</td>
+</tr>
+<tr>
+<td style="text-align:left">start_time</td>
+<td style="text-align:left">开始时间</td>
+</tr>
+<tr>
+<td style="text-align:left">end_time</td>
+<td style="text-align:left">结束时间</td>
+</tr>
+</tbody>
+</table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/06/18/使用php-swoole扩展实现IM系统/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-go-学习笔记一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/03/go-学习笔记一/">golang 学习笔记一(基础部分)</a>
+    </h1>
+  
+
+        
+        <a href="/2017/05/03/go-学习笔记一/" class="archive-article-date">
+  	<time datetime="2017-05-03T02:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Go语言最主要的特性"><a href="#Go语言最主要的特性" class="headerlink" title="Go语言最主要的特性"></a>Go语言最主要的特性</h3><p>自动垃圾回收<br>更丰富的内置类型<br>函数多返回值<br>错误处理<br>匿名函数和闭包<br>类型和接口<br>并发编程<br>反射<br>语言交互性</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>windows 版<br>GOROOT: go的安装路径,官方包路径根据这个设置自动匹配<br>GOPATH: 工作路径(其实不应该用中文翻译解释，直接说GOPATH更合适)</p>
+<p><img src="https://yeyute.github.io/assets/go_path.png" alt="配置环境变量"></p>
+<h3 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h3><ol>
+<li>go语言中所有类型的命名都必须以一个字母或下划线开发，后面可以 跟字母、数字、下划线，且区分大小写</li>
+<li>关键字不能用于自定义名字,以下是关键字25个</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># 关键字</div><div class="line">break      default       func</div><div class="line">case       defer         go</div><div class="line">chan       else          goto</div><div class="line">const      fallthrough   if</div><div class="line">interface</div><div class="line">map</div><div class="line">package</div><div class="line">range</div><div class="line">select</div><div class="line">struct</div><div class="line">switch</div><div class="line">type</div><div class="line">continue for</div><div class="line">import   return      var</div></pre></td></tr></table></figure>
+<ol>
+<li>预定义名字30多个，可以再定义中使用他们，注意避免过度而引起语义混乱 </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">内建常量: true false iota nil</div><div class="line">内建类型: int int8 int16 int32 int64</div><div class="line">         uint uint8 uint16 uint32 uint64 uintptr</div><div class="line">         float32 float64 complex128 complex64</div><div class="line">         bool byte rune string error</div><div class="line">内建函数: make len cap new append copy close delete complex real imag</div><div class="line">          panic recover</div></pre></td></tr></table></figure>
+<ol>
+<li>函数内部定义的名字，那么只在函数内部有效</li>
+<li>函数外部定义，那么当前包的所有文件都有效</li>
+<li>名字开头字母大写决定 （必须在函数外部定义的包级名字），大小写决定包外的可见性，大写为可以被外部访问</li>
+<li>推荐驼峰命名</li>
+</ol>
+<h3 id="声明（4种类型）"><a href="#声明（4种类型）" class="headerlink" title="声明（4种类型）"></a>声明（4种类型）</h3><ul>
+<li>变量</li>
+<li>常量</li>
+<li>类型</li>
+<li>函数</li>
+</ul>
+<h4 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var 变量名字 类型 = 表达式</div></pre></td></tr></table></figure>
+<p>其中的 类型 或 “= 表达式” 两个部分可以省略其中的一个，类型被省略的话会根据表达式来推导变量的类型， 表达式被省略的话，数值的类型为0，布尔类型对应为false,字符串是空，接口或引用类型（slice、map、chan和函数）亦是对应的是nil</p>
+<p>简短声明语句<br>变量 := 表达式， 同时也可以声明一组变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i,j := 0,1</div></pre></td></tr></table></figure></p>
+<p>而交换变量的语法，不要和上面的声明混一起了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i, j = j, i</div></pre></td></tr></table></figure></p>
+<p>和普通var形式的变量声明语句一样,可以用函数的返回值来声明和初始化，像下面os.Open函数调用将返回两个值，如果简短的变量声明过，就是赋值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">f, err := os.Open(name)</div><div class="line">if err != nil &#123;</div><div class="line">	return err</div><div class="line">&#125;</div><div class="line">// ...use f...</div><div class="line">f.Close()</div></pre></td></tr></table></figure></p>
+<p>注意的是，简短的变量声明必须有一个新的变量，否则不能通过，例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">f, err := os.Open(infile)</div><div class="line">// ...</div><div class="line">f, err := os.Create(outfile) // compile error: no new variables</div></pre></td></tr></table></figure></p>
+<p>解决的方法是第二个简短变量声明语句改用普通的多重赋值语言</p>
+<h4 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h4><p>一个变量对应一个保存了变量对应类型值的内存空间<br>一般 <em>p  表达式读取指针指向的变量的值，这里<br>为int类型的值，同时因为 </em>p  对应一个变量，所以该表达式也可以出现在赋值语句的左边，表<br>示更新指针所指向的变量的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">x := 1</div><div class="line">p := &amp;x // p, of type *int, points to x</div><div class="line">fmt.Println(*p) // &quot;1&quot;</div><div class="line">*p = 2 // equivalent to x = 2</div><div class="line">fmt.Println(x) // &quot;2&quot;</div></pre></td></tr></table></figure></p>
+<p>任何类型的指针的零值都是nil</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var x, y int</div><div class="line">fmt.Println(&amp;x == &amp;x, &amp;x == &amp;y, &amp;x == nil) // &quot;true false false&quot;</div></pre></td></tr></table></figure>
+<h4 id="new-函数"><a href="#new-函数" class="headerlink" title="new 函数"></a>new 函数</h4><p>可以用new函数来创建变量，和普通的变量声明一样，没区别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">p := new(int) // p, *int 类型, 指向署名的int变量</div><div class="line">fmt.Println(*p) // &quot;0&quot;</div><div class="line">*p=2 // 设 int  变  值为 2 </div><div class="line">fmt.Println(*p) // &quot;2&quot;</div></pre></td></tr></table></figure></p>
+<p>每次new函数都是返回一个新的变量的地址，因此下面两个变量是不同的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p := new(int)</div><div class="line">q := new(int)</div><div class="line">fmt.Println(p == q) // &quot;false&quot;</div></pre></td></tr></table></figure></p>
+<p>当然有特殊情况，两个类型都为空，也就是说类型的大小是0，例如 struct{} 和 [0]int,有可能有相同的地址，（谨慎使用大小为0的类型）</p>
+<p>由于new是一个预定义的函数，它并不是一个关键字，因此我们可以将new名字重新定义为别的类型。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">func delta(old, new int) int &#123; return new - old&#125;</div></pre></td></tr></table></figure>
+<p>由于new 被定义为 int类型的变量名，因此在delta 函数内部无法使用内置的new函数</p>
+<h4 id="变量的生命周期"><a href="#变量的生命周期" class="headerlink" title="变量的生命周期"></a>变量的生命周期</h4><ol>
+<li>在包一级声明的变量来说，它们的生命周期和整个程序的运行周期是一致的</li>
+<li>局部变量的声明周期是动态的：从每次创建一个新变量的声明语句开始，到变量不再被引用，然后变量的存储空间可能被回收，函数的参数变量和返回值变量都是局部变量，它们在函数被调用时创建</li>
+</ol>
+<h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h4><p>一个类型声明语句创建了一个新的类型名称，和现有类型具有相同的底层结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">type 类型名字 底层类型</div></pre></td></tr></table></figure>
+<p>类型声明语句一般出现在包一级，首字母大写则在外部包也可以使用</p>
+<h3 id="第一个go"><a href="#第一个go" class="headerlink" title="第一个go"></a>第一个go</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 每个Go源代码文件的开头都是一个 package 声明，表示该Go代码所属的包</div><div class="line">package main</div><div class="line"># import 语句，用于导入该程序所依赖的包。由于本示例程序用到了 Println() 函数，所以需要导入该函数所属的 fmt 包</div><div class="line">import &quot;fmt&quot;// 我们需要使用fmt包中的Println()函数</div><div class="line"></div><div class="line">func main() &#123;</div><div class="line">    fmt.Println(&quot;Hello, world. 你好，世界！&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>要生成Go可执行程序，必须建立一个名字为 main 的包，并且在该包中包含一个叫 main() 的函数（该函数是Go可执行程序的执行起点）<br>Go语言的 main() 函数不能带参数，也不能定义返回值。</p>
+<h3 id="函数格式"><a href="#函数格式" class="headerlink" title="函数格式"></a>函数格式</h3><p>所有Go函数（包括在对象编程中会提到的类型成员函数）以关键字 func 开头。Go支持多个返回值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">func 函数名(参数列表)(返回值列表) &#123;</div><div class="line">// 函数体</div><div class="line">&#125;</div><div class="line"># 对应的一个实例如下</div><div class="line">func Compute(value1 int, value2 float64)(result float64, err error) &#123;</div><div class="line">// 函数体</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="开发规范"><a href="#开发规范" class="headerlink" title="开发规范"></a>开发规范</h3><p>Go语言很可能是第一个将代码风格强制统一的语言，例如Go语言要求 public 的变量必须以大写字母开头， private 变量则以小写字母开头，这种做法不仅免除了 public 、 private 关键字，更重要的是统一了命名风格<br>Go语言对 { } 应该怎么写进行了强制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 正确</div><div class="line">if expression &#123;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以下错误的示例将报错 syntax error: unexpected semicolon or newline before {<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if expression</div><div class="line">&#123;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="string-类型"><a href="#string-类型" class="headerlink" title="string  类型"></a>string  类型</h3><p>+ 运算符是连接字符串 (跟js一样)</p>
+<h3 id="循环格式（Go语言只有for循环这一种循环语句）"><a href="#循环格式（Go语言只有for循环这一种循环语句）" class="headerlink" title="循环格式（Go语言只有for循环这一种循环语句）"></a>循环格式（Go语言只有for循环这一种循环语句）</h3><p>循环索引变量i在for循环的第一部分中定义。符号 :=  是短变量声明（short variable<br>declaration）的一部分, 这是定义一个或多个变量并根据它们的初始值为这些变量赋予适当类<br>型的语句。<br>for循环三个部分不需括号包围。大括号强制要求, 左大括号必须和post语句在同一行。例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for initialization; condition; post &#123;</div><div class="line">// zero or more statements</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// a traditional &quot;while&quot; loop 一个无限循环</div><div class="line">for condition &#123;</div><div class="line">// ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果连 condition  也省略了，像下面这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// a traditional infinite loop 一个无限循环</div><div class="line">for &#123;</div><div class="line">// ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>另外<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    s, sep := &quot;&quot;, &quot;&quot;</div><div class="line">    // _ 为空标识符 用于任何语法需要变量名但程序逻辑不需要的时候 </div><div class="line">    for _, arg := range os.Args[1:] &#123;</div><div class="line">        s += sep + arg</div><div class="line">        sep = &quot; &quot;</div><div class="line">    &#125;</div><div class="line">    fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="变量声明-1"><a href="#变量声明-1" class="headerlink" title="变量声明"></a>变量声明</h3><p>Go语言引入了关键字 var ，而类型信息放在变量名之后，示例如下<br>数值类型是0，字符串类型是空字符串””<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var v1 int</div><div class="line">var v2 string // 依赖于字符串的默认初始化零值机制，被初始化为&quot;&quot;。</div><div class="line">var v3 [10]int  // 数组</div><div class="line">var v4 []int // 数组切片</div><div class="line">var v5 struct &#123;</div><div class="line">f int</div><div class="line">&#125;</div><div class="line">var v6 *int // 指针</div><div class="line">var v7 map[string]int  // map，key为string类型，value为int类型</div><div class="line">var v8 func(a int) int</div></pre></td></tr></table></figure></p>
+<p>var 关键字的另一种用法是可以将若干个需要声明的变量放置在一起<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var (</div><div class="line">    v1 int</div><div class="line">    v2 string</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>变量时需要进行初始化的场景,var 关键字可以保留，但不再是必要的元素，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var v1 int = 10 // 正确的使用方式1</div><div class="line">var v2 = 10  // 正确的使用方式2，编译器可以自动推导出v2的类型</div><div class="line">v3 := 10  // 正确的使用方式3，编译器可以自动推导出v3的类型</div></pre></td></tr></table></figure></p>
+<p>出现在 := 左侧的变量不应该是已经被声明过的，否则会导致编译错误,例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var i int</div><div class="line">i := 2</div><div class="line">// 会导致类似如下的编译错误：</div><div class="line">no new variables on left side of :=a</div></pre></td></tr></table></figure></p>
+<h3 id="变量赋值（多重赋值功能）"><a href="#变量赋值（多重赋值功能）" class="headerlink" title="变量赋值（多重赋值功能）"></a>变量赋值（多重赋值功能）</h3><p>在不支持多重赋值的语言中,交互两个变量的内容需要引入一个中间变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">t = i; i = j; j = t;</div></pre></td></tr></table></figure></p>
+<p>支持多重赋值,交互两个变量的内容 的语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i, j = j, i</div></pre></td></tr></table></figure>
+<h3 id="匿名变量（有点意思）"><a href="#匿名变量（有点意思）" class="headerlink" title="匿名变量（有点意思）"></a>匿名变量（有点意思）</h3><p>为解决在调用函数时为了获取一个值 ，却返回多个值而不得不定义一堆没用的变量的时候，go的优雅写法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">func GetName() (firstName, lastName, nickName string) &#123;</div><div class="line">    return &quot;May&quot;, &quot;Chan&quot;, &quot;Chibi Maruko&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>若只想获取nickName，则函数调用语句可以 用如下方式编写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">_, _, nickName :=GetName()</div></pre></td></tr></table></figure>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>const 关键字定义<br>go 常量定义可以 限定常量类型，但不是必须的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">const (</div><div class="line">    size int64 = 1024 // 有类型</div><div class="line">    eof = -1  // 无类型</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<h3 id="预定义常量"><a href="#预定义常量" class="headerlink" title="预定义常量"></a>预定义常量</h3><p>go 语言预定义了这些常量： true、false和iota<br>iota 比较特殊，可以认为是一个可被编译器修改的常量，在每一个const 关键字出现时重置为0，每出现一次iota,其代表的数字会自动增1.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">const (          // iota 被重置为0</div><div class="line">    c0 = iota    // co = 0</div><div class="line">    c1 = iota    // co = 1           </div><div class="line">    c2 = iota   // co = 2</div><div class="line">)</div></pre></td></tr></table></figure>
+<h3 id="类型-1"><a href="#类型-1" class="headerlink" title="类型"></a>类型</h3><h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><p>布尔类型不能接受其它类型的赋值，不支持自动或强制的类型转换，以下错误的用户，会导致编译错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var b bool</div><div class="line">b = 1 // 编译错误 </div><div class="line">了= bool(1) // 编译错误</div></pre></td></tr></table></figure>
+<p>以下是正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var b bool</div><div class="line">b = (1 != 0 ) //编译正确</div><div class="line">fmt.Println(b) 打印结果为true</div></pre></td></tr></table></figure>
+<h4 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h4><p>需要注意的是int和int32 在go 语言里被认为是两种不同的类型，编译器不会帮你自动做类型转换，例下 有编译错误 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var value2 int32</div><div class="line">value1 := 64 // value1 将会被自动推导为int 类型</div><div class="line">value2 = value1 // 编译错误</div></pre></td></tr></table></figure>
+<p>错误类似于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cannot use value1 (type int ) as type int32 in assignment</div></pre></td></tr></table></figure>
+<p>使用强制类型转换可以解决</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value2 = int32(value1) // 编译通过</div></pre></td></tr></table></figure>
+<p>另外不同类型的整形数不能直接比较 ，例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var i int32</div><div class="line">var j int64</div><div class="line">if i == j &#123; // 编译出错</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">if i == 1 || j == 2 &#123; // 编译通过 </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h3><p>go定义了两个 float32（c语言中的float） 和float64(c 语言中double类型)，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var fvalue1 float32</div><div class="line">fvalue2 := 12.0 // 类型自动被设为float64, 如果不加小数点，fvalue2 会被推导为整形而不是浮点型</div><div class="line"></div><div class="line">fvalue1 = fvalue2 // 不同类型会编译出错</div><div class="line">fvalue1 = float32(fvalue2)</div></pre></td></tr></table></figure></p>
+<p>另注意浮点数不能像整形那样直接用==来判断两个浮点数是否相等，推荐替代的方案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">import &quot;math&quot;</div><div class="line"></div><div class="line">// p 为用户自定义的比较精度，比如 0.0000001</div><div class="line">func IsEqual(f1, f2, p float64) bool &#123;</div><div class="line">    return math.Fdim(f1, f2) &lt; p</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>声明方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[32]byte                    // 长度为32的数组，每个元素为一个字节 </div><div class="line">[2*N] struct &#123; x, y int32 &#125; // 复杂类型数组</div><div class="line">[1000]*float64              // 指针数组</div><div class="line">[3][5]int                   // 二维数组</div><div class="line">[2][2][2]float64            // 等同于[2]([2]([2]float64))</div></pre></td></tr></table></figure>
+<p>例 [3][5] 表达是3行5表的二维整数数组，总共可以 放15个整型元素<br>注： 在go 数组长度在定义后就不可更改</p>
+<p>另外go有一个关键字 range,用于便捷地遍历容器中的元素，range 具有两个返回 值，一个是数组下标，一个是元素的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for i,v := range array &#123;</div><div class="line">    fmt.Println(&quot;Array element[&quot;, i, &quot;]=&quot;, v)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>需注意的是<br>go 数组是一个值类型。所有的值类型变量在赋值和作为参数传递时都将产生一次复制动作。如果将数组作为函数的参数类型，则在函数调用时该 参数将发生数据复制。因此，在函数体中无法修改传入的数组的内容，因为函数内操作的只是所 传入数组的一个副本</p>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line">import &quot;fmt&quot;</div><div class="line">// PersonInfo是一个包含个人详细信息的类型 type PersonInfo struct &#123;</div><div class="line">    ID string</div><div class="line">    Name string Address string</div><div class="line">&#125;</div><div class="line">func main() &#123;</div><div class="line">    var personDB map[string] PersonInfo</div><div class="line">    personDB = make(map[string] PersonInfo)</div><div class="line">    // 往这个map里插入几条数据</div><div class="line">    personDB[&quot;12345&quot;] = PersonInfo&#123;&quot;12345&quot;, &quot;Tom&quot;, &quot;Room 203,...&quot;&#125; personDB[&quot;1&quot;] = PersonInfo&#123;&quot;1&quot;, &quot;Jack&quot;, &quot;Room 101,...&quot;&#125;</div><div class="line">    // 从这个map查找键为&quot;1234&quot;的信息 person, ok := personDB[&quot;1234&quot;]</div><div class="line">    // ok是一个返回的bool型，返回true表示找到了对应的数据 if ok &#123;</div><div class="line">            fmt.Println(&quot;Found person&quot;, person.Name, &quot;with ID 1234.&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    fmt.Println(&quot;Did not find person with ID 1234.&quot;)</div><div class="line">&#125; &#125;</div></pre></td></tr></table></figure>
+<p>make() 内置函数 来创建一个新map </p>
+<h3 id="注释格式"><a href="#注释格式" class="headerlink" title="注释格式"></a>注释格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">块注释</div><div class="line">*/</div><div class="line">// 行注释</div></pre></td></tr></table></figure>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 正确</div><div class="line">if expression &#123;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"># 错误</div><div class="line">if expression</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"># 则报错</div><div class="line"></div><div class="line">syntax error: unexpected semicolon or newline before &#123;</div></pre></td></tr></table></figure>
+<h3 id="后续复习"><a href="#后续复习" class="headerlink" title="后续复习"></a>后续复习</h3><ol>
+<li>&lt;&lt; 运算符</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">golang</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/05/03/go-学习笔记一/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-golang-排序练习题学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -493,283 +948,9 @@
 
 
   
-    <article id="post-windows与linux安装node-js" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/01/windows与linux安装node-js/">windows与linux安装node.js</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/01/windows与linux安装node-js/" class="archive-article-date">
-  	<time datetime="2016-12-01T08:03:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="window-安装"><a href="#window-安装" class="headerlink" title="window 安装"></a>window 安装</h3><ol>
-<li>安装git<br><a href="http://blog.csdn.net/shuyou612/article/details/53183683" target="_blank" rel="external">http://blog.csdn.net/shuyou612/article/details/53183683</a><br>官网安装过于慢的话可以考虑在 <a href="http://download.csdn.net/download/u010180815/9726804" target="_blank" rel="external">http://download.csdn.net/download/u010180815/9726804</a> 下载</li>
-</ol>
-<ol>
-<li>下载并安装 Node.js 。使用其 LTS（长期支持）版本。 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>windows 8以后的版本安装 msi 文件会 报 the installer has encountered…….. 2503 参考 <a href="http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html" target="_blank" rel="external">http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html</a></li>
-</ol>
-<p>现在开始安装相关环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// -g 代表全用户安装</div><div class="line">npm install express -g</div><div class="line">npm install jade -g </div><div class="line">npm install mysql  -g</div></pre></td></tr></table></figure></p>
-<h3 id="linux-centOS-安装"><a href="#linux-centOS-安装" class="headerlink" title="linux centOS 安装"></a>linux centOS 安装</h3><p>下载需要的版本 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>参考 <a href="http://www.cnblogs.com/8765h/p/4777746.html" target="_blank" rel="external">http://www.cnblogs.com/8765h/p/4777746.html</a></p>
-<h3 id="创建一个工程"><a href="#创建一个工程" class="headerlink" title="创建一个工程"></a>创建一个工程</h3><p>创建一个工程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">express ship </div><div class="line">// 如运行cmd 时没有使用管理员身份运行，会报以下错误 </div><div class="line">// Error: EPERM:operation not permitted,mkdir &apos;C:\Program Files\nodejs\ship&apos; at Error(native)</div></pre></td></tr></table></figure>
-<p>如终端报错提示 express不是内部或外部命令<br>具体参数  <a href="http://jingyan.baidu.com/article/922554468a3466851648f419.html" target="_blank" rel="external">http://jingyan.baidu.com/article/922554468a3466851648f419.html</a></p>
-<p>复制node_modules到ship下面进行测试</p>
-<p>新建一个test.js 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var http = require(&quot;http&quot;);  </div><div class="line">http.createServer(function(request, response) &#123;    </div><div class="line">    response.writeHead(200, &#123;&quot;Content-Type&quot;: &quot;text/plain&quot;&#125;);    </div><div class="line">    response.write(&quot;Hello World&quot;);    </div><div class="line">    response.end();  </div><div class="line">&#125;).listen(8888);  </div><div class="line">console.log(&quot;nodejs start listen 8888 port!&quot;);</div></pre></td></tr></table></figure>
-<p> 终端 cd 到C:\Program Files\nodejs\ship 执行</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node test.js</div></pre></td></tr></table></figure>
-<p> 浏览器访问 <a href="http://127.0.0.1:8888/" target="_blank" rel="external">http://127.0.0.1:8888/</a>  即可</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">nodejs</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/01/windows与linux安装node-js/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-使用dockerfile-部署php环境" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/使用dockerfile-部署php环境/">使用dockerfile 部署php环境</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/03/使用dockerfile-部署php环境/" class="archive-article-date">
-  	<time datetime="2016-11-03T06:32:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="docker-简介"><a href="#docker-简介" class="headerlink" title="docker 简介"></a>docker 简介</h3><p>docker 可以运行于任何安装现在linux 内核 的x64主机上，推荐内核版本3.8及以上</p>
-<h3 id="为什么使用docker"><a href="#为什么使用docker" class="headerlink" title="为什么使用docker"></a>为什么使用docker</h3><ol>
-<li>加速本地的开发和构建流程，容器可以在开发环境构建，然后轻松地提交到测试环境，并最终进入生产环境</li>
-<li>能够在让独立的服务或应用程序在不同的环境中得到相同的运行结果</li>
-<li>创建隔离的环境来进行测试</li>
-<li>高性能、超大规划的宿主机部署</li>
-</ol>
-<h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
-<p><strong>mac 使用docker toolbox</strong></p>
-<blockquote>
-<p><a href="https://github.com/widuu/chinese_docker/blob/master/installation/mac.md" target="_blank" rel="external">https://github.com/widuu/chinese_docker/blob/master/installation/mac.md</a> 参考使用该文章</p>
-</blockquote>
-<p><strong>linux</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum update</div><div class="line"></div><div class="line">sudo yum install docker</div><div class="line">#安装程序将docker程序安装到/usr/bin⺫⽬目录下，配置⽂文件安装在/etc/sysconfig/docker。安装好docker之后，可以 将docker加⼊入到启动服务组中 </div><div class="line">sudo systemctl enable docker.service</div><div class="line"></div><div class="line">#手动启动docker服务器，使⽤用命令 sudo systemctl start docker.service</div></pre></td></tr></table></figure>
-<p>目录结构 github地址 <a href="https://github.com/yeyute/docker-lnmpr" target="_blank" rel="external">https://github.com/yeyute/docker-lnmpr</a> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">docker_lnmpr</div><div class="line">├── mysql</div><div class="line">│   └── Dockerfile</div><div class="line">	└── mysqld.cnf</div><div class="line">├── nginx</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── nginx.conf</div><div class="line">│   └── vhost</div><div class="line">│       └── www.texixi.com.conf</div><div class="line">├── php</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── composer.phar</div><div class="line">│   ├── php-fpm.conf</div><div class="line">│   ├── php.ini</div><div class="line">│   ├── redis-3.0.0.tgz</div><div class="line">└── redis</div><div class="line">    └── Dockerfile</div><div class="line">    └── redis.conf</div></pre></td></tr></table></figure>
-<h3 id="建立镜像与容器"><a href="#建立镜像与容器" class="headerlink" title="建立镜像与容器"></a>建立镜像与容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># build</div><div class="line">docker build -t centos/nginx:v1.11.5 -v /www:/www -v /data:/data  ./nginx</div><div class="line">docker build -t centos/mysql:v5.7 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql  ./mysql</div><div class="line">docker build -t centos/php:v7.0.12 -v /www:/www -v /data:/data  ./php</div><div class="line">docker build -t centos/redis:v3.2.6 -v /data:/data  ./redis</div><div class="line"></div><div class="line">#备注：这里选取了172.172.0.0网段，也可以指定其他任意空闲的网段</div><div class="line">docker network create --subnet=172.171.0.0/16 docker-at</div><div class="line"></div><div class="line"># run</div><div class="line">docker run --name mysql57 --net docker-at --ip 172.171.0.9 -d -p 3306:3306 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql -v /data/run/mysqlmysqld:/var/run/mysqld  -e MYSQL_ROOT_PASSWORD=123456 -it centos/mysql:v5.7</div><div class="line">docker run --name redis326 --net docker-at --ip 172.171.0.10 -d -p 6379:6379  -v /data:/data -it centos/redis:v3.2.6</div><div class="line">docker run --name php7 --net docker-at --ip 172.171.0.8 -d -p 9000:9000 -v /www:/www -v /data:/data --link mysql57:mysql57 --link redis326:redis326 -it centos/php:v7.0.12 </div><div class="line">docker run --name nginx11 --net docker-at --ip 172.171.0.7 -p 80:80 -d -v /www:/www -v /data:/data --link php7:php7 -it centos/nginx:v1.11.5</div></pre></td></tr></table></figure>
-<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
-<li>docker start 容器名（容器ID也可以）</li>
-<li>docker stop 容器名（容器ID也可以）</li>
-<li>docker run 命令加 -d 参数，docker 会将容器放到后台运行</li>
-<li>docker ps 正在运行的容器</li>
-<li>docker logs –tail 10 -tf 容器名    查看容器的日志文件,加-t是加上时间戳，f是跟踪某个容器的最新日志而不必读整个日志文件</li>
-<li>docker top 容器名 查看容器内部运行的进程</li>
-<li>docker exec -d 容器名 touch /etc/new_config_file  通过后台命令创建一个空文件</li>
-<li>docker run –restart=always –name 容器名 -d ubuntu /bin/sh -c “while true;do echo hello world; sleep 1; done” 无论退出代码是什么，docker都会自动重启容器，可以设置 –restart=on-failure:5 自动重启的次数</li>
-<li>docker inspect 容器名   对容器进行详细的检查，可以加 –format=’{(.State.Running)}’ 来获取指定的信息</li>
-<li>docker rm 容器ID  删除容器，注，运行中的容器无法删除</li>
-<li>docker rm <code>docker ps -a -q</code> 这样可以删除所有的容器</li>
-<li>docker images 列出镜像</li>
-<li>docker pull 镜像名:标签 拉镜像</li>
-<li>docker search  查找docker Hub 上公共的可用镜像 </li>
-<li>docker build -t=’AT/web_server:v1’  命令后面可以直接加上github仓库的要目录下存在的Dockerfile文件。 命令是编写Dockerfile 之后使用的。-t选项为新镜像设置了仓库和名称:标签</li>
-<li>docker login  登陆到Docker Hub，个人认证信息将会保存到$HOME/.dockercfg, </li>
-<li>docker commit -m=”comment “ –author=”AT”  容器ID 镜像的用户名/仓库名:标签 不推荐这种方法，推荐dockerfile</li>
-<li>docker history 镜像ID 深入探求镜像是如何构建出来的</li>
-<li>docker port 镜像ID 端口    查看映射情况的容器的ID和容器的端口号，假设查询80端口对应的映射的端口</li>
-<li>run 运行一个容器，  -p 8080:80  将容器内的80端口映射到docker宿主机的某一特定端口，将容器的80端口绑定到宿主机的8080端口，另 127.0.0.1:80:80 是将容器的80端口绑定到宿主机这个IP的80端口上，-P 是将容器内的80端口对本地的宿主机公开</li>
-<li><a href="http://docs.docker.com/reference/builder/" target="_blank" rel="external">http://docs.docker.com/reference/builder/</a> 查看更多的命令</li>
-<li>docker push 镜像名 将镜像推送到 Docker Hub</li>
-<li>docker rmi 镜像名  删除镜像</li>
-<li>docker attach 容器ID   进入容器</li>
-</ul>
-<p><strong>删除所有容器和镜像的命令</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker rm `docker ps -a |awk &apos;&#123;print $1&#125;&apos; | grep [0-9a-z]` 删除停止的容器</div><div class="line">docker rmi $(docker images | awk &apos;/^&lt;none&gt;/ &#123; print $3 &#125;&apos;)</div></pre></td></tr></table></figure>
-<p><strong>进入容器的命令</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ nginx]# docker inspect --format &quot;&#123;&#123; .State.Pid &#125;&#125;&quot; 54a454b827e5(容器ID)</div><div class="line">20426</div><div class="line">[root@iZ287mq5dooZ nginx]# nsenter --target 20426 --mount --uts --ipc --net --pid</div><div class="line">[root@bcb14764a7a3 /]#</div></pre></td></tr></table></figure>
-<h3 id="dockerfile-语法"><a href="#dockerfile-语法" class="headerlink" title="dockerfile 语法"></a>dockerfile 语法</h3><ul>
-<li>MAINTAINER  标识镜像的作者和联系方式</li>
-<li>EXPOSE 可以指定多个EXPOSE向外部公开多个端口，可以帮助多个容器链接</li>
-<li>FROM   指令指定一个已经存在的镜像</li>
-<li>#号代表注释</li>
-<li>RUN 运行命令,会在shell 里使用命令包装器 /bin/sh -c 来执行。如果是在一个不支持shell 的平台上运行或者不希望在shell 中运行，也可以 使用exec 格式 的RUN指令</li>
-<li>ENV REFRESHED_AT 环境变量 这个环境亦是用来表明镜像模板最后的更新时间</li>
-<li>VOLUME 容器添加卷。一个卷是可以 存在于一个或多个容器内的特定的目录，对卷的修改是立刻生效的，对卷的修改不会对更新镜像产品影响，例:VOLUME[“/opt/project”,”/data”]</li>
-<li>ADD 将构建环境 下的文件 和目录复制到镜像 中。例 ADD nginx.conf /conf/nginx.conf 也可以是取url 的地址文件，如果是压缩包，ADD命令会自动解压、</li>
-<li>USER 指定镜像用那个USER 去运行</li>
-<li>COPY 是复制本地文件，而不会去做文件提取（解压包不会自动解压） 例：COPY conf.d/ /etc/apache2/  将本地conf.d目录中的文件复制到/etc/apache2/目录中</li>
-</ul>
-<h3 id="问题点整理"><a href="#问题点整理" class="headerlink" title="问题点整理"></a>问题点整理</h3><ul>
-<li><p><strong>docker 服务没启动</strong><br>启动并设置为开机自动启动docker服务</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ docker-php]# docker info</div><div class="line">Cannot connect to the Docker daemon. Is the docker daemon running on this host?</div><div class="line">[root@iZ287mq5dooZ docker-php]# ps aux | grep docker</div><div class="line">root      7902  0.0  0.0 112648   956 pts/0    S+   13:54   0:00 grep --color=auto docker</div><div class="line">[root@iZ287mq5dooZ docker-php]# service docker start</div><div class="line">Redirecting to /bin/systemctl start  docker.service</div><div class="line">[root@iZ287mq5dooZ redis]# systemctl start docker</div></pre></td></tr></table></figure>
-</li>
-<li><p><strong>注意挂载目录的权限问题，不然容器成功启动几秒后立刻关闭</strong><br>例：以下/data/run/mysql 目录没权限的情况下就会出现刚才那种情况</p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --name mysql57 -d -p 3306:3306 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql -v /data/run/mysql:/var/run/mysqld -e MYSQL_ROOT_PASSWORD=123456 -it centos/mysql:v5.7</div></pre></td></tr></table></figure>
-</code></pre></li>
-<li><p><strong>需要注意php.ini 中的目录对应  mysql 的配置的目录需要挂载才能获取文件内容，不然php连接mysql失败</strong></p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># php.ini</div><div class="line">mysql.default_socket = /data/run/mysql/mysqld.sock</div><div class="line">mysqli.default_socket = /data/run/mysql/mysqld.sock</div><div class="line">pdo_mysql.default_socket = /data/run/mysql/mysqld.sock</div><div class="line"></div><div class="line"># mysqld.cnf</div><div class="line">pid-file       = /var/run/mysqld/mysqld.pid</div><div class="line">socket         = /var/run/mysqld/mysqld.sock</div></pre></td></tr></table></figure>
-</code></pre></li>
-<li><p><strong>宿主机 无法访问docker的容器（nginx）</strong> <a href="https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面" target="_blank" rel="external">https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面</a></p>
-</li>
-<li><p><strong>使用php连接不上redis</strong> </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># 错误的</div><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;127.0.0.1&apos;, 6379);</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code>php连接不上，查看错误日志
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PHP Fatal error:  Uncaught RedisException: Redis server went away in /www/index.php:7</div></pre></td></tr></table></figure>
-
-考虑到docker 之间的通信应该不可以用127.0.0.1 应该使用容器里面的ip，所以查看redis 容器的ip
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ php]# docker ps </div><div class="line">CONTAINER ID        IMAGE                  COMMAND                   CREATED             STATUS              PORTS                         NAMES</div><div class="line">5fb4b1904f1c        centos/nginx:v1.11.5   &quot;/usr/local/nginx/sbi&quot;    About an hour ago   Up About an hour    0.0.0.0:80-&gt;80/tcp, 443/tcp   nginx11</div><div class="line">2bf7ad9f44f9        centos/php:v7.0.12     &quot;/usr/local/php/sbin/&quot;    About an hour ago   Up About an hour    0.0.0.0:9000-&gt;9000/tcp        php7</div><div class="line">4b84858ea4e4        centos/redis:v3.2.6    &quot;/bin/sh -c &apos;\&quot;/usr/lo&quot;   18 hours ago        Up About an hour    0.0.0.0:6379-&gt;6379/tcp        redis326</div><div class="line">158c67aa178c        centos/mysql:v5.7      &quot;docker-entrypoint.sh&quot;    6 days ago          Up About an hour    0.0.0.0:3306-&gt;3306/tcp        mysql57</div><div class="line">[root@iZ287mq5dooZ php]# docker inspect 4b84858ea4e4</div></pre></td></tr></table></figure>
-
-结果是为 192.168.0.4，测试连接，成功
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;192.168.0.4&apos;, 6379);</div></pre></td></tr></table></figure>
-
-问题是重启容器ip为动态的，解决该问题
-第一步：创建自定义网络
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#备注：这里选取了172.172.0.0网段，也可以指定其他任意空闲的网段</div><div class="line">docker network create --subnet=172.171.0.0/16 docker-at</div><div class="line">docker run --name redis326 --net docker-at --ip 172.171.0.10 -d -p 6379:6379  -v /data:/data -it centos/redis:v3.2.6</div></pre></td></tr></table></figure>
-
-
-连接redis 就可以配置对应的ip地址了，连接成功
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;172.171.0.10&apos;, 6379);</div></pre></td></tr></table></figure>
-</code></pre><ul>
-<li><p><strong>使用docker-compose 报错</strong></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 使用pip 安装docker-compose</div><div class="line">pip install -U docker-compose</div></pre></td></tr></table></figure>
-<p>  假设没安装pip，会报以下错误，windows 请参数 <a href="http://www.cnblogs.com/RSsky/articles/5525999.html" target="_blank" rel="external">http://www.cnblogs.com/RSsky/articles/5525999.html</a></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash: pip: command not found</div></pre></td></tr></table></figure>
-<p>  linux 请执行</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-pip</div></pre></td></tr></table></figure>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/03/使用dockerfile-部署php环境/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -892,19 +1073,19 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">生活</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>

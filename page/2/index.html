@@ -154,6 +154,280 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-windows与linux安装node-js" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/01/windows与linux安装node-js/">windows与linux安装node.js</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/01/windows与linux安装node-js/" class="archive-article-date">
+  	<time datetime="2016-12-01T08:03:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="window-安装"><a href="#window-安装" class="headerlink" title="window 安装"></a>window 安装</h3><ol>
+<li>安装git<br><a href="http://blog.csdn.net/shuyou612/article/details/53183683" target="_blank" rel="external">http://blog.csdn.net/shuyou612/article/details/53183683</a><br>官网安装过于慢的话可以考虑在 <a href="http://download.csdn.net/download/u010180815/9726804" target="_blank" rel="external">http://download.csdn.net/download/u010180815/9726804</a> 下载</li>
+</ol>
+<ol>
+<li>下载并安装 Node.js 。使用其 LTS（长期支持）版本。 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>windows 8以后的版本安装 msi 文件会 报 the installer has encountered…….. 2503 参考 <a href="http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html" target="_blank" rel="external">http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html</a></li>
+</ol>
+<p>现在开始安装相关环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// -g 代表全用户安装</div><div class="line">npm install express -g</div><div class="line">npm install jade -g </div><div class="line">npm install mysql  -g</div></pre></td></tr></table></figure></p>
+<h3 id="linux-centOS-安装"><a href="#linux-centOS-安装" class="headerlink" title="linux centOS 安装"></a>linux centOS 安装</h3><p>下载需要的版本 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>参考 <a href="http://www.cnblogs.com/8765h/p/4777746.html" target="_blank" rel="external">http://www.cnblogs.com/8765h/p/4777746.html</a></p>
+<h3 id="创建一个工程"><a href="#创建一个工程" class="headerlink" title="创建一个工程"></a>创建一个工程</h3><p>创建一个工程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">express ship </div><div class="line">// 如运行cmd 时没有使用管理员身份运行，会报以下错误 </div><div class="line">// Error: EPERM:operation not permitted,mkdir &apos;C:\Program Files\nodejs\ship&apos; at Error(native)</div></pre></td></tr></table></figure>
+<p>如终端报错提示 express不是内部或外部命令<br>具体参数  <a href="http://jingyan.baidu.com/article/922554468a3466851648f419.html" target="_blank" rel="external">http://jingyan.baidu.com/article/922554468a3466851648f419.html</a></p>
+<p>复制node_modules到ship下面进行测试</p>
+<p>新建一个test.js 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var http = require(&quot;http&quot;);  </div><div class="line">http.createServer(function(request, response) &#123;    </div><div class="line">    response.writeHead(200, &#123;&quot;Content-Type&quot;: &quot;text/plain&quot;&#125;);    </div><div class="line">    response.write(&quot;Hello World&quot;);    </div><div class="line">    response.end();  </div><div class="line">&#125;).listen(8888);  </div><div class="line">console.log(&quot;nodejs start listen 8888 port!&quot;);</div></pre></td></tr></table></figure>
+<p> 终端 cd 到C:\Program Files\nodejs\ship 执行</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node test.js</div></pre></td></tr></table></figure>
+<p> 浏览器访问 <a href="http://127.0.0.1:8888/" target="_blank" rel="external">http://127.0.0.1:8888/</a>  即可</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">nodejs</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/01/windows与linux安装node-js/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-使用dockerfile-部署php环境" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/使用dockerfile-部署php环境/">使用dockerfile 部署php环境</a>
+    </h1>
+  
+
+        
+        <a href="/2016/11/03/使用dockerfile-部署php环境/" class="archive-article-date">
+  	<time datetime="2016-11-03T06:32:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="docker-简介"><a href="#docker-简介" class="headerlink" title="docker 简介"></a>docker 简介</h3><p>docker 可以运行于任何安装现在linux 内核 的x64主机上，推荐内核版本3.8及以上</p>
+<h3 id="为什么使用docker"><a href="#为什么使用docker" class="headerlink" title="为什么使用docker"></a>为什么使用docker</h3><ol>
+<li>加速本地的开发和构建流程，容器可以在开发环境构建，然后轻松地提交到测试环境，并最终进入生产环境</li>
+<li>能够在让独立的服务或应用程序在不同的环境中得到相同的运行结果</li>
+<li>创建隔离的环境来进行测试</li>
+<li>高性能、超大规划的宿主机部署</li>
+</ol>
+<h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
+<p><strong>mac 使用docker toolbox</strong></p>
+<blockquote>
+<p><a href="https://github.com/widuu/chinese_docker/blob/master/installation/mac.md" target="_blank" rel="external">https://github.com/widuu/chinese_docker/blob/master/installation/mac.md</a> 参考使用该文章</p>
+</blockquote>
+<p><strong>linux</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum update</div><div class="line"></div><div class="line">sudo yum install docker</div><div class="line">#安装程序将docker程序安装到/usr/bin⺫⽬目录下，配置⽂文件安装在/etc/sysconfig/docker。安装好docker之后，可以 将docker加⼊入到启动服务组中 </div><div class="line">sudo systemctl enable docker.service</div><div class="line"></div><div class="line">#手动启动docker服务器，使⽤用命令 sudo systemctl start docker.service</div></pre></td></tr></table></figure>
+<p>目录结构 github地址 <a href="https://github.com/yeyute/docker-lnmpr" target="_blank" rel="external">https://github.com/yeyute/docker-lnmpr</a> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">docker_lnmpr</div><div class="line">├── mysql</div><div class="line">│   └── Dockerfile</div><div class="line">	└── mysqld.cnf</div><div class="line">├── nginx</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── nginx.conf</div><div class="line">│   └── vhost</div><div class="line">│       └── www.texixi.com.conf</div><div class="line">├── php</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── composer.phar</div><div class="line">│   ├── php-fpm.conf</div><div class="line">│   ├── php.ini</div><div class="line">│   ├── redis-3.0.0.tgz</div><div class="line">└── redis</div><div class="line">    └── Dockerfile</div><div class="line">    └── redis.conf</div></pre></td></tr></table></figure>
+<h3 id="建立镜像与容器"><a href="#建立镜像与容器" class="headerlink" title="建立镜像与容器"></a>建立镜像与容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># build</div><div class="line">docker build -t centos/nginx:v1.11.5 -v /www:/www -v /data:/data  ./nginx</div><div class="line">docker build -t centos/mysql:v5.7 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql  ./mysql</div><div class="line">docker build -t centos/php:v7.0.12 -v /www:/www -v /data:/data  ./php</div><div class="line">docker build -t centos/redis:v3.2.6 -v /data:/data  ./redis</div><div class="line"></div><div class="line">#备注：这里选取了172.172.0.0网段，也可以指定其他任意空闲的网段</div><div class="line">docker network create --subnet=172.171.0.0/16 docker-at</div><div class="line"></div><div class="line"># run</div><div class="line">docker run --name mysql57 --net docker-at --ip 172.171.0.9 -d -p 3306:3306 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql -v /data/run/mysqlmysqld:/var/run/mysqld  -e MYSQL_ROOT_PASSWORD=123456 -it centos/mysql:v5.7</div><div class="line">docker run --name redis326 --net docker-at --ip 172.171.0.10 -d -p 6379:6379  -v /data:/data -it centos/redis:v3.2.6</div><div class="line">docker run --name php7 --net docker-at --ip 172.171.0.8 -d -p 9000:9000 -v /www:/www -v /data:/data --link mysql57:mysql57 --link redis326:redis326 -it centos/php:v7.0.12 </div><div class="line">docker run --name nginx11 --net docker-at --ip 172.171.0.7 -p 80:80 -d -v /www:/www -v /data:/data --link php7:php7 -it centos/nginx:v1.11.5</div></pre></td></tr></table></figure>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li>docker start 容器名（容器ID也可以）</li>
+<li>docker stop 容器名（容器ID也可以）</li>
+<li>docker run 命令加 -d 参数，docker 会将容器放到后台运行</li>
+<li>docker ps 正在运行的容器</li>
+<li>docker logs –tail 10 -tf 容器名    查看容器的日志文件,加-t是加上时间戳，f是跟踪某个容器的最新日志而不必读整个日志文件</li>
+<li>docker top 容器名 查看容器内部运行的进程</li>
+<li>docker exec -d 容器名 touch /etc/new_config_file  通过后台命令创建一个空文件</li>
+<li>docker run –restart=always –name 容器名 -d ubuntu /bin/sh -c “while true;do echo hello world; sleep 1; done” 无论退出代码是什么，docker都会自动重启容器，可以设置 –restart=on-failure:5 自动重启的次数</li>
+<li>docker inspect 容器名   对容器进行详细的检查，可以加 –format=’{(.State.Running)}’ 来获取指定的信息</li>
+<li>docker rm 容器ID  删除容器，注，运行中的容器无法删除</li>
+<li>docker rm <code>docker ps -a -q</code> 这样可以删除所有的容器</li>
+<li>docker images 列出镜像</li>
+<li>docker pull 镜像名:标签 拉镜像</li>
+<li>docker search  查找docker Hub 上公共的可用镜像 </li>
+<li>docker build -t=’AT/web_server:v1’  命令后面可以直接加上github仓库的要目录下存在的Dockerfile文件。 命令是编写Dockerfile 之后使用的。-t选项为新镜像设置了仓库和名称:标签</li>
+<li>docker login  登陆到Docker Hub，个人认证信息将会保存到$HOME/.dockercfg, </li>
+<li>docker commit -m=”comment “ –author=”AT”  容器ID 镜像的用户名/仓库名:标签 不推荐这种方法，推荐dockerfile</li>
+<li>docker history 镜像ID 深入探求镜像是如何构建出来的</li>
+<li>docker port 镜像ID 端口    查看映射情况的容器的ID和容器的端口号，假设查询80端口对应的映射的端口</li>
+<li>run 运行一个容器，  -p 8080:80  将容器内的80端口映射到docker宿主机的某一特定端口，将容器的80端口绑定到宿主机的8080端口，另 127.0.0.1:80:80 是将容器的80端口绑定到宿主机这个IP的80端口上，-P 是将容器内的80端口对本地的宿主机公开</li>
+<li><a href="http://docs.docker.com/reference/builder/" target="_blank" rel="external">http://docs.docker.com/reference/builder/</a> 查看更多的命令</li>
+<li>docker push 镜像名 将镜像推送到 Docker Hub</li>
+<li>docker rmi 镜像名  删除镜像</li>
+<li>docker attach 容器ID   进入容器</li>
+</ul>
+<p><strong>删除所有容器和镜像的命令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker rm `docker ps -a |awk &apos;&#123;print $1&#125;&apos; | grep [0-9a-z]` 删除停止的容器</div><div class="line">docker rmi $(docker images | awk &apos;/^&lt;none&gt;/ &#123; print $3 &#125;&apos;)</div></pre></td></tr></table></figure>
+<p><strong>进入容器的命令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ nginx]# docker inspect --format &quot;&#123;&#123; .State.Pid &#125;&#125;&quot; 54a454b827e5(容器ID)</div><div class="line">20426</div><div class="line">[root@iZ287mq5dooZ nginx]# nsenter --target 20426 --mount --uts --ipc --net --pid</div><div class="line">[root@bcb14764a7a3 /]#</div></pre></td></tr></table></figure>
+<h3 id="dockerfile-语法"><a href="#dockerfile-语法" class="headerlink" title="dockerfile 语法"></a>dockerfile 语法</h3><ul>
+<li>MAINTAINER  标识镜像的作者和联系方式</li>
+<li>EXPOSE 可以指定多个EXPOSE向外部公开多个端口，可以帮助多个容器链接</li>
+<li>FROM   指令指定一个已经存在的镜像</li>
+<li>#号代表注释</li>
+<li>RUN 运行命令,会在shell 里使用命令包装器 /bin/sh -c 来执行。如果是在一个不支持shell 的平台上运行或者不希望在shell 中运行，也可以 使用exec 格式 的RUN指令</li>
+<li>ENV REFRESHED_AT 环境变量 这个环境亦是用来表明镜像模板最后的更新时间</li>
+<li>VOLUME 容器添加卷。一个卷是可以 存在于一个或多个容器内的特定的目录，对卷的修改是立刻生效的，对卷的修改不会对更新镜像产品影响，例:VOLUME[“/opt/project”,”/data”]</li>
+<li>ADD 将构建环境 下的文件 和目录复制到镜像 中。例 ADD nginx.conf /conf/nginx.conf 也可以是取url 的地址文件，如果是压缩包，ADD命令会自动解压、</li>
+<li>USER 指定镜像用那个USER 去运行</li>
+<li>COPY 是复制本地文件，而不会去做文件提取（解压包不会自动解压） 例：COPY conf.d/ /etc/apache2/  将本地conf.d目录中的文件复制到/etc/apache2/目录中</li>
+</ul>
+<h3 id="问题点整理"><a href="#问题点整理" class="headerlink" title="问题点整理"></a>问题点整理</h3><ul>
+<li><p><strong>docker 服务没启动</strong><br>启动并设置为开机自动启动docker服务</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ docker-php]# docker info</div><div class="line">Cannot connect to the Docker daemon. Is the docker daemon running on this host?</div><div class="line">[root@iZ287mq5dooZ docker-php]# ps aux | grep docker</div><div class="line">root      7902  0.0  0.0 112648   956 pts/0    S+   13:54   0:00 grep --color=auto docker</div><div class="line">[root@iZ287mq5dooZ docker-php]# service docker start</div><div class="line">Redirecting to /bin/systemctl start  docker.service</div><div class="line">[root@iZ287mq5dooZ redis]# systemctl start docker</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>注意挂载目录的权限问题，不然容器成功启动几秒后立刻关闭</strong><br>例：以下/data/run/mysql 目录没权限的情况下就会出现刚才那种情况</p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --name mysql57 -d -p 3306:3306 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql -v /data/run/mysql:/var/run/mysqld -e MYSQL_ROOT_PASSWORD=123456 -it centos/mysql:v5.7</div></pre></td></tr></table></figure>
+</code></pre></li>
+<li><p><strong>需要注意php.ini 中的目录对应  mysql 的配置的目录需要挂载才能获取文件内容，不然php连接mysql失败</strong></p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># php.ini</div><div class="line">mysql.default_socket = /data/run/mysql/mysqld.sock</div><div class="line">mysqli.default_socket = /data/run/mysql/mysqld.sock</div><div class="line">pdo_mysql.default_socket = /data/run/mysql/mysqld.sock</div><div class="line"></div><div class="line"># mysqld.cnf</div><div class="line">pid-file       = /var/run/mysqld/mysqld.pid</div><div class="line">socket         = /var/run/mysqld/mysqld.sock</div></pre></td></tr></table></figure>
+</code></pre></li>
+<li><p><strong>宿主机 无法访问docker的容器（nginx）</strong> <a href="https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面" target="_blank" rel="external">https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面</a></p>
+</li>
+<li><p><strong>使用php连接不上redis</strong> </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># 错误的</div><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;127.0.0.1&apos;, 6379);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>php连接不上，查看错误日志
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PHP Fatal error:  Uncaught RedisException: Redis server went away in /www/index.php:7</div></pre></td></tr></table></figure>
+
+考虑到docker 之间的通信应该不可以用127.0.0.1 应该使用容器里面的ip，所以查看redis 容器的ip
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ php]# docker ps </div><div class="line">CONTAINER ID        IMAGE                  COMMAND                   CREATED             STATUS              PORTS                         NAMES</div><div class="line">5fb4b1904f1c        centos/nginx:v1.11.5   &quot;/usr/local/nginx/sbi&quot;    About an hour ago   Up About an hour    0.0.0.0:80-&gt;80/tcp, 443/tcp   nginx11</div><div class="line">2bf7ad9f44f9        centos/php:v7.0.12     &quot;/usr/local/php/sbin/&quot;    About an hour ago   Up About an hour    0.0.0.0:9000-&gt;9000/tcp        php7</div><div class="line">4b84858ea4e4        centos/redis:v3.2.6    &quot;/bin/sh -c &apos;\&quot;/usr/lo&quot;   18 hours ago        Up About an hour    0.0.0.0:6379-&gt;6379/tcp        redis326</div><div class="line">158c67aa178c        centos/mysql:v5.7      &quot;docker-entrypoint.sh&quot;    6 days ago          Up About an hour    0.0.0.0:3306-&gt;3306/tcp        mysql57</div><div class="line">[root@iZ287mq5dooZ php]# docker inspect 4b84858ea4e4</div></pre></td></tr></table></figure>
+
+结果是为 192.168.0.4，测试连接，成功
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;192.168.0.4&apos;, 6379);</div></pre></td></tr></table></figure>
+
+问题是重启容器ip为动态的，解决该问题
+第一步：创建自定义网络
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#备注：这里选取了172.172.0.0网段，也可以指定其他任意空闲的网段</div><div class="line">docker network create --subnet=172.171.0.0/16 docker-at</div><div class="line">docker run --name redis326 --net docker-at --ip 172.171.0.10 -d -p 6379:6379  -v /data:/data -it centos/redis:v3.2.6</div></pre></td></tr></table></figure>
+
+
+连接redis 就可以配置对应的ip地址了，连接成功
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;172.171.0.10&apos;, 6379);</div></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p><strong>使用docker-compose 报错</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 使用pip 安装docker-compose</div><div class="line">pip install -U docker-compose</div></pre></td></tr></table></figure>
+<p>  假设没安装pip，会报以下错误，windows 请参数 <a href="http://www.cnblogs.com/RSsky/articles/5525999.html" target="_blank" rel="external">http://www.cnblogs.com/RSsky/articles/5525999.html</a></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash: pip: command not found</div></pre></td></tr></table></figure>
+<p>  linux 请执行</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-pip</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/11/03/使用dockerfile-部署php环境/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-mysql-主从配置原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -761,208 +1035,9 @@
 
 
   
-    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/11/单例模式/">单例模式</a>
-    </h1>
-  
-
-        
-        <a href="/2016/04/11/单例模式/" class="archive-article-date">
-  	<time datetime="2016-04-11T12:04:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="单例模式的特点"><a href="#单例模式的特点" class="headerlink" title="单例模式的特点"></a>单例模式的特点</h3><ul>
-<li>只能有一个实例</li>
-<li>必须自行创建这个实例</li>
-<li>必须给其他对象提供这一实例</li>
-</ul>
-<h3 id="单例类"><a href="#单例类" class="headerlink" title="单例类"></a>单例类</h3><ul>
-<li>构造函数需要标记为private（访问控制：防止外部代码使用new操作符创建对象），单例类不能在其他类中实例化，只能被其自身实例化；</li>
-<li>拥有一个保存类的实例的静态成员变量(非成静态员：所有没有加Static的成员都是非静态成员,当类被实例化之后,可以通过实例化的类名进行访问..非静态成员的生存期决定于该类的生存期..而静态成员则不存在生存期的概念,因为静态成员始终驻留在内容中..)</li>
-<li>拥有一个访问这个实例的公共的静态方法（常用getInstance()方法进行实例化单例类，通过instanceof操作符可以检测到类是否已经被实例化）</li>
-</ul>
-<h3 id="为什么要使用PHP单例模式？"><a href="#为什么要使用PHP单例模式？" class="headerlink" title="为什么要使用PHP单例模式？"></a>为什么要使用PHP单例模式？</h3><ul>
-<li>虽然PHP每次执行完页面都是会从内存中清理掉所有的资源. 因而PHP中的单例实际每次运行都是需要重新实例化的，但PHP一个主要应用场合就是应用程序与数据库打交道的场景，在一个应用中会存在大量的数据库操作，针对数据库句柄连接数据库的行为，使用单例模式可以避免大量的new操作。因为每一次new操作都会消耗系统和内存的资源。</li>
-</ul>
-<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul>
-<li>改进系统的设计</li>
-<li>是对全局变量的一种改进</li>
-</ul>
-<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ul>
-<li>难于调试</li>
-<li>隐藏的依赖关系</li>
-<li>无法用错误类型的数据覆写一个单例</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/04/11/单例模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-秒杀活动的架构设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/09/秒杀活动的架构设计/">秒杀活动的架构设计</a>
-    </h1>
-  
-
-        
-        <a href="/2016/03/09/秒杀活动的架构设计/" class="archive-article-date">
-  	<time datetime="2016-03-09T09:04:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="业务的基本说明"><a href="#业务的基本说明" class="headerlink" title="业务的基本说明"></a>业务的基本说明</h3><ol>
-<li>运营评估最高的并发会达到  10W（根据推广的力度，以及以往的经验）</li>
-<li>业务现有的服务器架构 反向代理 4台，前端机 8台， db 2台（主从），redis 2台（主从）以下是服务器架构图</li>
-</ol>
-<p><img src="https://yeyute.github.io/assets/msjgt.jpg" alt="服务器架构图"></p>
-<h3 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h3><p>html 等静态文件上CDN ，这方面压力不大<br>后台程序动态接口，必须支持高并发，用户体验必须做好<br>后端程序优化点（欢迎大家补充）</p>
-<ul>
-<li>程序尽可能的减少加载的文件</li>
-<li>程序减少不必要的网络请求</li>
-<li>redis 队列来作 异步方式实现</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 后台进程消费队列 个人使用brpoplpush方法 取出数据并用存入另外队列作数据备份</div><div class="line">$block_expire_time = 0; # 设置阻塞等待时间为永久</div><div class="line">$redis-&gt;brpoplpush($key, $backup_key, $block_expire_time);</div></pre></td></tr></table></figure>
-<ul>
-<li>redis 缓存</li>
-<li>前端点击按钮请求后变灰，防止用户重复点击</li>
-<li>静态文件上CDN </li>
-<li>nginx的最大连接数设置为550，防止连接数过大时全部到php，导致php服务挂了</li>
-<li>针对每个用户加并发锁（redis），防止高并发情况判断条件被绕过,程序执行完后解锁。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$lock_status = $redis-&gt;set($lock_key, 1, array(&quot;NX&quot;, &quot;EX&quot;=&gt;$expire_time));</div></pre></td></tr></table></figure>
-<h3 id="高并发下奖品超发问题"><a href="#高并发下奖品超发问题" class="headerlink" title="高并发下奖品超发问题"></a>高并发下奖品超发问题</h3><p>个人设计的方案：提前把每个奖品放入 redis队列，每个key一个奖品，队列的长度是奖品的数量，可以保证奖品不会超发放<br>另外，假设使用<br>悲观锁，在更新数据的时候加锁，其它的都为等待状态，不合适秒杀场景<br>乐观锁 基本是采用带版本号更新，版本号匹配才能更新，其它的回滚，虽然保证的数据的安全不超发放，但是在高并发场景下，DB只有两台的时候，超过mysql 进程堆积肯定会的， 超过最大连接数是怎么办，一系列的问题需要解决，所以该方案不合适</p>
-<h3 id="程序压测结果分析服务器能抗的并发"><a href="#程序压测结果分析服务器能抗的并发" class="headerlink" title="程序压测结果分析服务器能抗的并发"></a>程序压测结果分析服务器能抗的并发</h3><p>在平均响应时间300ms内，单台qps 750 左右（保持300ms是公司压测试的规范指标）<br>10台机器（后面新增2台到 8+2）一秒钟能处理： 10 * 750/0.3 = 25000<br>但是系统在高并发的状态下，响应时间有可能从300ms 变成500ms，所以在做评估，需要预留一定的空间<br>那么问题来了，<br>保守的并发只有1.5W,与10w 差距大，需要在执行方案上解决，公司不可无限的申请web机器。<br>解决10W并发问题(资源有限的情况)方案<br>在代理层做处理，根据权重挡掉90%的量，返回800（自定义），前端判断是否为800，是则提示火爆用户重试（对应的方案设置友好一些）</p>
-<h3 id="活动的序列图及说明"><a href="#活动的序列图及说明" class="headerlink" title="活动的序列图及说明"></a>活动的序列图及说明</h3><ol>
-<li>接口程序不连接查询mysql数据库</li>
-<li>奖品的数据存放redis队列，每个奖品一个key，队列长度是奖品的数量</li>
-<li>用户成功领取红包（或抢购）时的代码流程（不包括业务限制与防刷），从队列获取奖品成功，再入队列（此队列后台消费入库），返回给用户领取成功。在用户体验上有所提升，但如果后台队列堆积太多，未能消费完成，用户查看的红包时是没有对应记录的，所以针对自己的需求作对应的优化。</li>
-</ol>
-<p><img src="https://yeyute.github.io/assets/xlt.jpg" alt="活动流程图"></p>
-<h3 id="活动流程图（开爷画的）"><a href="#活动流程图（开爷画的）" class="headerlink" title="活动流程图（开爷画的）"></a>活动流程图（开爷画的）</h3><p><img src="https://yeyute.github.io/assets/lct.png" alt="活动流程图"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">架构设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/03/09/秒杀活动的架构设计/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1085,19 +1160,19 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">生活</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>

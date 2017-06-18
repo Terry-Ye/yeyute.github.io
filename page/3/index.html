@@ -154,6 +154,205 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/11/单例模式/">单例模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/04/11/单例模式/" class="archive-article-date">
+  	<time datetime="2016-04-11T12:04:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="单例模式的特点"><a href="#单例模式的特点" class="headerlink" title="单例模式的特点"></a>单例模式的特点</h3><ul>
+<li>只能有一个实例</li>
+<li>必须自行创建这个实例</li>
+<li>必须给其他对象提供这一实例</li>
+</ul>
+<h3 id="单例类"><a href="#单例类" class="headerlink" title="单例类"></a>单例类</h3><ul>
+<li>构造函数需要标记为private（访问控制：防止外部代码使用new操作符创建对象），单例类不能在其他类中实例化，只能被其自身实例化；</li>
+<li>拥有一个保存类的实例的静态成员变量(非成静态员：所有没有加Static的成员都是非静态成员,当类被实例化之后,可以通过实例化的类名进行访问..非静态成员的生存期决定于该类的生存期..而静态成员则不存在生存期的概念,因为静态成员始终驻留在内容中..)</li>
+<li>拥有一个访问这个实例的公共的静态方法（常用getInstance()方法进行实例化单例类，通过instanceof操作符可以检测到类是否已经被实例化）</li>
+</ul>
+<h3 id="为什么要使用PHP单例模式？"><a href="#为什么要使用PHP单例模式？" class="headerlink" title="为什么要使用PHP单例模式？"></a>为什么要使用PHP单例模式？</h3><ul>
+<li>虽然PHP每次执行完页面都是会从内存中清理掉所有的资源. 因而PHP中的单例实际每次运行都是需要重新实例化的，但PHP一个主要应用场合就是应用程序与数据库打交道的场景，在一个应用中会存在大量的数据库操作，针对数据库句柄连接数据库的行为，使用单例模式可以避免大量的new操作。因为每一次new操作都会消耗系统和内存的资源。</li>
+</ul>
+<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul>
+<li>改进系统的设计</li>
+<li>是对全局变量的一种改进</li>
+</ul>
+<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ul>
+<li>难于调试</li>
+<li>隐藏的依赖关系</li>
+<li>无法用错误类型的数据覆写一个单例</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/04/11/单例模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-秒杀活动的架构设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/09/秒杀活动的架构设计/">秒杀活动的架构设计</a>
+    </h1>
+  
+
+        
+        <a href="/2016/03/09/秒杀活动的架构设计/" class="archive-article-date">
+  	<time datetime="2016-03-09T09:04:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="业务的基本说明"><a href="#业务的基本说明" class="headerlink" title="业务的基本说明"></a>业务的基本说明</h3><ol>
+<li>运营评估最高的并发会达到  10W（根据推广的力度，以及以往的经验）</li>
+<li>业务现有的服务器架构 反向代理 4台，前端机 8台， db 2台（主从），redis 2台（主从）以下是服务器架构图</li>
+</ol>
+<p><img src="https://yeyute.github.io/assets/msjgt.jpg" alt="服务器架构图"></p>
+<h3 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h3><p>html 等静态文件上CDN ，这方面压力不大<br>后台程序动态接口，必须支持高并发，用户体验必须做好<br>后端程序优化点（欢迎大家补充）</p>
+<ul>
+<li>程序尽可能的减少加载的文件</li>
+<li>程序减少不必要的网络请求</li>
+<li>redis 队列来作 异步方式实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 后台进程消费队列 个人使用brpoplpush方法 取出数据并用存入另外队列作数据备份</div><div class="line">$block_expire_time = 0; # 设置阻塞等待时间为永久</div><div class="line">$redis-&gt;brpoplpush($key, $backup_key, $block_expire_time);</div></pre></td></tr></table></figure>
+<ul>
+<li>redis 缓存</li>
+<li>前端点击按钮请求后变灰，防止用户重复点击</li>
+<li>静态文件上CDN </li>
+<li>nginx的最大连接数设置为550，防止连接数过大时全部到php，导致php服务挂了</li>
+<li>针对每个用户加并发锁（redis），防止高并发情况判断条件被绕过,程序执行完后解锁。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$lock_status = $redis-&gt;set($lock_key, 1, array(&quot;NX&quot;, &quot;EX&quot;=&gt;$expire_time));</div></pre></td></tr></table></figure>
+<h3 id="高并发下奖品超发问题"><a href="#高并发下奖品超发问题" class="headerlink" title="高并发下奖品超发问题"></a>高并发下奖品超发问题</h3><p>个人设计的方案：提前把每个奖品放入 redis队列，每个key一个奖品，队列的长度是奖品的数量，可以保证奖品不会超发放<br>另外，假设使用<br>悲观锁，在更新数据的时候加锁，其它的都为等待状态，不合适秒杀场景<br>乐观锁 基本是采用带版本号更新，版本号匹配才能更新，其它的回滚，虽然保证的数据的安全不超发放，但是在高并发场景下，DB只有两台的时候，超过mysql 进程堆积肯定会的， 超过最大连接数是怎么办，一系列的问题需要解决，所以该方案不合适</p>
+<h3 id="程序压测结果分析服务器能抗的并发"><a href="#程序压测结果分析服务器能抗的并发" class="headerlink" title="程序压测结果分析服务器能抗的并发"></a>程序压测结果分析服务器能抗的并发</h3><p>在平均响应时间300ms内，单台qps 750 左右（保持300ms是公司压测试的规范指标）<br>10台机器（后面新增2台到 8+2）一秒钟能处理： 10 * 750/0.3 = 25000<br>但是系统在高并发的状态下，响应时间有可能从300ms 变成500ms，所以在做评估，需要预留一定的空间<br>那么问题来了，<br>保守的并发只有1.5W,与10w 差距大，需要在执行方案上解决，公司不可无限的申请web机器。<br>解决10W并发问题(资源有限的情况)方案<br>在代理层做处理，根据权重挡掉90%的量，返回800（自定义），前端判断是否为800，是则提示火爆用户重试（对应的方案设置友好一些）</p>
+<h3 id="活动的序列图及说明"><a href="#活动的序列图及说明" class="headerlink" title="活动的序列图及说明"></a>活动的序列图及说明</h3><ol>
+<li>接口程序不连接查询mysql数据库</li>
+<li>奖品的数据存放redis队列，每个奖品一个key，队列长度是奖品的数量</li>
+<li>用户成功领取红包（或抢购）时的代码流程（不包括业务限制与防刷），从队列获取奖品成功，再入队列（此队列后台消费入库），返回给用户领取成功。在用户体验上有所提升，但如果后台队列堆积太多，未能消费完成，用户查看的红包时是没有对应记录的，所以针对自己的需求作对应的优化。</li>
+</ol>
+<p><img src="https://yeyute.github.io/assets/xlt.jpg" alt="活动流程图"></p>
+<h3 id="活动流程图（开爷画的）"><a href="#活动流程图（开爷画的）" class="headerlink" title="活动流程图（开爷画的）"></a>活动流程图（开爷画的）</h3><p><img src="https://yeyute.github.io/assets/lct.png" alt="活动流程图"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">架构设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/03/09/秒杀活动的架构设计/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-用脚步丈量家乡-汕尾" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -522,281 +721,9 @@
 
 
   
-    <article id="post-Mysql-覆盖索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/02/Mysql-覆盖索引/">Mysql 覆盖索引</a>
-    </h1>
-  
-
-        
-        <a href="/2016/01/02/Mysql-覆盖索引/" class="archive-article-date">
-  	<time datetime="2016-01-02T02:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
-<li>覆盖索引能够极大地提高性能。 考虑一下如果查询只需要扫描索引而无须回表，会带来多少好处 <ol>
-<li>索引的条目通常远小于数据行大小，所以如果只需要读取索引，那极大地减少数据访问量，所以更内容全部放在内存中</li>
-<li>索引是按照列值顺序存储的（至少单个页内是这样的）</li>
-<li>一些存储引擎如MyISAM 的内存只缓存索引。</li>
-<li>由于innodb 的聚簇索引，覆盖索引 对Innodb表特别有用。 Innodb的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询</li>
-</ol>
-</li>
-<li>mysql 只能用b-tree索引来做覆盖索引</li>
-<li>当发起一个被索引覆盖的查询时，在 EXPLAIN 的extra列可以看到 “Using index”的信息</li>
-</ol>
-<p>例子</p>
-<pre><code>explain select * from prodcuts where actor = &quot;yeyute&quot; and title like &apos; %aplollo%&apos;;
-</code></pre><ol>
-<li>没有任务索引能够覆盖这个查询，因为查询从表中选择了所有的列， 不过 where 条件中的表是有索引可以覆盖的</li>
-<li>mysql 不能在索引中执行like 操作 。 mysql5.5以为更早版本，只允许在索引中做简单操作（&gt; 和 &gt;= 和 !=  ）,这种情况，mysql 只能提取数据行的值而不是索引值来做比较</li>
-</ol>
-<h3 id="使用索引扫描来做排序"><a href="#使用索引扫描来做排序" class="headerlink" title="使用索引扫描来做排序"></a>使用索引扫描来做排序</h3><ul>
-<li>explain type列的值为“index”</li>
-<li>如果索引不能覆盖查询所需的全部列，就得扫描查询所需的全部列</li>
-<li>mysql 可以使用同一个索引既满足排序，又用于查找行</li>
-<li>关联多表时，只有当order by 子句引用的字段全部为第一个表时，才能使用索引做排序</li>
-<li>建立（sex,country），查询时不限制性别，可以在查询条件新增 sex in(‘m’,’f’) and country=’’ 来使用索引</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/01/02/Mysql-覆盖索引/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-Mysql-聚簇索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/01/Mysql-聚簇索引/">Mysql 聚簇索引(Clustered Index)</a>
-    </h1>
-  
-
-        
-        <a href="/2016/01/01/Mysql-聚簇索引/" class="archive-article-date">
-  	<time datetime="2016-01-01T06:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
-<li>每个表只能有一个聚簇索引，因为一个表中的记录只能以一种物理顺序存放，但是，一个表可以有不止一个非聚簇索引。例:你翻到新华字典的汉字“爬”那一页就是P开头的部分，这就是物理存储顺序（聚簇索引）；而不用你到目录，找到汉字“爬”所在的页码，然后根据页码找到这个字（非聚簇索引）</li>
-<li>如果需要该索引,只要将索引指定为主键(primary key)就可以，根据主键创建聚簇索引</li>
-<li>如果正在使用Innodb 表并且没有什么数据需要聚集，那么可以定义一个代理键作为主键，这种主键的数据应该和应用无关，最简单的方法是使用AUTO_INCREMENT 自增列。这样可以保证数据行是按顺序写入，对于根据主键做关联操作的性能也会更好。 </li>
-<li>顺序的主键会造成什么坏的结果？ 在高并发插入可能导致间隙锁竞争，可以考虑重新设计表，或者更改innodb_autoinc_lock_mode参数（innodb在语句1的实际插入操作执行前就预分配给该语句三个自增值，当有一个新的insert语句2要执行时，读取的AUTO_INCREMENT=4，这样虽然语句1可能还没有执行完，语句2就可直接执行无需等待语句2。）</li>
-</ol>
-<h3 id="什么时候用到聚簇索引"><a href="#什么时候用到聚簇索引" class="headerlink" title="什么时候用到聚簇索引"></a>什么时候用到聚簇索引</h3><p>以下将id设置为主键时，mysql 会根据主键创建聚簇索引,例：如果没设置主键，自增，where id=’1000’，是扫描全表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE `test_user` (</div><div class="line">	`id` int(11) NOT NULL AUTO_INCREMENT,</div><div class="line">	`user_name` VARCHAR(32) NOT NULL DEFAULT &apos;&apos;,</div><div class="line">	`password` CHAR(32) NOT NULL DEFAULT &apos;&apos;,</div><div class="line">	PRIMARY KEY (`id`)</div><div class="line">) ENGINE=InnoDB  CHARSET=utf8;</div></pre></td></tr></table></figure></p>
-<p>设置id为主键，自增，以下是对应的分析数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EXPLAIN select * from test_user where id=&apos;16000000&apos; ;</div></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">字段</th>
-<th style="text-align:left">值</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">select_type</td>
-<td style="text-align:left">simple</td>
-<td style="text-align:left">简单的 select 查询,不使用 union 及子查询</td>
-</tr>
-<tr>
-<td style="text-align:left">table</td>
-<td style="text-align:left">test_user</td>
-<td style="text-align:left">表名</td>
-</tr>
-<tr>
-<td style="text-align:left">partitions</td>
-<td style="text-align:left">null</td>
-<td style="text-align:left">列代表给定表所使用的分区</td>
-</tr>
-<tr>
-<td style="text-align:left">type</td>
-<td style="text-align:left">const</td>
-<td style="text-align:left">是说明只有一条匹配值，</td>
-</tr>
-<tr>
-<td style="text-align:left">possible_keys</td>
-<td style="text-align:left">PRIMARY</td>
-<td style="text-align:left">指出 MySQL 能在该表中使用哪些索引有助于 查询。如果为空,说明没有可用的索引</td>
-</tr>
-<tr>
-<td style="text-align:left">key</td>
-<td style="text-align:left">PRIMARY</td>
-<td style="text-align:left">MySQL 实际从 possible_key 选择使用的索引</td>
-</tr>
-<tr>
-<td style="text-align:left">key_len</td>
-<td style="text-align:left">4</td>
-<td style="text-align:left">使用的索引的长度。在不损失精确性的情况 下,长度越短越好</td>
-</tr>
-<tr>
-<td style="text-align:left">ref</td>
-<td style="text-align:left">const</td>
-<td style="text-align:left">where 条件筛选后表上至多有一条元组匹配时</td>
-</tr>
-<tr>
-<td style="text-align:left">rows</td>
-<td style="text-align:left">1</td>
-<td style="text-align:left">MYSQL 认为必须检查的用来返回请求数据的行数</td>
-</tr>
-<tr>
-<td style="text-align:left">filtered</td>
-<td style="text-align:left">100</td>
-<td style="text-align:left">列给出了一个百分比的值，这个百分比值和rows列的值一起使用，可以估计出那些将要和QEP中的前一个表进行连接的行的数目。前一个表就是指id列的值比当前表的id小的表</td>
-</tr>
-</tbody>
-</table>
-<h3 id="主键设置为那个字段合适"><a href="#主键设置为那个字段合适" class="headerlink" title="主键设置为那个字段合适"></a>主键设置为那个字段合适</h3><p>情况分析</p>
-<ol>
-<li>选择聚簇索引应基于where子句和连接操作的类型。</li>
-<li>在聚簇索引中不要包含经常修改的列，因为值修改后，数据行必须移动到新的位置。</li>
-<li>大多数表都应该有聚簇索引或使用分区来降低对表尾页的竞争，在一个高事务的环境中，对最后一页的封锁严重影响系统的吞吐量</li>
-<li>在聚簇索引下，数据在物理上按顺序排在数据页上，重复值也排在一起，因而在那些包含范围检查(between、&lt;、&lt;=、&amp; gt;、&gt;=)或使用group by或order by的查询时，一旦找到具有范围中第一个键值的行，具有后续索引值的行保证物理上毗连在一起而不必进一步搜索，避免了大范围扫描，可以大大提高查询速度。</li>
-<li>在一个频繁发生插入操作的表上建立聚簇索引时，不要建在具有单调上升值的列(如IDENTITY)上，否则会经常引起封锁冲突。</li>
-</ol>
-<p>用户名字段，可以设置为主键，但是不推荐<br>1.用户名是比较规则字母数字序列，这可能导致性能上有所差别<br>2.假如以用户名作为主键并与其他表关联，当删除用户时，再创建一个同名的用户，可能导致这些关联紊乱。而绝对唯一的ID则不会。<br>3.有的系统可能会允许修改用户名，如果以用户名为主键，将带来很多麻烦。而如果以ID为主键进行关联，则没有此问题。</p>
-<h3 id="聚簇索引中的记录是如何存放"><a href="#聚簇索引中的记录是如何存放" class="headerlink" title="聚簇索引中的记录是如何存放"></a>聚簇索引中的记录是如何存放</h3><ol>
-<li>节点页只包含了索引列，叶子页包含了行的全部数据，就是既存储索引值,又在叶子中存储行的数据</li>
-<li>Innodb是通过主键聚集数据，如果没有主键，Innodb会选择一个唯一的非空索引代替。如果没有这样的索引，会隐式定义一个主键来作为聚簇索引。</li>
-<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列<br><img src="https://yeyute.github.io/assets/jcsy.png" alt=""></li>
-</ol>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
-<li>可以把相关的数据保存在一起。 例如电子邮件，可以根据用户ID来聚集数据，这样只需要从磁盘读取少数的数据页就能获取某个用户的全部邮件。如果没有使用聚簇索引，则每封邮件都可能导致一次磁盘的I/O.</li>
-<li>数据访问更快。将索引和数据保存在同一个B-Tree中，因此从聚簇索引中获取数据通常比非聚簇索引查找更快</li>
-<li>使用覆盖索引扫描的查询可以直接使用页节点中的主键值</li>
-</ol>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
-<li>聚簇数据最大限度地提高了I/O密集型应用的性能，但如果数据全部都放在内存中，则访问的顺序就没那么重要了，聚会簇索引也就没什么优势</li>
-<li>更新索引列代价很大，因为innodb 强制将每个被更新的行移动到新的位置</li>
-<li>插入的速度严重依赖于插入顺充，按照主键的顺序插入是加载数据到INNODB表中速度最快的方式，如果不是，那么加载完成后最好 使用optimize table命令重新排序</li>
-<li>对于插入新行，或主键更新，导致需要移动行的时候，可能面临“页分裂”问题。 当行的主键值要求必须将这一行插入到某个已满的页中时，存储引擎会将该页分裂成两个页面来容纳该行，会导致表占用更大的磁盘空间</li>
-<li>可能会导致全表扫描变慢，尤其是行比较稀疏 或者 页分裂 存储不连续的时候</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology/" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/01/01/Mysql-聚簇索引/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -919,19 +846,19 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">生活</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>
