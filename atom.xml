@@ -471,7 +471,7 @@
     <link href="http://yoursite.com/2016/12/15/laravel%E5%90%8E%E5%8F%B0%E6%A1%86%E6%9E%B6laravel-admin-select%E6%A1%86%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>http://yoursite.com/2016/12/15/laravel后台框架laravel-admin-select框的使用/</id>
     <published>2016-12-15T04:01:59.000Z</published>
-    <updated>2017-03-19T08:19:10.000Z</updated>
+    <updated>2017-03-19T08:19:10.148Z</updated>
     
     <content type="html"><![CDATA[<h3 id="select-二级联动不能正常获取数据原因"><a href="#select-二级联动不能正常获取数据原因" class="headerlink" title="select 二级联动不能正常获取数据原因"></a>select 二级联动不能正常获取数据原因</h3><p><img src="https://yeyute.github.io/assets/laravel_admin1.png" alt="laravel_admin"><br>使用二级联动时调用的api时，api返回的代码如以下, </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//控制器文件controller.php</div><div class="line">$this-&gt;form-&gt;select(&apos;sort&apos;, &apos;app&apos;)</div><div class="line">             -&gt;options($sort_type)</div><div class="line">             -&gt;load(&apos;position_id&apos;, &apos;/admin/api_general/get_position&apos;);</div><div class="line"></div><div class="line">//api文件                     </div><div class="line">$data = [</div><div class="line">	&#123;&quot;id&quot;=&gt;&quot;111&quot;,&quot;text&quot;=&gt;&quot;index&quot;&#125;,</div><div class="line">	];</div><div class="line">return json_encode($data);</div></pre></td></tr></table></figure>
@@ -504,7 +504,7 @@
     <link href="http://yoursite.com/2016/12/01/windows%E4%B8%8Elinux%E5%AE%89%E8%A3%85node-js/"/>
     <id>http://yoursite.com/2016/12/01/windows与linux安装node-js/</id>
     <published>2016-12-01T08:03:11.000Z</published>
-    <updated>2017-03-19T08:07:02.000Z</updated>
+    <updated>2017-03-19T08:07:02.913Z</updated>
     
     <content type="html"><![CDATA[<h3 id="window-安装"><a href="#window-安装" class="headerlink" title="window 安装"></a>window 安装</h3><ol>
 <li>安装git<br><a href="http://blog.csdn.net/shuyou612/article/details/53183683" target="_blank" rel="external">http://blog.csdn.net/shuyou612/article/details/53183683</a><br>官网安装过于慢的话可以考虑在 <a href="http://download.csdn.net/download/u010180815/9726804" target="_blank" rel="external">http://download.csdn.net/download/u010180815/9726804</a> 下载</li>
@@ -674,7 +674,7 @@
     <link href="http://yoursite.com/2016/05/16/mysql-%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/"/>
     <id>http://yoursite.com/2016/05/16/mysql-主从配置原理/</id>
     <published>2016-05-15T16:18:32.000Z</published>
-    <updated>2017-03-19T08:41:01.000Z</updated>
+    <updated>2017-03-19T08:41:01.445Z</updated>
     
     <content type="html"><![CDATA[<h3 id="复制概述"><a href="#复制概述" class="headerlink" title="复制概述"></a>复制概述</h3><ul>
 <li>主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环，这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，从服务器在日志中读取的最后一次成功更新的位置</li>
@@ -718,7 +718,7 @@
     <link href="http://yoursite.com/2016/05/01/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/"/>
     <id>http://yoursite.com/2016/05/01/适配器模式/</id>
     <published>2016-05-01T15:44:52.000Z</published>
-    <updated>2017-03-22T00:16:28.000Z</updated>
+    <updated>2017-03-22T00:16:28.446Z</updated>
     
     <content type="html"><![CDATA[<h3 id="适配器的适用场景"><a href="#适配器的适用场景" class="headerlink" title="适配器的适用场景"></a>适配器的适用场景</h3><ul>
 <li>代码的复用性强。</li>
@@ -1226,7 +1226,7 @@
     <link href="http://yoursite.com/2016/01/08/mysql-%E6%95%B0%E6%8D%AE%E9%98%BB%E5%A1%9E%EF%BC%8C%E8%BF%9B%E7%A8%8B%E6%95%B0%E6%BB%A1/"/>
     <id>http://yoursite.com/2016/01/08/mysql-数据阻塞，进程数满/</id>
     <published>2016-01-08T14:35:40.000Z</published>
-    <updated>2017-03-19T09:05:00.000Z</updated>
+    <updated>2017-03-19T09:05:00.765Z</updated>
     
     <content type="html"><![CDATA[<h3 id="出现慢查询且并发高的情景下"><a href="#出现慢查询且并发高的情景下" class="headerlink" title="出现慢查询且并发高的情景下"></a>出现慢查询且并发高的情景下</h3><p>一个中型的活动，当时做的时候不够细心，出现了数据库崩溃<br>进入数据库</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show full processlist</div></pre></td></tr></table></figure>
