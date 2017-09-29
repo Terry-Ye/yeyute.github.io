@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/11/03/使用dockerfile-部署php环境/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="docker,dockerfile,php,使用dockerfile 部署php环境">
-<meta property="og:updated_time" content="2017-04-10T06:46:09.000Z">
+<meta property="og:updated_time" content="2017-09-29T01:20:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用dockerfile 部署php环境">
 <meta name="twitter:description" content="docker,dockerfile,php,使用dockerfile 部署php环境">
@@ -173,18 +173,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="docker-简介"><a href="#docker-简介" class="headerlink" title="docker 简介"></a>docker 简介</h3><p>docker 可以运行于任何安装现在linux 内核 的x64主机上，推荐内核版本3.8及以上</p>
+        <blockquote>
+<p>该文章为学习docker 笔记一</p>
+</blockquote>
+<h3 id="docker-简介"><a href="#docker-简介" class="headerlink" title="docker 简介"></a>docker 简介</h3><p>Docker 是基于GO语言实现的开源容器项目，现在主流的Linux系统都支持Docker,Docker 的构想是想要实现“Build,Ship and Run Any App, Anywhere”,即通过对应用的封装（Packaging）、分发（Distribution）、部署（Deployment）、运行（Runtime）生命周期进行管理，达到应用组件“<strong><em>一次封装，到处运行</em></strong>”的目的。<br>简单的来说，可以将Docker容器理解为一种轻量级的沙盒（sandbox）.每个容器运行着一个应用，不同的容器相互隔离，容器之间也可以通过网络互相通信。且容器的创建和停止都十分快速，几乎跟创建和终止原生应用一致。</p>
 <h3 id="为什么使用docker"><a href="#为什么使用docker" class="headerlink" title="为什么使用docker"></a>为什么使用docker</h3><ol>
 <li>加速本地的开发和构建流程，容器可以在开发环境构建，然后轻松地提交到测试环境，并最终进入生产环境</li>
 <li>能够在让独立的服务或应用程序在不同的环境中得到相同的运行结果</li>
 <li>创建隔离的环境来进行测试</li>
-<li>高性能、超大规划的宿主机部署</li>
+<li>高性能、超大规划的宿主机部署,高效的资源利用，docker 容器不需要额外的虚拟化管理程序（虚拟机）</li>
+<li>一次创建与配置，之后可以在任意地方，任意时间让应用正常的运行</li>
 </ol>
-<h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
-<p><strong>mac 使用docker toolbox</strong></p>
-<blockquote>
-<p><a href="https://github.com/widuu/chinese_docker/blob/master/installation/mac.md" target="_blank" rel="external">https://github.com/widuu/chinese_docker/blob/master/installation/mac.md</a> 参考使用该文章</p>
-</blockquote>
+<h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p><strong>mac</strong><br>docker下载，官网下载太慢，网盘地址 <a href="https://pan.baidu.com/s/1i47ETj3" target="_blank" rel="external">https://pan.baidu.com/s/1i47ETj3</a> 密码: r76s</p>
+<p>需要挂载的目录需要在  Docker -&gt; Preferences… -&gt; File Sharing  添加。<br>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
 <p><strong>linux</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum update</div><div class="line"></div><div class="line">sudo yum install docker</div><div class="line">#安装程序将docker程序安装到/usr/bin⺫⽬目录下，配置⽂文件安装在/etc/sysconfig/docker。安装好docker之后，可以 将docker加⼊入到启动服务组中 </div><div class="line">sudo systemctl enable docker.service</div><div class="line"></div><div class="line">#手动启动docker服务器，使⽤用命令 sudo systemctl start docker.service</div></pre></td></tr></table></figure>
 <p>目录结构 github地址 <a href="https://github.com/yeyute/docker-lnmpr" target="_blank" rel="external">https://github.com/yeyute/docker-lnmpr</a> </p>
@@ -220,6 +221,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker rm `docker ps -a |awk &apos;&#123;print $1&#125;&apos; | grep [0-9a-z]` 删除停止的容器</div><div class="line">docker rmi $(docker images | awk &apos;/^&lt;none&gt;/ &#123; print $3 &#125;&apos;)</div></pre></td></tr></table></figure>
 <p><strong>进入容器的命令</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ nginx]# docker inspect --format &quot;&#123;&#123; .State.Pid &#125;&#125;&quot; 54a454b827e5(容器ID)</div><div class="line">20426</div><div class="line">[root@iZ287mq5dooZ nginx]# nsenter --target 20426 --mount --uts --ipc --net --pid</div><div class="line">[root@bcb14764a7a3 /]#</div></pre></td></tr></table></figure>
+<h3 id="搭建私有仓库"><a href="#搭建私有仓库" class="headerlink" title="搭建私有仓库"></a>搭建私有仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 使用官方提供的registry 镜像来简单的搭建本地仓库</div><div class="line">docker run -d -p 5000:5000 -v /data/registry:/tmp/registry registry</div><div class="line"></div><div class="line"># 标记镜像</div><div class="line">docker tag centos/mysql:v5.6 192.168.199.128:5000/mysql56</div><div class="line"></div><div class="line"># 上传镜像</div><div class="line">docker push 192.168.199.128:5000/mysql56</div><div class="line"></div><div class="line"># 下载镜像</div><div class="line">docker pull 192.168.199.128:5000/mysql56</div></pre></td></tr></table></figure>
 <h3 id="dockerfile-语法"><a href="#dockerfile-语法" class="headerlink" title="dockerfile 语法"></a>dockerfile 语法</h3><ul>
 <li>MAINTAINER  标识镜像的作者和联系方式</li>
 <li>EXPOSE 可以指定多个EXPOSE向外部公开多个端口，可以帮助多个容器链接</li>
@@ -269,7 +271,8 @@
 连接redis 就可以配置对应的ip地址了，连接成功
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;172.171.0.10&apos;, 6379);</div></pre></td></tr></table></figure>
-</code></pre><ul>
+</code></pre><p>以上情况虽然容器之间关联了，但是容器之间的通讯需要用搭建的网段的连接。<br>假设：只有mysql 的容器，我们机器挂载了3306的端口，我们本地可以127.0.0.1去连接mysql容器服务<br>但是假设php服务也在容器里面，这时就不可以这么连接，因为是php容器去连接mysql容器，所以需要一个连接的ip。</p>
+<ul>
 <li><p><strong>使用docker-compose 报错</strong></p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 使用pip 安装docker-compose</div><div class="line">pip install -U docker-compose</div></pre></td></tr></table></figure>
 <p>  假设没安装pip，会报以下错误，windows 请参数 <a href="http://www.cnblogs.com/RSsky/articles/5525999.html" target="_blank" rel="external">http://www.cnblogs.com/RSsky/articles/5525999.html</a></p>
@@ -278,6 +281,11 @@
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-pip</div></pre></td></tr></table></figure>
 </li>
 </ul>
+<h3 id="安全检测工具"><a href="#安全检测工具" class="headerlink" title="安全检测工具"></a>安全检测工具</h3><p>Docker bench,clair 等</p>
+<h3 id="镜像体积优化-目前个人使用的centos-没有做优化"><a href="#镜像体积优化-目前个人使用的centos-没有做优化" class="headerlink" title="镜像体积优化(目前个人使用的centos,没有做优化)"></a>镜像体积优化(目前个人使用的centos,没有做优化)</h3><ol>
+<li>centos的基础镜像接近200m 可以考虑使用Alpine 的基础镜像，才4.999M</li>
+<li>Docker 镜像的储存原理是分层的,docker build 的过程就是 docker 运行了一个容器，然后执行 Dockerfile 里写的命令。并且每一个命令都会 commit 一下，每一次 commit 都是一层一层的叠加在原来的镜像上，也就是说在某一层里增加了一个文件，在下一层里删除这个文件，是没有任何效果的，镜像体积是不变的，可能反而会增加</li>
+</ol>
 
       
 
@@ -495,15 +503,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -523,11 +531,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+                <a href="javascript:void(0)" class="js-tag color2">nodejs</a>
               </li>
              
               <li class="article-tag-list-item">
