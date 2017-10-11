@@ -5,17 +5,17 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>单例模式 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="php,单例模式,设计模式">
 <meta name="keywords" content="php,设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单例模式">
-<meta property="og:url" content="http://yoursite.com/2016/04/11/单例模式/index.html">
+<meta property="og:url" content="//yeyute.github.io/2016/04/11/单例模式/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="php,单例模式,设计模式">
-<meta property="og:updated_time" content="2017-03-16T09:08:38.000Z">
+<meta property="og:updated_time" content="2017-10-10T12:09:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式">
 <meta name="twitter:description" content="php,单例模式,设计模式">
@@ -78,13 +78,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -187,6 +187,7 @@ var _hmt = _hmt || [];
 <li>必须自行创建这个实例</li>
 <li>必须给其他对象提供这一实例</li>
 </ul>
+<a id="more"></a>
 <h3 id="单例类"><a href="#单例类" class="headerlink" title="单例类"></a>单例类</h3><ul>
 <li>构造函数需要标记为private（访问控制：防止外部代码使用new操作符创建对象），单例类不能在其他类中实例化，只能被其自身实例化；</li>
 <li>拥有一个保存类的实例的静态成员变量(非成静态员：所有没有加Static的成员都是非静态成员,当类被实例化之后,可以通过实例化的类名进行访问..非静态成员的生存期决定于该类的生存期..而静态成员则不存在生存期的概念,因为静态成员始终驻留在内容中..)</li>
@@ -288,7 +289,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/04/11/单例模式/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yeyute.github.io/2016/04/11/单例模式/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -377,7 +378,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -408,13 +409,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -435,15 +436,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">

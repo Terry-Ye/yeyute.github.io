@@ -5,18 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>golang 环境搭建笔记 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="golang环境安装">
 <meta name="keywords" content="golang, 笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang 环境搭建笔记">
-<meta property="og:url" content="http://yoursite.com/2017/02/25/go-安装笔记/index.html">
+<meta property="og:url" content="//yeyute.github.io/2017/02/25/go-安装笔记/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="golang环境安装">
 <meta property="og:image" content="https://yeyute.github.io/assets/go_path.png">
-<meta property="og:updated_time" content="2017-05-03T09:47:48.000Z">
+<meta property="og:updated_time" content="2017-10-10T12:10:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang 环境搭建笔记">
 <meta name="twitter:description" content="golang环境安装">
@@ -80,13 +80,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -186,11 +186,12 @@ var _hmt = _hmt || [];
       
         <h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>下载地址：<a href="https://golang.org/dl/" target="_blank" rel="external">https://golang.org/dl/</a></p>
 <h3 id="mac-安装"><a href="#mac-安装" class="headerlink" title="mac 安装"></a>mac 安装</h3><p>版本：1.8.1<br>MAC 系统下你可以使用 .pkg 结尾的安装包直接双击来完成安装，安装目录在 /usr/local/go/ 下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 没有bash_profile 则新建</div><div class="line">vim ~/.bash_profile</div><div class="line"></div><div class="line"># 项目路径</div><div class="line">export GOPATH=/Users/AT/Dropbox/htdocs/go</div><div class="line"># go执行的执行位置 默认是</div><div class="line">export GOBIN=/usr/local/go/bin</div><div class="line">export PATH=$PATH:$GOBIN</div><div class="line">:wq</div><div class="line"></div><div class="line"># 编译</div><div class="line">source .bash_profile</div><div class="line"># 查看 go 环境变量是否成功</div><div class="line">go env</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 没有bash_profile 则新建</div><div class="line">vim ~/.bash_profile</div><div class="line"></div><div class="line"><span class="comment"># 项目路径</span></div><div class="line"><span class="built_in">export</span> GOPATH=/Users/AT/Dropbox/htdocs/go</div><div class="line"><span class="comment"># go执行的执行位置 默认是</span></div><div class="line"><span class="built_in">export</span> GOBIN=/usr/<span class="built_in">local</span>/go/bin</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GOBIN</span></div><div class="line">:wq</div><div class="line"></div><div class="line"><span class="comment"># 编译</span></div><div class="line"><span class="built_in">source</span> .bash_profile</div><div class="line"><span class="comment"># 查看 go 环境变量是否成功</span></div><div class="line">go env</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="windows-安装"><a href="#windows-安装" class="headerlink" title="windows 安装"></a>windows 安装</h3><p>下载windodws对应的安装版本（msi结尾的），安装完成配置对应的环境变量即可<br>GOROOT: go的安装路径,官方包路径根据这个设置自动匹配<br>GOPATH: 工作路径(其实不应该用中文翻译解释，直接说GOPATH更合适)<br><img src="https://yeyute.github.io/assets/go_path.png" alt="配置环境变量"></p>
-<h3 id="输出第一条语句"><a href="#输出第一条语句" class="headerlink" title="输出第一条语句"></a>输出第一条语句</h3><p>在环境变量 GOPATH的目录下新建 hello.go。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import &quot;fmt&quot;</div><div class="line"></div><div class="line">func main() &#123;</div><div class="line">	fmt.Println(&quot;Hello, World!&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="输出第一条语句"><a href="#输出第一条语句" class="headerlink" title="输出第一条语句"></a>输出第一条语句</h3><p>在环境变量 GOPATH的目录下新建 hello.go。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	fmt.Println(<span class="string">"Hello, World!"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>个人使用sublime的插件执行 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go run hello.go</div></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go <span class="keyword">run</span><span class="bash"> hello.go</span></div></pre></td></tr></table></figure>
       
 
       
@@ -274,7 +275,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/02/25/go-安装笔记/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yeyute.github.io/2017/02/25/go-安装笔记/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -363,7 +364,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -394,13 +395,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -421,15 +422,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">

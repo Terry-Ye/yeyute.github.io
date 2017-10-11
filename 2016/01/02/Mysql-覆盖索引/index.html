@@ -5,17 +5,17 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>Mysql 覆盖索引 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="覆盖索引,mysql">
 <meta name="keywords" content="mysql,笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mysql 覆盖索引">
-<meta property="og:url" content="http://yoursite.com/2016/01/02/Mysql-覆盖索引/index.html">
+<meta property="og:url" content="//yeyute.github.io/2016/01/02/Mysql-覆盖索引/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="覆盖索引,mysql">
-<meta property="og:updated_time" content="2017-03-10T01:39:46.000Z">
+<meta property="og:updated_time" content="2017-10-10T12:11:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql 覆盖索引">
 <meta name="twitter:description" content="覆盖索引,mysql">
@@ -78,13 +78,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -193,6 +193,7 @@ var _hmt = _hmt || [];
 <li>mysql 只能用b-tree索引来做覆盖索引</li>
 <li>当发起一个被索引覆盖的查询时，在 EXPLAIN 的extra列可以看到 “Using index”的信息</li>
 </ol>
+<a id="more"></a>
 <p>例子</p>
 <pre><code>explain select * from prodcuts where actor = &quot;yeyute&quot; and title like &apos; %aplollo%&apos;;
 </code></pre><ol>
@@ -290,7 +291,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/01/02/Mysql-覆盖索引/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yeyute.github.io/2016/01/02/Mysql-覆盖索引/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -379,7 +380,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -410,13 +411,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -437,15 +438,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">

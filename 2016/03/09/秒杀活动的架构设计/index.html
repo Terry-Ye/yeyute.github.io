@@ -5,20 +5,20 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>秒杀活动的架构设计 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="稳定版本的设计">
 <meta name="keywords" content="php, 架构设计">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒杀活动的架构设计">
-<meta property="og:url" content="http://yoursite.com/2016/03/09/秒杀活动的架构设计/index.html">
+<meta property="og:url" content="//yeyute.github.io/2016/03/09/秒杀活动的架构设计/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="稳定版本的设计">
 <meta property="og:image" content="https://yeyute.github.io/assets/msjgt.jpg">
 <meta property="og:image" content="https://yeyute.github.io/assets/xlt.jpg">
 <meta property="og:image" content="https://yeyute.github.io/assets/lct.png">
-<meta property="og:updated_time" content="2017-03-09T07:14:05.000Z">
+<meta property="og:updated_time" content="2017-10-10T12:09:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒杀活动的架构设计">
 <meta name="twitter:description" content="稳定版本的设计">
@@ -82,13 +82,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -191,13 +191,14 @@ var _hmt = _hmt || [];
 <li>业务现有的服务器架构 反向代理 4台，前端机 8台， db 2台（主从），redis 2台（主从）以下是服务器架构图</li>
 </ol>
 <p><img src="https://yeyute.github.io/assets/msjgt.jpg" alt="服务器架构图"></p>
+<a id="more"></a>
 <h3 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h3><p>html 等静态文件上CDN ，这方面压力不大<br>后台程序动态接口，必须支持高并发，用户体验必须做好<br>后端程序优化点（欢迎大家补充）</p>
 <ul>
 <li>程序尽可能的减少加载的文件</li>
 <li>程序减少不必要的网络请求</li>
 <li>redis 队列来作 异步方式实现</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 后台进程消费队列 个人使用brpoplpush方法 取出数据并用存入另外队列作数据备份</div><div class="line">$block_expire_time = 0; # 设置阻塞等待时间为永久</div><div class="line">$redis-&gt;brpoplpush($key, $backup_key, $block_expire_time);</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 后台进程消费队列 个人使用brpoplpush方法 取出数据并用存入另外队列作数据备份</span></div><div class="line">$block_expire_time = <span class="number">0</span>; <span class="comment"># 设置阻塞等待时间为永久</span></div><div class="line">$redis-&gt;brpoplpush($key, $backup_key, $block_expire_time);</div></pre></td></tr></table></figure>
 <ul>
 <li>redis 缓存</li>
 <li>前端点击按钮请求后变灰，防止用户重复点击</li>
@@ -205,7 +206,7 @@ var _hmt = _hmt || [];
 <li>nginx的最大连接数设置为550，防止连接数过大时全部到php，导致php服务挂了</li>
 <li>针对每个用户加并发锁（redis），防止高并发情况判断条件被绕过,程序执行完后解锁。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$lock_status = $redis-&gt;set($lock_key, 1, array(&quot;NX&quot;, &quot;EX&quot;=&gt;$expire_time));</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$lock_status = $redis-&gt;set($lock_key, <span class="number">1</span>, <span class="keyword">array</span>(<span class="string">"NX"</span>, <span class="string">"EX"</span>=&gt;$expire_time));</div></pre></td></tr></table></figure>
 <h3 id="高并发下奖品超发问题"><a href="#高并发下奖品超发问题" class="headerlink" title="高并发下奖品超发问题"></a>高并发下奖品超发问题</h3><p>个人设计的方案：提前把每个奖品放入 redis队列，每个key一个奖品，队列的长度是奖品的数量，可以保证奖品不会超发放<br>另外，假设使用<br>悲观锁，在更新数据的时候加锁，其它的都为等待状态，不合适秒杀场景<br>乐观锁 基本是采用带版本号更新，版本号匹配才能更新，其它的回滚，虽然保证的数据的安全不超发放，但是在高并发场景下，DB只有两台的时候，超过mysql 进程堆积肯定会的， 超过最大连接数是怎么办，一系列的问题需要解决，所以该方案不合适</p>
 <h3 id="程序压测结果分析服务器能抗的并发"><a href="#程序压测结果分析服务器能抗的并发" class="headerlink" title="程序压测结果分析服务器能抗的并发"></a>程序压测结果分析服务器能抗的并发</h3><p>在平均响应时间300ms内，单台qps 750 左右（保持300ms是公司压测试的规范指标）<br>10台机器（后面新增2台到 8+2）一秒钟能处理： 10 * 750/0.3 = 25000<br>但是系统在高并发的状态下，响应时间有可能从300ms 变成500ms，所以在做评估，需要预留一定的空间<br>那么问题来了，<br>保守的并发只有1.5W,与10w 差距大，需要在执行方案上解决，公司不可无限的申请web机器。<br>解决10W并发问题(资源有限的情况)方案<br>在代理层做处理，根据权重挡掉90%的量，返回800（自定义），前端判断是否为800，是则提示火爆用户重试（对应的方案设置友好一些）</p>
 <h3 id="活动的序列图及说明"><a href="#活动的序列图及说明" class="headerlink" title="活动的序列图及说明"></a>活动的序列图及说明</h3><ol>
@@ -295,7 +296,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/03/09/秒杀活动的架构设计/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yeyute.github.io/2016/03/09/秒杀活动的架构设计/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -384,7 +385,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -415,13 +416,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -442,15 +443,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">

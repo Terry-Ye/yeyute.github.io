@@ -5,19 +5,19 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>laravel后台框架laravel-admin select框的使用 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="php">
-<meta name="keywords" content="笔记,php">
+<meta name="keywords" content="php,笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="laravel后台框架laravel-admin select框的使用">
-<meta property="og:url" content="http://yoursite.com/2016/12/15/laravel后台框架laravel-admin-select框的使用/index.html">
+<meta property="og:url" content="//yeyute.github.io/2016/12/15/laravel后台框架laravel-admin-select框的使用/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="php">
 <meta property="og:image" content="https://yeyute.github.io/assets/laravel_admin1.png">
 <meta property="og:image" content="https://yeyute.github.io/assets/laravel_admin2.png">
-<meta property="og:updated_time" content="2017-03-19T08:19:10.000Z">
+<meta property="og:updated_time" content="2017-10-10T12:10:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="laravel后台框架laravel-admin select框的使用">
 <meta name="twitter:description" content="php">
@@ -81,13 +81,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -186,14 +186,15 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="select-二级联动不能正常获取数据原因"><a href="#select-二级联动不能正常获取数据原因" class="headerlink" title="select 二级联动不能正常获取数据原因"></a>select 二级联动不能正常获取数据原因</h3><p><img src="https://yeyute.github.io/assets/laravel_admin1.png" alt="laravel_admin"><br>使用二级联动时调用的api时，api返回的代码如以下, </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//控制器文件controller.php</div><div class="line">$this-&gt;form-&gt;select(&apos;sort&apos;, &apos;app&apos;)</div><div class="line">             -&gt;options($sort_type)</div><div class="line">             -&gt;load(&apos;position_id&apos;, &apos;/admin/api_general/get_position&apos;);</div><div class="line"></div><div class="line">//api文件                     </div><div class="line">$data = [</div><div class="line">	&#123;&quot;id&quot;=&gt;&quot;111&quot;,&quot;text&quot;=&gt;&quot;index&quot;&#125;,</div><div class="line">	];</div><div class="line">return json_encode($data);</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//控制器文件controller.php</span></div><div class="line"><span class="keyword">$this</span>-&gt;form-&gt;select(<span class="string">'sort'</span>, <span class="string">'app'</span>)</div><div class="line">             -&gt;options($sort_type)</div><div class="line">             -&gt;load(<span class="string">'position_id'</span>, <span class="string">'/admin/api_general/get_position'</span>);</div><div class="line"></div><div class="line"><span class="comment">//api文件                     </span></div><div class="line">$data = [</div><div class="line">	&#123;<span class="string">"id"</span>=&gt;<span class="string">"111"</span>,<span class="string">"text"</span>=&gt;<span class="string">"index"</span>&#125;,</div><div class="line">	];</div><div class="line"><span class="keyword">return</span> json_encode($data);</div></pre></td></tr></table></figure>
 <p><img src="https://yeyute.github.io/assets/laravel_admin2.png" alt="laravel_admin"></p>
+<a id="more"></a>
 <p>头部信息的格式为 Content-type:text/html;</p>
 <p> 即使在api文件补上header</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">header(&quot;Content-type: application/json&quot;);</div><div class="line">$data = [</div><div class="line">	&#123;&quot;id&quot;=&gt;&quot;111&quot;,&quot;text&quot;=&gt;&quot;index&quot;&#125;,</div><div class="line">	];</div><div class="line">return json_encode($data);</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">header(<span class="string">"Content-type: application/json"</span>);</div><div class="line">$data = [</div><div class="line">	&#123;<span class="string">"id"</span>=&gt;<span class="string">"111"</span>,<span class="string">"text"</span>=&gt;<span class="string">"index"</span>&#125;,</div><div class="line">	];</div><div class="line"><span class="keyword">return</span> json_encode($data);</div></pre></td></tr></table></figure>
 <p>结果还是返回Content-type:text/html; 类型</p>
 <p>最后使用laravel封装方法解决问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$data = [</div><div class="line">	&#123;&quot;id&quot;=&gt;&quot;111&quot;,&quot;text&quot;=&gt;&quot;index&quot;&#125;,</div><div class="line">	];</div><div class="line">// json 方法会自动将 Content-Type 头设置为 application/json，并使用 PHP 函数 json_encode 方法将给定数组转化为 JSON：</div><div class="line">return response()-&gt;json($data);</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$data = [</div><div class="line">	&#123;<span class="string">"id"</span>=&gt;<span class="string">"111"</span>,<span class="string">"text"</span>=&gt;<span class="string">"index"</span>&#125;,</div><div class="line">	];</div><div class="line"><span class="comment">// json 方法会自动将 Content-Type 头设置为 application/json，并使用 PHP 函数 json_encode 方法将给定数组转化为 JSON：</span></div><div class="line"><span class="keyword">return</span> response()-&gt;json($data);</div></pre></td></tr></table></figure>
 
       
 
@@ -207,11 +208,11 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
         		</li>
       		
 		</ul>
@@ -278,7 +279,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/12/15/laravel后台框架laravel-admin-select框的使用/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yeyute.github.io/2016/12/15/laravel后台框架laravel-admin-select框的使用/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -367,7 +368,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -398,13 +399,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -425,15 +426,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">

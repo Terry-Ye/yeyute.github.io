@@ -5,17 +5,17 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>windows与linux安装node.js | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="nodejs">
 <meta name="keywords" content="笔记,nodejs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="windows与linux安装node.js">
-<meta property="og:url" content="http://yoursite.com/2016/12/01/windows与linux安装node-js/index.html">
+<meta property="og:url" content="//yeyute.github.io/2016/12/01/windows与linux安装node-js/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="nodejs">
-<meta property="og:updated_time" content="2017-03-19T08:07:02.000Z">
+<meta property="og:updated_time" content="2017-10-10T12:11:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows与linux安装node.js">
 <meta name="twitter:description" content="nodejs">
@@ -78,13 +78,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -188,16 +188,17 @@ var _hmt = _hmt || [];
 <ol>
 <li>下载并安装 Node.js 。使用其 LTS（长期支持）版本。 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>windows 8以后的版本安装 msi 文件会 报 the installer has encountered…….. 2503 参考 <a href="http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html" target="_blank" rel="external">http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html</a></li>
 </ol>
-<p>现在开始安装相关环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// -g 代表全用户安装</div><div class="line">npm install express -g</div><div class="line">npm install jade -g </div><div class="line">npm install mysql  -g</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>现在开始安装相关环境<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// -g 代表全用户安装</div><div class="line">npm <span class="keyword">install</span> express -g</div><div class="line">npm <span class="keyword">install</span> jade -g </div><div class="line">npm <span class="keyword">install</span> mysql  -g</div></pre></td></tr></table></figure></p>
 <h3 id="linux-centOS-安装"><a href="#linux-centOS-安装" class="headerlink" title="linux centOS 安装"></a>linux centOS 安装</h3><p>下载需要的版本 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>参考 <a href="http://www.cnblogs.com/8765h/p/4777746.html" target="_blank" rel="external">http://www.cnblogs.com/8765h/p/4777746.html</a></p>
 <h3 id="创建一个工程"><a href="#创建一个工程" class="headerlink" title="创建一个工程"></a>创建一个工程</h3><p>创建一个工程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">express ship </div><div class="line">// 如运行cmd 时没有使用管理员身份运行，会报以下错误 </div><div class="line">// Error: EPERM:operation not permitted,mkdir &apos;C:\Program Files\nodejs\ship&apos; at Error(native)</div></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">express ship </div><div class="line">// 如运行<span class="keyword">cmd</span><span class="bash"> 时没有使用管理员身份运行，会报以下错误 </span></div><div class="line">// Error: EPERM:operation not permitted,mkdir <span class="string">'C:\Program Files\nodejs\ship'</span> at Error(native)</div></pre></td></tr></table></figure>
 <p>如终端报错提示 express不是内部或外部命令<br>具体参数  <a href="http://jingyan.baidu.com/article/922554468a3466851648f419.html" target="_blank" rel="external">http://jingyan.baidu.com/article/922554468a3466851648f419.html</a></p>
 <p>复制node_modules到ship下面进行测试</p>
 <p>新建一个test.js 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var http = require(&quot;http&quot;);  </div><div class="line">http.createServer(function(request, response) &#123;    </div><div class="line">    response.writeHead(200, &#123;&quot;Content-Type&quot;: &quot;text/plain&quot;&#125;);    </div><div class="line">    response.write(&quot;Hello World&quot;);    </div><div class="line">    response.end();  </div><div class="line">&#125;).listen(8888);  </div><div class="line">console.log(&quot;nodejs start listen 8888 port!&quot;);</div></pre></td></tr></table></figure>
+<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var http = require(<span class="string">"http"</span>);  </div><div class="line">http.createServer(<span class="keyword">function</span>(<span class="built_in">request</span>, <span class="built_in">response</span>) &#123;    </div><div class="line">    <span class="built_in">response</span>.writeHead(<span class="number">200</span>, &#123;<span class="string">"Content-Type"</span>: <span class="string">"text/plain"</span>&#125;);    </div><div class="line">    <span class="built_in">response</span>.write(<span class="string">"Hello World"</span>);    </div><div class="line">    <span class="built_in">response</span>.<span class="keyword">end</span>();  </div><div class="line">&#125;).listen(<span class="number">8888</span>);  </div><div class="line">console.<span class="built_in">log</span>(<span class="string">"nodejs start listen 8888 port!"</span>);</div></pre></td></tr></table></figure>
 <p> 终端 cd 到C:\Program Files\nodejs\ship 执行</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node test.js</div></pre></td></tr></table></figure>
+ <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">node</span> <span class="title">test</span>.js</div></pre></td></tr></table></figure>
 <p> 浏览器访问 <a href="http://127.0.0.1:8888/" target="_blank" rel="external">http://127.0.0.1:8888/</a>  即可</p>
 
       
@@ -283,7 +284,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/12/01/windows与linux安装node-js/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yeyute.github.io/2016/12/01/windows与linux安装node-js/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -372,7 +373,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -403,13 +404,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -430,15 +431,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">

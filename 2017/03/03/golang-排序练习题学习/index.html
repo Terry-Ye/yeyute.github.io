@@ -5,17 +5,17 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>golang 排序练习题学习 | AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="golang 排序练习题学习">
 <meta name="keywords" content="golang, 练习题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang 排序练习题学习">
-<meta property="og:url" content="http://yoursite.com/2017/03/03/golang-排序练习题学习/index.html">
+<meta property="og:url" content="//yeyute.github.io/2017/03/03/golang-排序练习题学习/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="golang 排序练习题学习">
-<meta property="og:updated_time" content="2017-05-03T05:40:46.000Z">
+<meta property="og:updated_time" content="2017-10-10T12:10:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang 排序练习题学习">
 <meta name="twitter:description" content="golang 排序练习题学习">
@@ -78,13 +78,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -186,13 +186,14 @@ var _hmt = _hmt || [];
 <p>练习题目来源于 go 语言编程  一书,程序自己测试完成通过</p>
 </blockquote>
 <p>我们将该函数分为两类：主程序和排序算法函数。每个排序算法都包装成一个静态库，虽然现在看起来似乎有些多此一举，但这只是为了顺便演示包之间的依赖方法<br>注：环境变量需要指定到该根目录执行程序，另外文章只是简单的说明构建流程，主要自己看代码理解</p>
-<h3 id="目录结构代码-https-github-com-yeyute-go-git"><a href="#目录结构代码-https-github-com-yeyute-go-git" class="headerlink" title="目录结构代码 (https://github.com/yeyute/go.git)"></a>目录结构代码 (<a href="https://github.com/yeyute/go.git" target="_blank" rel="external">https://github.com/yeyute/go.git</a>)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">├─&lt;src&gt;</div><div class="line">	├─&lt;sorter&gt;</div><div class="line">		├─sorter.go</div><div class="line">	├─&lt;algorithms&gt;</div><div class="line">		├─&lt;qsort&gt;</div><div class="line">			├─qsort.go</div><div class="line">			├─qsort_test.go</div><div class="line">		├─&lt;bubblesort&gt;</div><div class="line">			├─bubblesort.go</div><div class="line">			├─bubblesort_test.go</div><div class="line">	├─&lt;pkg&gt;(程序构建时自动创建)</div><div class="line">	├─&lt;bin&gt;(程序构建时自动创建)</div></pre></td></tr></table></figure>
+<h3 id="目录结构代码-https-github-com-yeyute-go-git"><a href="#目录结构代码-https-github-com-yeyute-go-git" class="headerlink" title="目录结构代码 (https://github.com/yeyute/go.git)"></a>目录结构代码 (<a href="https://github.com/yeyute/go.git" target="_blank" rel="external">https://github.com/yeyute/go.git</a>)</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">├─<span class="symbol">&lt;src&gt;</span></div><div class="line">	├─<span class="symbol">&lt;sorter&gt;</span></div><div class="line">		├─sorter.<span class="keyword">go</span></div><div class="line">	├─<span class="symbol">&lt;algorithms&gt;</span></div><div class="line">		├─<span class="symbol">&lt;qsort&gt;</span></div><div class="line">			├─qsort.<span class="keyword">go</span></div><div class="line">			├─qsort_test.<span class="keyword">go</span></div><div class="line">		├─<span class="symbol">&lt;bubblesort&gt;</span></div><div class="line">			├─bubblesort.<span class="keyword">go</span></div><div class="line">			├─bubblesort_test.<span class="keyword">go</span></div><div class="line">	├─<span class="symbol">&lt;pkg&gt;</span>(程序构建时自动创建)</div><div class="line">	├─<span class="symbol">&lt;bin&gt;</span>(程序构建时自动创建)</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>其中sorter.go是主程序<br>qsort.go用于实现快速排序<br>bubblesort.go用于实现冒泡排序</p>
-<h3 id="构建程序"><a href="#构建程序" class="headerlink" title="构建程序"></a>构建程序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ go build algorithm/qsort</div><div class="line">$ go build algorithm/bubblesort</div><div class="line">$ go test algorithm/qsort</div><div class="line">ok algorithm/qsort0.007s</div><div class="line">$ go test algorithm/bubblesort</div><div class="line">ok algorithm/bubblesort0.013s</div><div class="line">$ go install algorithm/qsort</div><div class="line">$ go install algorithm/bubblesort</div><div class="line">$ go build sorter</div><div class="line">$ go install sorter</div></pre></td></tr></table></figure>
+<h3 id="构建程序"><a href="#构建程序" class="headerlink" title="构建程序"></a>构建程序</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ <span class="keyword">go</span> build algorithm/qsort</div><div class="line">$ <span class="keyword">go</span> build algorithm/bubblesort</div><div class="line">$ <span class="keyword">go</span> test algorithm/qsort</div><div class="line">ok algorithm/qsort0<span class="number">.007s</span></div><div class="line">$ <span class="keyword">go</span> test algorithm/bubblesort</div><div class="line">ok algorithm/bubblesort0<span class="number">.013s</span></div><div class="line">$ <span class="keyword">go</span> install algorithm/qsort</div><div class="line">$ <span class="keyword">go</span> install algorithm/bubblesort</div><div class="line">$ <span class="keyword">go</span> build sorter</div><div class="line">$ <span class="keyword">go</span> install sorter</div></pre></td></tr></table></figure>
 <p>执行安装这些命令，我们应该能够在src的同一级目录下看到两个目录——bin和pkg,然后在bin目录新建unsorted.dat，执行以下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ cd bin</div><div class="line">$ vim unsorted.dat</div><div class="line">123</div><div class="line">3064</div><div class="line">3</div><div class="line">64</div><div class="line">490</div><div class="line">1</div><div class="line">23</div><div class="line">5331</div><div class="line">2</div><div class="line">7</div><div class="line">4</div><div class="line">2</div><div class="line">132</div></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ cd bin</div><div class="line">$ vim unsorted.dat</div><div class="line"><span class="number">123</span></div><div class="line"><span class="number">3064</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">64</span></div><div class="line"><span class="number">490</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">23</span></div><div class="line"><span class="number">5331</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">7</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">132</span></div></pre></td></tr></table></figure>
 <p>:wq 保存退出</p>
-<p>再执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ ./sorter -i unsorted.dat -o sorted.dat -a qsort infile = unsorted.dat outfile = sorted.dat algorithm = qsort</div><div class="line">The sorting process costs 3us to complete.</div><div class="line">$ ./sorter -i unsorted.dat -o sorted.dat -a bubblesort infile = unsorted.dat outfile = sorted.dat algorithm = bubblesort</div><div class="line">The sorting process costs 2us to complete.</div><div class="line">$ cat sorted.dat</div><div class="line">1</div><div class="line">2</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">7</div><div class="line">23</div><div class="line">64</div><div class="line">123</div><div class="line">132</div><div class="line">490</div><div class="line">3064</div><div class="line">5331</div></pre></td></tr></table></figure></p>
+<p>再执行<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ ./sorter -<span class="selector-tag">i</span> unsorted<span class="selector-class">.dat</span> -o sorted<span class="selector-class">.dat</span> -<span class="selector-tag">a</span> qsort infile = unsorted<span class="selector-class">.dat</span> outfile = sorted<span class="selector-class">.dat</span> algorithm = qsort</div><div class="line">The sorting process costs <span class="number">3</span>us to complete.</div><div class="line">$ ./sorter -<span class="selector-tag">i</span> unsorted<span class="selector-class">.dat</span> -o sorted<span class="selector-class">.dat</span> -<span class="selector-tag">a</span> bubblesort infile = unsorted<span class="selector-class">.dat</span> outfile = sorted<span class="selector-class">.dat</span> algorithm = bubblesort</div><div class="line">The sorting process costs <span class="number">2</span>us to complete.</div><div class="line">$ cat sorted<span class="selector-class">.dat</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">7</span></div><div class="line"><span class="number">23</span></div><div class="line"><span class="number">64</span></div><div class="line"><span class="number">123</span></div><div class="line"><span class="number">132</span></div><div class="line"><span class="number">490</span></div><div class="line"><span class="number">3064</span></div><div class="line"><span class="number">5331</span></div></pre></td></tr></table></figure></p>
 <p>结果已经被正确排序并写入到sorted.dat文件中,，至此我们的程序也算是完整了</p>
 <blockquote>
 <p>如果有您有帮助，请给个start</p>
@@ -277,7 +278,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/03/03/golang-排序练习题学习/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yeyute.github.io/2017/03/03/golang-排序练习题学习/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -366,7 +367,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -397,13 +398,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -424,15 +425,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">

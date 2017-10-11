@@ -5,14 +5,14 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="//yeyute.github.io">
   <title>AT的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
 <meta name="keywords" content="互联网,php,mysql,nginx,linux,docker,nodejs,开源,redis,memcache,缓存,高并发,设计模式,算法,编程,开源,前端,js,css,程序猿">
 <meta property="og:type" content="website">
 <meta property="og:title" content="AT的博客">
-<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:url" content="//yeyute.github.io/page/2/index.html">
 <meta property="og:site_name" content="AT的博客">
 <meta property="og:description" content="AT博客，喜爱极限运动，互联网，就职过互联网20强企业，主php开发一位">
 <meta name="twitter:card" content="summary">
@@ -77,13 +77,13 @@ var _hmt = _hmt || [];
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章2</a>
     			
             
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我2</a>
     			
             
 		</nav>
@@ -163,312 +163,6 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-windows与linux安装node-js" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/01/windows与linux安装node-js/">windows与linux安装node.js</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/01/windows与linux安装node-js/" class="archive-article-date">
-  	<time datetime="2016-12-01T08:03:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="window-安装"><a href="#window-安装" class="headerlink" title="window 安装"></a>window 安装</h3><ol>
-<li>安装git<br><a href="http://blog.csdn.net/shuyou612/article/details/53183683" target="_blank" rel="external">http://blog.csdn.net/shuyou612/article/details/53183683</a><br>官网安装过于慢的话可以考虑在 <a href="http://download.csdn.net/download/u010180815/9726804" target="_blank" rel="external">http://download.csdn.net/download/u010180815/9726804</a> 下载</li>
-</ol>
-<ol>
-<li>下载并安装 Node.js 。使用其 LTS（长期支持）版本。 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>windows 8以后的版本安装 msi 文件会 报 the installer has encountered…….. 2503 参考 <a href="http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html" target="_blank" rel="external">http://jingyan.baidu.com/article/59a015e34f4870f79488652e.html</a></li>
-</ol>
-<p>现在开始安装相关环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// -g 代表全用户安装</div><div class="line">npm install express -g</div><div class="line">npm install jade -g </div><div class="line">npm install mysql  -g</div></pre></td></tr></table></figure></p>
-<h3 id="linux-centOS-安装"><a href="#linux-centOS-安装" class="headerlink" title="linux centOS 安装"></a>linux centOS 安装</h3><p>下载需要的版本 <a href="https://nodejs.org/en/download/" target="_blank" rel="external">https://nodejs.org/en/download/</a><br>参考 <a href="http://www.cnblogs.com/8765h/p/4777746.html" target="_blank" rel="external">http://www.cnblogs.com/8765h/p/4777746.html</a></p>
-<h3 id="创建一个工程"><a href="#创建一个工程" class="headerlink" title="创建一个工程"></a>创建一个工程</h3><p>创建一个工程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">express ship </div><div class="line">// 如运行cmd 时没有使用管理员身份运行，会报以下错误 </div><div class="line">// Error: EPERM:operation not permitted,mkdir &apos;C:\Program Files\nodejs\ship&apos; at Error(native)</div></pre></td></tr></table></figure>
-<p>如终端报错提示 express不是内部或外部命令<br>具体参数  <a href="http://jingyan.baidu.com/article/922554468a3466851648f419.html" target="_blank" rel="external">http://jingyan.baidu.com/article/922554468a3466851648f419.html</a></p>
-<p>复制node_modules到ship下面进行测试</p>
-<p>新建一个test.js 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var http = require(&quot;http&quot;);  </div><div class="line">http.createServer(function(request, response) &#123;    </div><div class="line">    response.writeHead(200, &#123;&quot;Content-Type&quot;: &quot;text/plain&quot;&#125;);    </div><div class="line">    response.write(&quot;Hello World&quot;);    </div><div class="line">    response.end();  </div><div class="line">&#125;).listen(8888);  </div><div class="line">console.log(&quot;nodejs start listen 8888 port!&quot;);</div></pre></td></tr></table></figure>
-<p> 终端 cd 到C:\Program Files\nodejs\ship 执行</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node test.js</div></pre></td></tr></table></figure>
-<p> 浏览器访问 <a href="http://127.0.0.1:8888/" target="_blank" rel="external">http://127.0.0.1:8888/</a>  即可</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">nodejs</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/01/windows与linux安装node-js/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-使用dockerfile-部署php环境" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/使用dockerfile-部署php环境/">使用dockerfile 部署php环境</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/03/使用dockerfile-部署php环境/" class="archive-article-date">
-  	<time datetime="2016-11-03T06:32:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>该文章为学习docker 笔记一</p>
-</blockquote>
-<h3 id="docker-简介"><a href="#docker-简介" class="headerlink" title="docker 简介"></a>docker 简介</h3><p>Docker 是基于GO语言实现的开源容器项目，现在主流的Linux系统都支持Docker,Docker 的构想是想要实现“Build,Ship and Run Any App, Anywhere”,即通过对应用的封装（Packaging）、分发（Distribution）、部署（Deployment）、运行（Runtime）生命周期进行管理，达到应用组件“<strong><em>一次封装，到处运行</em></strong>”的目的。<br>简单的来说，可以将Docker容器理解为一种轻量级的沙盒（sandbox）.每个容器运行着一个应用，不同的容器相互隔离，容器之间也可以通过网络互相通信。且容器的创建和停止都十分快速，几乎跟创建和终止原生应用一致。</p>
-<h3 id="为什么使用docker"><a href="#为什么使用docker" class="headerlink" title="为什么使用docker"></a>为什么使用docker</h3><ol>
-<li>加速本地的开发和构建流程，容器可以在开发环境构建，然后轻松地提交到测试环境，并最终进入生产环境</li>
-<li>能够在让独立的服务或应用程序在不同的环境中得到相同的运行结果</li>
-<li>创建隔离的环境来进行测试</li>
-<li>高性能、超大规划的宿主机部署,高效的资源利用，docker 容器不需要额外的虚拟化管理程序（虚拟机）</li>
-<li>一次创建与配置，之后可以在任意地方，任意时间让应用正常的运行</li>
-</ol>
-<h3 id="各系统环境安装docker"><a href="#各系统环境安装docker" class="headerlink" title="各系统环境安装docker"></a>各系统环境安装docker</h3><p><strong>mac</strong><br>docker下载，官网下载太慢，网盘地址 <a href="https://pan.baidu.com/s/1i47ETj3" target="_blank" rel="external">https://pan.baidu.com/s/1i47ETj3</a> 密码: r76s</p>
-<p>需要挂载的目录需要在  Docker -&gt; Preferences… -&gt; File Sharing  添加。<br>windows 7 安装 <a href="https://segmentfault.com/n/1330000008349110" target="_blank" rel="external">https://segmentfault.com/n/1330000008349110</a></p>
-<p><strong>linux</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum update</div><div class="line"></div><div class="line">sudo yum install docker</div><div class="line">#安装程序将docker程序安装到/usr/bin⺫⽬目录下，配置⽂文件安装在/etc/sysconfig/docker。安装好docker之后，可以 将docker加⼊入到启动服务组中 </div><div class="line">sudo systemctl enable docker.service</div><div class="line"></div><div class="line">#手动启动docker服务器，使⽤用命令 sudo systemctl start docker.service</div></pre></td></tr></table></figure>
-<p>目录结构 github地址 <a href="https://github.com/yeyute/docker-lnmpr" target="_blank" rel="external">https://github.com/yeyute/docker-lnmpr</a> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">docker_lnmpr</div><div class="line">├── mysql</div><div class="line">│   └── Dockerfile</div><div class="line">	└── mysqld.cnf</div><div class="line">├── nginx</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── nginx.conf</div><div class="line">│   └── vhost</div><div class="line">│       └── www.texixi.com.conf</div><div class="line">├── php</div><div class="line">│   ├── Dockerfile</div><div class="line">│   ├── composer.phar</div><div class="line">│   ├── php-fpm.conf</div><div class="line">│   ├── php.ini</div><div class="line">│   ├── redis-3.0.0.tgz</div><div class="line">└── redis</div><div class="line">    └── Dockerfile</div><div class="line">    └── redis.conf</div></pre></td></tr></table></figure>
-<h3 id="建立镜像与容器"><a href="#建立镜像与容器" class="headerlink" title="建立镜像与容器"></a>建立镜像与容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># build</div><div class="line">docker build -t centos/nginx:v1.11.5 -v /www:/www -v /data:/data  ./nginx</div><div class="line">docker build -t centos/mysql:v5.7 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql  ./mysql</div><div class="line">docker build -t centos/php:v7.0.12 -v /www:/www -v /data:/data  ./php</div><div class="line">docker build -t centos/redis:v3.2.6 -v /data:/data  ./redis</div><div class="line"></div><div class="line">#备注：这里选取了172.172.0.0网段，也可以指定其他任意空闲的网段</div><div class="line">docker network create --subnet=172.171.0.0/16 docker-at</div><div class="line"></div><div class="line"># run</div><div class="line">docker run --name mysql57 --net docker-at --ip 172.171.0.9 -d -p 3306:3306 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql -v /data/run/mysqlmysqld:/var/run/mysqld  -e MYSQL_ROOT_PASSWORD=123456 -it centos/mysql:v5.7</div><div class="line">docker run --name redis326 --net docker-at --ip 172.171.0.10 -d -p 6379:6379  -v /data:/data -it centos/redis:v3.2.6</div><div class="line">docker run --name php7 --net docker-at --ip 172.171.0.8 -d -p 9000:9000 -v /www:/www -v /data:/data --link mysql57:mysql57 --link redis326:redis326 -it centos/php:v7.0.12 </div><div class="line">docker run --name nginx11 --net docker-at --ip 172.171.0.7 -p 80:80 -d -v /www:/www -v /data:/data --link php7:php7 -it centos/nginx:v1.11.5</div></pre></td></tr></table></figure>
-<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
-<li>docker start 容器名（容器ID也可以）</li>
-<li>docker stop 容器名（容器ID也可以）</li>
-<li>docker run 命令加 -d 参数，docker 会将容器放到后台运行</li>
-<li>docker ps 正在运行的容器</li>
-<li>docker logs –tail 10 -tf 容器名    查看容器的日志文件,加-t是加上时间戳，f是跟踪某个容器的最新日志而不必读整个日志文件</li>
-<li>docker top 容器名 查看容器内部运行的进程</li>
-<li>docker exec -d 容器名 touch /etc/new_config_file  通过后台命令创建一个空文件</li>
-<li>docker run –restart=always –name 容器名 -d ubuntu /bin/sh -c “while true;do echo hello world; sleep 1; done” 无论退出代码是什么，docker都会自动重启容器，可以设置 –restart=on-failure:5 自动重启的次数</li>
-<li>docker inspect 容器名   对容器进行详细的检查，可以加 –format=’{(.State.Running)}’ 来获取指定的信息</li>
-<li>docker rm 容器ID  删除容器，注，运行中的容器无法删除</li>
-<li>docker rm <code>docker ps -a -q</code> 这样可以删除所有的容器</li>
-<li>docker images 列出镜像</li>
-<li>docker pull 镜像名:标签 拉镜像</li>
-<li>docker search  查找docker Hub 上公共的可用镜像 </li>
-<li>docker build -t=’AT/web_server:v1’  命令后面可以直接加上github仓库的要目录下存在的Dockerfile文件。 命令是编写Dockerfile 之后使用的。-t选项为新镜像设置了仓库和名称:标签</li>
-<li>docker login  登陆到Docker Hub，个人认证信息将会保存到$HOME/.dockercfg, </li>
-<li>docker commit -m=”comment “ –author=”AT”  容器ID 镜像的用户名/仓库名:标签 不推荐这种方法，推荐dockerfile</li>
-<li>docker history 镜像ID 深入探求镜像是如何构建出来的</li>
-<li>docker port 镜像ID 端口    查看映射情况的容器的ID和容器的端口号，假设查询80端口对应的映射的端口</li>
-<li>run 运行一个容器，  -p 8080:80  将容器内的80端口映射到docker宿主机的某一特定端口，将容器的80端口绑定到宿主机的8080端口，另 127.0.0.1:80:80 是将容器的80端口绑定到宿主机这个IP的80端口上，-P 是将容器内的80端口对本地的宿主机公开</li>
-<li><a href="http://docs.docker.com/reference/builder/" target="_blank" rel="external">http://docs.docker.com/reference/builder/</a> 查看更多的命令</li>
-<li>docker push 镜像名 将镜像推送到 Docker Hub</li>
-<li>docker rmi 镜像名  删除镜像</li>
-<li>docker attach 容器ID   进入容器</li>
-</ul>
-<p><strong>删除所有容器和镜像的命令</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker rm `docker ps -a |awk &apos;&#123;print $1&#125;&apos; | grep [0-9a-z]` 删除停止的容器</div><div class="line">docker rmi $(docker images | awk &apos;/^&lt;none&gt;/ &#123; print $3 &#125;&apos;)</div></pre></td></tr></table></figure>
-<p><strong>进入容器的命令</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ nginx]# docker inspect --format &quot;&#123;&#123; .State.Pid &#125;&#125;&quot; 54a454b827e5(容器ID)</div><div class="line">20426</div><div class="line">[root@iZ287mq5dooZ nginx]# nsenter --target 20426 --mount --uts --ipc --net --pid</div><div class="line">[root@bcb14764a7a3 /]#</div></pre></td></tr></table></figure>
-<h3 id="搭建私有仓库"><a href="#搭建私有仓库" class="headerlink" title="搭建私有仓库"></a>搭建私有仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 使用官方提供的registry 镜像来简单的搭建本地仓库</div><div class="line">docker run -d -p 5000:5000 -v /data/registry:/tmp/registry registry</div><div class="line"></div><div class="line"># 标记镜像</div><div class="line">docker tag centos/mysql:v5.6 192.168.199.128:5000/mysql56</div><div class="line"></div><div class="line"># 上传镜像</div><div class="line">docker push 192.168.199.128:5000/mysql56</div><div class="line"></div><div class="line"># 下载镜像</div><div class="line">docker pull 192.168.199.128:5000/mysql56</div></pre></td></tr></table></figure>
-<h3 id="dockerfile-语法"><a href="#dockerfile-语法" class="headerlink" title="dockerfile 语法"></a>dockerfile 语法</h3><ul>
-<li>MAINTAINER  标识镜像的作者和联系方式</li>
-<li>EXPOSE 可以指定多个EXPOSE向外部公开多个端口，可以帮助多个容器链接</li>
-<li>FROM   指令指定一个已经存在的镜像</li>
-<li>#号代表注释</li>
-<li>RUN 运行命令,会在shell 里使用命令包装器 /bin/sh -c 来执行。如果是在一个不支持shell 的平台上运行或者不希望在shell 中运行，也可以 使用exec 格式 的RUN指令</li>
-<li>ENV REFRESHED_AT 环境变量 这个环境亦是用来表明镜像模板最后的更新时间</li>
-<li>VOLUME 容器添加卷。一个卷是可以 存在于一个或多个容器内的特定的目录，对卷的修改是立刻生效的，对卷的修改不会对更新镜像产品影响，例:VOLUME[“/opt/project”,”/data”]</li>
-<li>ADD 将构建环境 下的文件 和目录复制到镜像 中。例 ADD nginx.conf /conf/nginx.conf 也可以是取url 的地址文件，如果是压缩包，ADD命令会自动解压、</li>
-<li>USER 指定镜像用那个USER 去运行</li>
-<li>COPY 是复制本地文件，而不会去做文件提取（解压包不会自动解压） 例：COPY conf.d/ /etc/apache2/  将本地conf.d目录中的文件复制到/etc/apache2/目录中</li>
-</ul>
-<h3 id="问题点整理"><a href="#问题点整理" class="headerlink" title="问题点整理"></a>问题点整理</h3><ul>
-<li><p><strong>docker 服务没启动</strong><br>启动并设置为开机自动启动docker服务</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ docker-php]# docker info</div><div class="line">Cannot connect to the Docker daemon. Is the docker daemon running on this host?</div><div class="line">[root@iZ287mq5dooZ docker-php]# ps aux | grep docker</div><div class="line">root      7902  0.0  0.0 112648   956 pts/0    S+   13:54   0:00 grep --color=auto docker</div><div class="line">[root@iZ287mq5dooZ docker-php]# service docker start</div><div class="line">Redirecting to /bin/systemctl start  docker.service</div><div class="line">[root@iZ287mq5dooZ redis]# systemctl start docker</div></pre></td></tr></table></figure>
-</li>
-<li><p><strong>注意挂载目录的权限问题，不然容器成功启动几秒后立刻关闭</strong><br>例：以下/data/run/mysql 目录没权限的情况下就会出现刚才那种情况</p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --name mysql57 -d -p 3306:3306 -v /data/mysql:/var/lib/mysql -v /data/logs/mysql:/var/log/mysql -v /data/run/mysql:/var/run/mysqld -e MYSQL_ROOT_PASSWORD=123456 -it centos/mysql:v5.7</div></pre></td></tr></table></figure>
-</code></pre></li>
-<li><p><strong>需要注意php.ini 中的目录对应  mysql 的配置的目录需要挂载才能获取文件内容，不然php连接mysql失败</strong></p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># php.ini</div><div class="line">mysql.default_socket = /data/run/mysql/mysqld.sock</div><div class="line">mysqli.default_socket = /data/run/mysql/mysqld.sock</div><div class="line">pdo_mysql.default_socket = /data/run/mysql/mysqld.sock</div><div class="line"></div><div class="line"># mysqld.cnf</div><div class="line">pid-file       = /var/run/mysqld/mysqld.pid</div><div class="line">socket         = /var/run/mysqld/mysqld.sock</div></pre></td></tr></table></figure>
-</code></pre></li>
-<li><p><strong>宿主机 无法访问docker的容器（nginx）</strong> <a href="https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面" target="_blank" rel="external">https://segmentfault.com/q/1010000008893871，个人提问与回答都在里面</a></p>
-</li>
-<li><p><strong>使用php连接不上redis</strong> </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># 错误的</div><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;127.0.0.1&apos;, 6379);</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code>php连接不上，查看错误日志
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PHP Fatal error:  Uncaught RedisException: Redis server went away in /www/index.php:7</div></pre></td></tr></table></figure>
-
-考虑到docker 之间的通信应该不可以用127.0.0.1 应该使用容器里面的ip，所以查看redis 容器的ip
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@iZ287mq5dooZ php]# docker ps </div><div class="line">CONTAINER ID        IMAGE                  COMMAND                   CREATED             STATUS              PORTS                         NAMES</div><div class="line">5fb4b1904f1c        centos/nginx:v1.11.5   &quot;/usr/local/nginx/sbi&quot;    About an hour ago   Up About an hour    0.0.0.0:80-&gt;80/tcp, 443/tcp   nginx11</div><div class="line">2bf7ad9f44f9        centos/php:v7.0.12     &quot;/usr/local/php/sbin/&quot;    About an hour ago   Up About an hour    0.0.0.0:9000-&gt;9000/tcp        php7</div><div class="line">4b84858ea4e4        centos/redis:v3.2.6    &quot;/bin/sh -c &apos;\&quot;/usr/lo&quot;   18 hours ago        Up About an hour    0.0.0.0:6379-&gt;6379/tcp        redis326</div><div class="line">158c67aa178c        centos/mysql:v5.7      &quot;docker-entrypoint.sh&quot;    6 days ago          Up About an hour    0.0.0.0:3306-&gt;3306/tcp        mysql57</div><div class="line">[root@iZ287mq5dooZ php]# docker inspect 4b84858ea4e4</div></pre></td></tr></table></figure>
-
-结果是为 192.168.0.4，测试连接，成功
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;192.168.0.4&apos;, 6379);</div></pre></td></tr></table></figure>
-
-问题是重启容器ip为动态的，解决该问题
-第一步：创建自定义网络
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#备注：这里选取了172.172.0.0网段，也可以指定其他任意空闲的网段</div><div class="line">docker network create --subnet=172.171.0.0/16 docker-at</div><div class="line">docker run --name redis326 --net docker-at --ip 172.171.0.10 -d -p 6379:6379  -v /data:/data -it centos/redis:v3.2.6</div></pre></td></tr></table></figure>
-
-
-连接redis 就可以配置对应的ip地址了，连接成功
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$redis = new Redis;</div><div class="line">$rs = $redis-&gt;connect(&apos;172.171.0.10&apos;, 6379);</div></pre></td></tr></table></figure>
-</code></pre><p>以上情况虽然容器之间关联了，但是容器之间的通讯需要用搭建的网段的连接。<br>假设：只有mysql 的容器，我们机器挂载了3306的端口，我们本地可以127.0.0.1去连接mysql容器服务<br>但是假设php服务也在容器里面，这时就不可以这么连接，因为是php容器去连接mysql容器，所以需要一个连接的ip。</p>
-<ul>
-<li><p><strong>使用docker-compose 报错</strong></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 使用pip 安装docker-compose</div><div class="line">pip install -U docker-compose</div></pre></td></tr></table></figure>
-<p>  假设没安装pip，会报以下错误，windows 请参数 <a href="http://www.cnblogs.com/RSsky/articles/5525999.html" target="_blank" rel="external">http://www.cnblogs.com/RSsky/articles/5525999.html</a></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash: pip: command not found</div></pre></td></tr></table></figure>
-<p>  linux 请执行</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-pip</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="安全检测工具"><a href="#安全检测工具" class="headerlink" title="安全检测工具"></a>安全检测工具</h3><p>Docker bench,clair 等</p>
-<h3 id="镜像体积优化-目前个人使用的centos-没有做优化"><a href="#镜像体积优化-目前个人使用的centos-没有做优化" class="headerlink" title="镜像体积优化(目前个人使用的centos,没有做优化)"></a>镜像体积优化(目前个人使用的centos,没有做优化)</h3><ol>
-<li>centos的基础镜像接近200m 可以考虑使用Alpine 的基础镜像，才4.999M</li>
-<li>Docker 镜像的储存原理是分层的,docker build 的过程就是 docker 运行了一个容器，然后执行 Dockerfile 里写的命令。并且每一个命令都会 commit 一下，每一次 commit 都是一层一层的叠加在原来的镜像上，也就是说在某一层里增加了一个文件，在下一层里删除这个文件，是没有任何效果的，镜像体积是不变的，可能反而会增加</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/03/使用dockerfile-部署php环境/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-mysql-主从配置原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -497,19 +191,9 @@ var _hmt = _hmt || [];
 <li>基于行的复制：把改变的内容复制过去，而不是把命令在从服务器上执行一遍. 从mysql5.0开始支持 　　</li>
 <li>混合类型的复制: 默认采用基于语句的复制，一旦发现基于语句的无法精确的复制时，就会采用基于行的复制。</li>
 </ul>
-<h3 id="复制解决的问题（-MySQL复制技术有以下一些特点-）"><a href="#复制解决的问题（-MySQL复制技术有以下一些特点-）" class="headerlink" title="复制解决的问题（ MySQL复制技术有以下一些特点 ）"></a>复制解决的问题（ MySQL复制技术有以下一些特点 ）</h3><ul>
-<li>数据分布 (Data distribution)</li>
-<li>负载平衡(load balancing)</li>
-<li>备份(Backups)</li>
-<li>高可用性和容错行 High availability and failover</li>
-</ul>
-<h3 id="复制如何工作"><a href="#复制如何工作" class="headerlink" title="复制如何工作"></a>复制如何工作</h3><ul>
-<li>master将改变记录到二进制日志(binary log)中（这些记录叫做二进制日志事件，binary log events）；</li>
-<li>slave将master的binary log events拷贝到它的中继日志(relay log)；</li>
-<li>slave重做中继日志中的事件，将改变反映它自己的数据。</li>
-</ul>
-<h3 id="描述了复制的过程"><a href="#描述了复制的过程" class="headerlink" title="描述了复制的过程"></a>描述了复制的过程</h3><p>该过程的第一部分就是master记录二进制日志。在每个事务更新数据完成之前，master在二日志记录这些改变。<br>MySQL将事务串行的写入二进制日志，即使事务中的语句都是交叉执行的。<br>在事件写入二进制日志完成后，master通知存储引擎提交事务。<br>下一步就是slave将master的binary log拷贝到它自己的中继日志。<br>首先，slave开始一个工作线程——I/O线程。I/O线程在master上打开一个普通的连接，然后开始binlog dump process。Binlog dump process从master的二进制日志中读取事件，<br>如果已经跟上master，它会睡眠并等待master产生新的事件。I/O线程将这些事件写入中继日志。<br>SQL slave thread（SQL从线程）处理该过程的最后一步。SQL线程从中继日志读取事件，并重放其中的事件而更新slave的数据，使其与master中的数据一致。<br>只要该线程与I/O线程保持一致，中继日志通常会位于OS的缓存中，所以中继日志的开销很小。<br>此外，在master中也有一个工作线程：和其它MySQL的连接一样，slave在master中打开一个连接也会使得master开始一个线程。复制过程有一个很重要的限制——复制在slave上是串行化的，也就是说master上的并行更新操作不能在slave上并行操作。</p>
-
+        
+          <a class="article-more-a" href="/2016/05/16/mysql-主从配置原理/#more">more >></a>
+        
       
 
       
@@ -603,15 +287,9 @@ var _hmt = _hmt || [];
 <li>活动专题，例抽奖，固定的规则是充值有抽奖机会，但是突然来了一个需求说充值还要分享才能有抽奖机会，这时可以运用上这个设计模式</li>
 </ul>
 <p>题目一（来自于php 设计模式 书） - 假设一个企业网站同时销售软件服务和软件产品，目前所有的交易都在美国进行，后续业务决定向欧洲发展要增加货币换算（增加适配器）<br>题目二是自已设计于活动专题业务上，只是将逻辑摘取出来，代码不可直接运行</p>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
-<li>灵活性扩展性都很好</li>
-<li>将目标类和适配者类解耦</li>
-</ol>
-<h3 id="适配器所涉及的角色包括下面几种："><a href="#适配器所涉及的角色包括下面几种：" class="headerlink" title="适配器所涉及的角色包括下面几种："></a>适配器所涉及的角色包括下面几种：</h3><p>目标（Target）：定义一个客户端使用的特定接口。<br>客户端（Client）：使用目标接口，与和目标接口一致的对象合作。<br>被适配者（Adaptee）：一个现存需要适配的接口。<br>适配器（Adapter）：负责将Adaptee的接口转换为Target的接口。适配器是一个具体的类，这是该模式的核心。<br>适配器分为类适配器和对象适配器两种，下面将详细讲述。</p>
-<h3 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h3><p>来自 php 设计模式 一书的适配器设计模式案例**<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * EuroCalc.php</div><div class="line"> * 美元 - 能累加购买的服务和产品的价格 来自于php 设计模式</div><div class="line"> */</div><div class="line">class DollarCalc &#123;</div><div class="line">    private $dollar;</div><div class="line">    private $product;</div><div class="line">    private $service;</div><div class="line">    public $rate = 1;</div><div class="line"></div><div class="line">    public function requestCalc($productNow,$serviceNow) &#123;</div><div class="line">        $this-&gt;product = $productNow;</div><div class="line">        $this-&gt;service = $serviceNow;</div><div class="line">        $this-&gt;dollar = $this-&gt;product + $this-&gt;service;</div><div class="line">        return $this-&gt;requestCount();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private function requestCount() &#123;</div><div class="line">        $this-&gt;dollar *= $this-&gt;rate;</div><div class="line">        return $this-&gt;dollar;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> * EuroCalc.php</div><div class="line"> * 欧元 -  能累加购买的服务和产品的价格</div><div class="line"> */</div><div class="line">class EuroCalc &#123;</div><div class="line">    private $euro;</div><div class="line">    private $product;</div><div class="line">    private $service;</div><div class="line">    public $rate = 1;</div><div class="line"></div><div class="line">    public function requestCalc($productNow,$serviceNow) &#123;</div><div class="line">        $this-&gt;product = $productNow;</div><div class="line">        $this-&gt;service = $serviceNow;</div><div class="line">        $this-&gt;euro = $this-&gt;product + $this-&gt;service;</div><div class="line">        return $this-&gt;requestCount();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private function requestCount() &#123;</div><div class="line">        $this-&gt;euro *= $this-&gt;rate;</div><div class="line">        return $this-&gt;euro;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line"> * 接口 ITarget.php</div><div class="line"> */</div><div class="line">interface ITarget &#123;</div><div class="line">    function requester();</div><div class="line">&#125;</div><div class="line">/**</div><div class="line"> * 例：找一个合适的适配器来适合欧洲的插座一样，以下就是创建这个适配器</div><div class="line"> * EuroAdapter 实现了一个接口又扩展了一个类</div><div class="line"> */</div><div class="line"></div><div class="line">class EuroAdapter extends EuroCalc implements ITarget &#123;</div><div class="line">    public function __construct() &#123;</div><div class="line">        $this-&gt;requester();</div><div class="line">    &#125;</div><div class="line">    public function requester() &#123;</div><div class="line">        $this-&gt;rate = 0.8111;</div><div class="line">        return $this-&gt;rate;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line"> * 用户</div><div class="line"> */</div><div class="line">class Client &#123;</div><div class="line">    private $euroRequest;</div><div class="line">    private $dollarRequest;</div><div class="line">    public function __construct() &#123;</div><div class="line">        $this-&gt;euroRequest = new EuroAdapter();</div><div class="line">        $this-&gt;dollarRequest = new DollarCalc();</div><div class="line"></div><div class="line">        $euros = &quot;&amp;#8364;&quot;;</div><div class="line">        echo &quot;Euros:$euros&quot;.$this-&gt;makeAdapterRequest($this-&gt;euroRequest).&quot;&lt;br /&gt;&quot;;</div><div class="line">        echo &quot;dollar:&quot;.$this-&gt;makeDollarRequest($this-&gt;dollarRequest);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public function makeAdapterRequest(ITarget $req) &#123;</div><div class="line">        return $req-&gt;requestCalc(40,50);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public function makeDollarRequest(DollarCalc $req) &#123;</div><div class="line">        return $req-&gt;requestCalc(40,50);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">$worker = new Client();</div></pre></td></tr></table></figure></p>
-<h3 id="案例二-个人运用于自动化活动专题的接口设计"><a href="#案例二-个人运用于自动化活动专题的接口设计" class="headerlink" title="案例二 个人运用于自动化活动专题的接口设计"></a>案例二 个人运用于自动化活动专题的接口设计</h3><p>抽奖例子（代码只显示对应的设计逻辑部分）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"></div><div class="line">/**</div><div class="line"> * 适配器模式 - 抽奖接口</div><div class="line"> * comment 当后台规则不满足自动化，可以添加对应的适配器，增加代码的复用</div><div class="line"> * author AT</div><div class="line"> */</div><div class="line"></div><div class="line">namespace controller;</div><div class="line"></div><div class="line"></div><div class="line">// 每个月份对应的适配器 06年3月 = SixMarch</div><div class="line">use \Adapter\SixMarch\LotteryAdapter;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 抽奖接口 入口文件</div><div class="line"> */</div><div class="line">final class Lottery extends WebController</div><div class="line">&#123;</div><div class="line">    // 活动的配置信息 存放后台配置的活动信息</div><div class="line">    private $hd_info;</div><div class="line"></div><div class="line">    public function __construct() &#123;</div><div class="line">        // 加载配置信息</div><div class="line">        $this-&gt;hd_info = &apos;&apos;; </div><div class="line">    &#125;</div><div class="line">    public function _lottery()</div><div class="line">    &#123;</div><div class="line">        // 实例</div><div class="line">        $lottery = new LotteryAdapter($hd_info);</div><div class="line">        // 取得抽奖结果</div><div class="line">        $rs      = $lottery-&gt;_getLotteryResult();</div><div class="line">        return $rs;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">namespace controller;</div><div class="line"></div><div class="line">use \bbts\App as BaseApp;</div><div class="line">/**</div><div class="line"> * </div><div class="line"> */</div><div class="line">class LotteryAdapter extends AutoLottery implements ILottery</div><div class="line">&#123;</div><div class="line">    public function __construct($hd_info) &#123;</div><div class="line">        // 后台配置是否需要使用适配器</div><div class="line">        if($hd_info[&apos;use_adapter&apos;] === true) &#123;</div><div class="line">            $adapter_name = $hd_info[&apos;adapter_name&apos;];</div><div class="line">            // $adapter_name = &apos;adapter_name&apos;; test</div><div class="line">            $this-&gt;$adapter_name();</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * adapter_name 该活动对应的适配器</div><div class="line">     */</div><div class="line">    private function adapter_name()</div><div class="line">    &#123;</div><div class="line">        // 假设不符合自动化的需求条件是必须进入游戏后5分才可抽奖，增加适配器的该内容即可，从而不用重写整个抽奖活动</div><div class="line">        $game_info = App::$app-&gt;model()-&gt;checkEnterGameInfo();</div><div class="line">        if(strtotime($info[&apos;TIME&apos;]) - time() &lt; 300) &#123;</div><div class="line">            $this-&gt;adapter_status = false;</div><div class="line">            $this-&gt;adapter_code   = -51;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">namespace controller;</div><div class="line"></div><div class="line">use \bbts\App as BaseApp;</div><div class="line">/**</div><div class="line"> * 自动化抽奖接口的基类</div><div class="line"> */</div><div class="line">class AutoLottery &#123;</div><div class="line">     // 单独开发条件的状态</div><div class="line">    public $adapter_status = true;</div><div class="line">    public $adapter_code = 0;</div><div class="line">    public function _getLotteryResult()&#123;</div><div class="line">        </div><div class="line">        </div><div class="line">        //  最后判断适配器的状态</div><div class="line">        if(!$this-&gt;adapter_status) &#123;</div><div class="line">            App::jetJsonpOutput($this-&gt;adapter_return_code);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // 业务逻辑判断</div><div class="line">        </div><div class="line">        // 通过则将数据入库</div><div class="line">        $rs_status = App::$app-&gt;model()-&gt;insert($rs);</div><div class="line">       </div><div class="line">        // 返回结果</div><div class="line">        return $rs;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-
+        
+          <a class="article-more-a" href="/2016/05/01/适配器模式/#more">more >></a>
+        
       
 
       
@@ -708,243 +386,9 @@ var _hmt = _hmt || [];
 <li>hash(hash表)</li>
 <li>HyperLogLog</li>
 </ol>
-<h3 id="string-字符串-命令与运用场景"><a href="#string-字符串-命令与运用场景" class="headerlink" title="string(字符串) 命令与运用场景"></a>string(字符串) 命令与运用场景</h3><ul>
-<li>除了get、set、incr、decr mget等操作外，Redis还提供了下面一些操作：</li>
-<li>获取字符串长度 strlen</li>
-<li>往字符串append内容的末尾</li>
-<li>设置和获取字符串的某一段内容 GETRANGE </li>
-<li>设置及获取字符串的某一位（bit）</li>
-<li>批量设置一系列字符串的内容</li>
-<li>GETSET 可以和 INCR 组合使用，实现一个有原子性(atomic)复位操作的计数器(counter)。</li>
-</ul>
-<p>运用场景防并发</p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 加锁，防并发</div><div class="line"> * @param string $key</div><div class="line"> * @param int $expire_time</div><div class="line"> * @return Boolean</div><div class="line"> */</div><div class="line">public function lock($key = &apos;&apos;, $expire_time = 15)</div><div class="line">&#123;</div><div class="line">    return &apos;&apos;===$key ? false : self::initConnection()-&gt;set($key, 1, array(&quot;NX&quot;, &quot;EX&quot;=&gt;$expire_time));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><ul>
-<li>限制ip (访问超过几次)。INCRBY命令来控制次数，通过原子递增保持计数。</li>
-</ul>
-<h3 id="list-双向链表-命令与运用场景"><a href="#list-双向链表-命令与运用场景" class="headerlink" title="list(双向链表) 命令与运用场景"></a>list(双向链表) 命令与运用场景</h3><ul>
-<li>lpush,rpush,lpop,rpop,lrange,BLPOP(阻塞版)等</li>
-</ul>
-<p>应用场景：</p>
-<ul>
-<li>Redis list的应用场景非常多，也是Redis最重要的数据结构之一。</li>
-<li>我们可以轻松地实现最新消息排行等功能。</li>
-<li>Lists的另一个应用就是消息队列，可以利用Lists的PUSH操作，将任务<br>存在Lists中，然后工作线程再用POP操作将任务取出进行执行</li>
-<li>实现方式：</li>
-<li>Redis list的实现为一个双向链表，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销，Redis内部的很多实现，包括，发送缓冲队列等也都是用的这个数据结构</li>
-</ul>
-<h3 id="数据结构-无序集合"><a href="#数据结构-无序集合" class="headerlink" title="数据结构- 无序集合"></a>数据结构- 无序集合</h3><p>常用命令：<br>sadd,srem,spop,sdiff ,smembers,sunion 等。</p>
-<p>应用场景 </p>
-<ul>
-<li>set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据时，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的重要接口，这个也是list所不能提供的。</li>
-<li>比如在微博应用中，每个人的好友存在一个集合（set）中，这样求两个人的共<br>同好友的操作，可能就只需要用求交集命令即可。</li>
-<li>Redis还为集合提供了求交集、并集、差集等操作，可以非常方便的实</li>
-</ul>
-<p>实现方式：</p>
-<ul>
-<li>set 的内部实现是一个 value永远为null的HashMap，实际就是通过计算hash的<br>方式来快速排重的，这也是set能提供判断一个成员是否在集合内的原因。</li>
-</ul>
-<h3 id="数据结构-有序集合"><a href="#数据结构-有序集合" class="headerlink" title="数据结构-有序集合"></a>数据结构-有序集合</h3><p>常用命令：</p>
-<ul>
-<li>zadd,zrange,zrem,zcard等</li>
-</ul>
-<p>使用场景：</p>
-<ul>
-<li>以某个条件为权重，比如按顶的次数排序.</li>
-<li>ZREVRANGE命令可以用来按照得分来获取前100名的用户，ZRANK可以用来获取用户排名，非常直接而且操作容易。</li>
-<li>Redis sorted set的使用场景与set类似，区别是set不是自动有序的，而sorted set可以通过用户额外提供一个优先级(score)的参数来为成员排序，并且是插入有序的，即自动排序。</li>
-<li>比如:twitter 的public timeline可以以发表时间作为score来存储，这样获取时就是自动按时间排好序的。</li>
-</ul>
-<p>实现方式：</p>
-<ul>
-<li>Redis sorted set的内部使用HashMap和跳跃表(SkipList)来保证数据的存储和有序，HashMap<br>里放的是成员到score的映射，而跳跃表里存放的是所有的成员，排序依据是HashMap里存的score,<br>使用跳跃表的结构可以获得比较高的查找效率，并且在实现上比较简单</li>
-</ul>
-<h3 id="数据结构-hash-类型"><a href="#数据结构-hash-类型" class="headerlink" title="数据结构-hash 类型"></a>数据结构-hash 类型</h3><p>常用命令：</p>
-<ul>
-<li>hget,hset,hgetall 等。</li>
-</ul>
-<p>使用场景：</p>
-<ol>
-<li>根据业务场景存放用户信息等</li>
-</ol>
-<p>实现方式：</p>
-<ul>
-<li>上面已经说到Redis Hash对应Value内部实际就是一个HashMap，实际这里会有2种不同实现，这个Hash的成员比较少时Redis为了节省内存会采用类似一维数组的方式来紧凑存储，而不会采用真正的HashMap结构，对应的value redisObject的encoding为zipmap,当成员数量增大时会自动转成真正的HashMap,此时encoding为ht</li>
-</ul>
-<h3 id="数据结构-HyperLogLog"><a href="#数据结构-HyperLogLog" class="headerlink" title="数据结构-HyperLogLog"></a>数据结构-HyperLogLog</h3><ul>
-<li>Redis HyperLogLog 是用来做基数统计的 算 法 ，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定 的、并且是很小的。</li>
-<li>在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64 个不同元素的基 数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。</li>
-<li>但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。</li>
-<li>注意事项：HyperLogLog是一种近似去重的算法，对于精度要求较高的业务场景，不能使用</li>
-</ul>
-<h3 id="命令总结"><a href="#命令总结" class="headerlink" title="命令总结"></a>命令总结</h3><h4 id="对value-操作的命令"><a href="#对value-操作的命令" class="headerlink" title="对value 操作的命令"></a>对value 操作的命令</h4><ul>
-<li>exists(key)：确认一个key是否存在</li>
-<li>del(key)：删除一个key</li>
-<li>type(key)：返回值的类型</li>
-<li>keys(pattern)：返回满足给定pattern的所有key</li>
-<li>randomkey：随机返回key空间的一个key</li>
-<li><strong>rename(oldname, newname)：将key由oldname重命名为newname，若newname存在则删除newname表示的key</strong></li>
-<li>dbsize：返回当前数据库中key的数目</li>
-<li>expire：设定一个key的活动时间（s）</li>
-<li>ttl：获得一个key的活动时间</li>
-<li>select(index)：按索引查询</li>
-<li>move(key, dbindex)：将当前数据库中的key转移到有dbindex索引的数据库</li>
-<li><strong>flushdb：删除当前选择数据库中的所有key</strong></li>
-<li><strong>flushall：删除所有数据库中的所有key</strong></li>
-</ul>
-<h4 id="对String-操作的命令"><a href="#对String-操作的命令" class="headerlink" title="对String 操作的命令"></a>对String 操作的命令</h4><ul>
-<li>set(key, value)：给数据库中名称为key的string赋予值value</li>
-<li>get(key)：返回数据库中名称为key的string的value</li>
-<li><strong>getset(key, value)：给名称为key的string赋予上一次的value</strong></li>
-<li>mget(key1, key2,…, key N)：返回库中多个string（它们的名称为key1，key2…）的value</li>
-<li><strong>setnx(key, value)：如果不存在名称为key的string，则向库中添加string，名称为key，值为value</strong></li>
-<li><strong>setex(key, time, value)：向库中添加string（名称为key，值为value）同时，设定过期时间time</strong></li>
-<li>mset(key1, value1, key2, value2,…key N, value N)：同时给多个string赋值，名称为key i的string赋值value i</li>
-<li>msetnx(key1, value1, key2, value2,…key N, value N)：如果所有名称为key i的string都不存在，则向库中添加string，名称key i赋值为value i</li>
-<li>incr(key)：名称为key的string增1操作</li>
-<li>incrby(key, integer)：名称为key的string增加integer</li>
-<li>decr(key)：名称为key的string减1操作</li>
-<li>decrby(key, integer)：名称为key的string减少integer</li>
-<li>append(key, value)：名称为key的string的值附加value</li>
-<li>substr(key, start, end)：返回名称为key的string的value的子串</li>
-</ul>
-<h4 id="对List-操作的命令"><a href="#对List-操作的命令" class="headerlink" title="对List 操作的命令"></a>对List 操作的命令</h4><ul>
-<li>rpush(key, value)：在名称为key的list尾添加一个值为value的元素</li>
-<li>lpush(key, value)：在名称为key的list头添加一个值为value的 元素</li>
-<li>llen(key)：返回名称为key的list的长度</li>
-<li>lrange(key, start, end)：返回名称为key的list中start至end之间的元素（下标从0开始，下同）</li>
-<li>ltrim(key, start, end)：截取名称为key的list，保留start至end之间的元素</li>
-<li><strong>lindex(key, index)：返回名称为key的list中index位置的元素</strong></li>
-<li>lset(key, index, value)：给名称为key的list中index位置的元素赋值为value</li>
-<li>lrem(key, count, value)：删除count个名称为key的list中值为value的元素。count为0，删除所有值为value的元素，count&gt;0从头至尾删除count个值为value的元素，count&lt;0从尾到头删除|count|个值为value的元素。</li>
-<li>lpop(key)：返回并删除名称为key的list中的首元素</li>
-<li>rpop(key)：返回并删除名称为key的list中的尾元素</li>
-<li>blpop(key1, key2,… key N, timeout)：lpop命令的block版本。即当timeout为0时，若遇到名称为key i的list不存在或该list为空，则命令结束。如果timeout&gt;0，则遇到上述情况时，等待timeout秒，如果问题没有解决，则对key i+1开始的list执行pop操作。</li>
-<li>brpop(key1, key2,… key N, timeout)：rpop的block版本。参考上一命令。</li>
-<li>rpoplpush(srckey, dstkey)：返回并删除名称为srckey的list的尾元素，并将该元素添加到名称为dstkey的list的头部</li>
-</ul>
-<h4 id="对Set-操作的命令"><a href="#对Set-操作的命令" class="headerlink" title="对Set 操作的命令"></a>对Set 操作的命令</h4><ul>
-<li>sadd(key, member)：向名称为key的set中添加元素member</li>
-<li>srem(key, member) ：删除名称为key的set中的元素member</li>
-<li>spop(key) ：随机返回并删除名称为key的set中一个元素</li>
-<li>smove(srckey, dstkey, member) ：将member元素从名称为srckey的集合移到名称为dstkey的集合</li>
-<li>scard(key) ：返回名称为key的set的基数</li>
-<li>sismember(key, member) ：测试member是否是名称为key的set的元素</li>
-<li>sinter(key1, key2,…key N) ：求交集</li>
-<li>sinterstore(dstkey, key1, key2,…key N) ：求交集并将交集保存到dstkey的集合</li>
-<li>sunion(key1, key2,…key N) ：求并集</li>
-<li>sunionstore(dstkey, key1, key2,…key N) ：求并集并将并集保存到dstkey的集合</li>
-<li><strong>sdiff(key1, key2,…key N) ：求差集</strong></li>
-<li>sdiffstore(dstkey, key1, key2,…key N) ：求差集并将差集保存到dstkey的集合</li>
-<li>smembers(key) ：返回名称为key的set的所有元素</li>
-<li>srandmember(key) ：随机返回名称为key的set的一个元素</li>
-</ul>
-<h4 id="对zset-（sorted-set-）操作的命令"><a href="#对zset-（sorted-set-）操作的命令" class="headerlink" title="对zset （sorted set ）操作的命令"></a>对zset （sorted set ）操作的命令</h4><ul>
-<li>zadd(key, score, member)：向名称为key的zset中添加元素member，score用于排序。如果该元素已经存在，则根据score更新该元素的顺序。</li>
-<li>zrem(key, member) ：删除名称为key的zset中的元素member</li>
-<li>zincrby(key, increment, member) ：如果在名称为key的zset中已经存在元素member，则该元素的score增加increment；否则向集合中添加该元素，其score的值为increment</li>
-<li>zrank(key, member) ：返回名称为key的zset（元素已按score从小到大排序）中member元素的rank（即index，从0开始），若没有member元素，返回“nil”</li>
-<li>zrevrank(key, member) ：返回名称为key的zset（元素已按score从大到小排序）中member元素的rank（即index，从0开始），若没有member元素，返回“nil”</li>
-<li>zrange(key, start, end)：返回名称为key的zset（元素已按score从小到大排序）中的index从start到end的所有元素</li>
-<li>zrevrange(key, start, end)：返回名称为key的zset（元素已按score从大到小排序）中的index从start到end的所有元素</li>
-<li>zrangebyscore(key, min, max)：返回名称为key的zset中score &gt;= min且score&lt;= max的所有元素</li>
-<li>zcard(key)：返回名称为key的zset的基数</li>
-<li>zscore(key, element)：返回名称为key的zset中元素element的score</li>
-<li>zremrangebyrank(key, min, max)：删除名称为key的zset中rank &gt;= min且rank &lt;= max的所有元素</li>
-<li>zremrangebyscore(key, min, max) ：删除名称为key的zset中score &gt;= min且score &lt;= max的所有元素</li>
-<li>zunionstore / zinterstore(dstkeyN, key1,…,keyN,WEIGHTS w1,…wN, AGGREGATE SUM|MIN|MAX)：对N个zset求并集和交集，并将最后的集合保存在dstkeyN中。对于集合中每一个元素的score，在进行AGGREGATE运算前，都要乘以对于的WEIGHT参数。如果没有提供WEIGHT，默认为1。默认的AGGREGATE是SUM，即结果集合中元素的score是所有集合对应元素进行SUM运算的值，而MIN和MAX是指，结果集合中元素的score是所有集合对应元素中最小值和最大值。</li>
-</ul>
-<h4 id="对Hash-操作的命令"><a href="#对Hash-操作的命令" class="headerlink" title="对Hash 操作的命令"></a>对Hash 操作的命令</h4><ul>
-<li>hset(key, field, value)：向名称为key的hash中添加元素field&lt;—&gt;value</li>
-<li>hget(key, field)：返回名称为key的hash中field对应的value</li>
-<li>hmget(key, field1, …,field N)：返回名称为key的hash中field i对应的value</li>
-<li>hmset(key, field1, value1,…,field N, value N)：向名称为key的hash中添加元素field i&lt;—&gt;value i</li>
-<li>hincrby(key, field, integer)：将名称为key的hash中field的value增加integer</li>
-<li>hexists(key, field)：名称为key的hash中是否存在键为field的域</li>
-<li>hdel(key, field)：删除名称为key的hash中键为field的域</li>
-<li>hlen(key)：返回名称为key的hash中元素个数</li>
-<li>hkeys(key)：返回名称为key的hash中所有键</li>
-<li>hvals(key)：返回名称为key的hash中所有键对应的value</li>
-<li>hgetall(key)：返回名称为key的hash中所有的键（field）及其对应的value</li>
-</ul>
-<h4 id="对HyperLogLog-操作的命令"><a href="#对HyperLogLog-操作的命令" class="headerlink" title="对HyperLogLog 操作的命令"></a>对HyperLogLog 操作的命令</h4><ul>
-<li>pfadd (key, value…)，向名称为key的hyploglog结构中增<br>加value元素，返回boolean，true为已存在，false为不存<br>在。注意：不能使用返回结果做累加统计元素数量</li>
-<li>pfcount (key)，返回名称为key的hyploglog结构中元素<br>的数量</li>
-<li>pfmerge (key…) 合并多个hyploglog</li>
-</ul>
-<h3 id="php-与redis"><a href="#php-与redis" class="headerlink" title="php 与redis"></a>php 与redis</h3><ul>
-<li>predis扩展</li>
-<li>phpredis包</li>
-</ul>
-<h4 id="对比："><a href="#对比：" class="headerlink" title="对比："></a>对比：</h4><ul>
-<li>predis非侵入时，性能更好</li>
-<li>phpredis，php编写，效率低于predis，无序安装扩展，支持composer</li>
-<li>如何选择？更多的是个人习惯和团队规范</li>
-</ul>
-<h3 id="应用场景-队列"><a href="#应用场景-队列" class="headerlink" title="应用场景- 队列"></a>应用场景- 队列</h3><ul>
-<li>使用redis链表，lpush/rpush和rpop/lpop操作链表实现队列进出</li>
-<li>最佳实践：启用AOF持久化，批量入队列，批量取队列</li>
-</ul>
-<p>场景：</p>
-<ul>
-<li>分布式进程通信、配置分发</li>
-<li>示例：<a href="https://github.com/huyanping/RedisStudy" target="_blank" rel="external">https://github.com/huyanping/RedisStudy</a></li>
-<li>问题：在大多队列的应用场景中，生产者的速度往往都会大于消费者的速度，如果保证队列不堆积？</li>
-</ul>
-<h3 id="应用场景-缓存"><a href="#应用场景-缓存" class="headerlink" title="应用场景- 缓存"></a>应用场景- 缓存</h3><ul>
-<li>使用字典结构，通过set/get，hset/hget操作缓存数据</li>
-<li>最佳实践：启用maxmemory限制，启用lru机制，设置expire，关闭AOF，考虑关闭dump</li>
-</ul>
-<p>场景：</p>
-<ul>
-<li>数据库缓存-减少响应时间</li>
-<li>爬虫页面结果缓存-节省IO资源</li>
-<li>计算结果缓存-节省CPU资源</li>
-</ul>
-<h3 id="应用场景-归并计算"><a href="#应用场景-归并计算" class="headerlink" title="应用场景- 归并计算"></a>应用场景- 归并计算</h3><ul>
-<li>使用string类型，进行increment计数操作，减轻CPU或IO负载</li>
-<li>最佳实践：启用AOF，关闭dump，批量操作</li>
-</ul>
-<p>场景:</p>
-<ul>
-<li>广告日志实时处理中心</li>
-</ul>
-<h3 id="应用场景-去重"><a href="#应用场景-去重" class="headerlink" title="应用场景- 去重"></a>应用场景- 去重</h3><ul>
-<li>使用HyperLogLog进行IP去重</li>
-<li>最佳实践：启用dump，关闭AOF，批量操作，巧用dabase<br>场景：</li>
-<li>广告实时处理中心唯一IP统计</li>
-</ul>
-<h3 id="redis-lua"><a href="#redis-lua" class="headerlink" title="redis-lua"></a>redis-lua</h3><ul>
-<li>Lua 脚本功能是 Reids 2.6 版本的最大亮点， 通过内嵌对 Lua 环境的支持， Redis 解决了长久以来不能高效地处理 CAS （check-and-set）命令的缺点， 并且可以通过组合使用多个命令， 轻松实现以前很难实现或者不能高效实现的模式。</li>
-<li>优点：原子性，更小的请求包</li>
-<li>应用场景：事务实现，批量处理</li>
-</ul>
-<h4 id="命令："><a href="#命令：" class="headerlink" title="命令："></a>命令：</h4><ul>
-<li>EVAL script numkeys key [key …] arg [arg …]</li>
-<li>script： 参数是一段 Lua 5.1 脚本程序。脚本不必(也不应该)定义为一个 Lua 函数。</li>
-<li>numkeys： 用于指定键名参数的个数。</li>
-<li>key [key …]： 从 EVAL 的第三个参数开始算起，表示在脚本中所用到的那些 Redis 键(key)，这些键名参数可以在 Lua 中通过全局变量 KEYS 数组，用 1 为基址的形式访问( KEYS[1] ，KEYS[2] ，以此类推)。</li>
-<li>arg [arg …]： 附加参数，在 Lua 中通过全局变量 ARGV 数组访问，访问的形式和 KEYS 变量类似( ARGV[1] 、 ARGV[2] ，诸如此类)。</li>
-<li>EVALSHA sha1 numkeys key [key …] arg [arg …]</li>
-<li>script： 参数是一段 Lua 5.1 脚本程序。脚本不必(也不应该)定义为一个 Lua 函数。</li>
-<li>numkeys： 用于指定键名参数的个数。</li>
-<li>key [key …]： 从 EVAL 的第三个参数开始算起，表示在脚本中所用到的那些 Redis 键(key)，这些键名参数可以在 Lua 中通过全局变量 KEYS数组，用 1 为基址的形式访问( KEYS[1] ， KEYS[2] ，以此类推)。</li>
-<li>arg [arg …]： 附加参数，在 Lua 中通过全局变量 ARGV 数组访问，访问的形式和 KEYS 变量类似( ARGV[1] 、 ARGV[2] ，诸如此类)。</li>
-<li>SCRIPT LOAD “return ‘hello moto’”</li>
-<li>EVALSHA “232fd51614574cf0867b83d384a5e898cfd24e5a” 0</li>
-</ul>
-<h3 id="故障-dump-故障"><a href="#故障-dump-故障" class="headerlink" title="故障-dump 故障"></a>故障-dump 故障</h3><ul>
-<li>故障描述：redis使用dump持久化，未设置最大内存限制，dump时内存瞬时增加，大量使用swap分区，造成机器假死宕机</li>
-<li>原因：redis使用dump持久化时，使用fork，子进程持有父进程内存的映像，在数据频繁更改的情况下，内存使用量会翻倍，内存不够的情况下，操作系统会使用swap分区。</li>
-<li>经验：系统剩余内存不足redis占用内存2/3时，就会比较危险了</li>
-<li>解决方案：设置maxmemroy，考虑启用lru，考虑关闭dump</li>
-</ul>
-<h3 id="故障-maxmemory"><a href="#故障-maxmemory" class="headerlink" title="故障-maxmemory"></a>故障-maxmemory</h3><ul>
-<li>故障描述：设置了maxmemory，内存用完，客户端无法写入</li>
-<li>解决方案：监控，根据业务场景控制内存使用；引入分布式redis集群方案</li>
-</ul>
-<h3 id="安全-redis-访问漏洞"><a href="#安全-redis-访问漏洞" class="headerlink" title="安全-redis 访问漏洞"></a>安全-redis 访问漏洞</h3><p>现象：服务器.ssh/authorized_keys文件被篡改，黑客最高可获得root权限，服务器被种木马<br>原理：利用 Redis 自身的提供的 config 命令，可以进行写文件操作，攻击者可以成功将自己的公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以直接使用对应的私钥登录目标服务器。<br>危害：数以万计的服务器被黑<br>如何避免：防火墙，密码访问</p>
-
+        
+          <a class="article-more-a" href="/2016/04/27/Redis-运用场景与介绍/#more">more >></a>
+        
       
 
       
@@ -1045,18 +489,9 @@ var _hmt = _hmt || [];
 <li>扩展 开灯-&gt;加亮-&gt;再加亮-&gt;关灯</li>
 <li>九宫格的数字移动游戏</li>
 </ul>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>它将与特定状态相关的行为局部化，并且将不同状态的行为分割开来:</li>
-<li>代码清晰可见，扩展性好</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>状态模式的使用必然会增加系统类和对象的个数。</li>
-</ul>
-<p><strong>只做开灯关灯例子说明 学习于php 设计模式（强烈推荐这本书）</strong><br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * content.class.php</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">content</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $onState;</div><div class="line">    <span class="keyword">private</span> $offState;</div><div class="line">    <span class="keyword">private</span> $currentState;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;onState      = <span class="keyword">new</span> OnState(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;offState     = <span class="keyword">new</span> offState(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;currentState = <span class="keyword">$this</span>-&gt;offState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [trueOnLight 开灯]</div><div class="line">     * <span class="doctag">@return</span> [type] [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">trueOnLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;currentState-&gt;onLight();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [trueOffLight 关灯]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">trueOffLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;currentState-&gt;offLight();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [getState 取得关灯的实例]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOffState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;offState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [getOnState 取得开灯实例]</div><div class="line">     * <span class="doctag">@return</span> [type] [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOnState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;onState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [setState 设置当前的实例]</div><div class="line">     * <span class="doctag">@param</span> Istate $state [description]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setState</span><span class="params">(Istate $state)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;currentState = $state;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 接口 IState.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">interface</span>  <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 开灯状态 OnState.class.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OnState</span> <span class="keyword">implements</span> <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Content $content)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content =  $content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [onLight 开灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'已经开灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [offLight 关灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;content-&gt;setState(<span class="keyword">$this</span>-&gt;content-&gt;getOffState());</div><div class="line">        <span class="keyword">return</span> <span class="string">'关灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 关灯状态 OffState.class.php</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OffState</span> <span class="keyword">implements</span> <span class="title">IState</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Content $content)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content = $content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [onLight 开灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">onLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content-&gt;setState(<span class="keyword">$this</span>-&gt;content-&gt;getOnState());</div><div class="line">        <span class="keyword">return</span> <span class="string">'开灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * [offLight 关灯行为方法]</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">offLight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'已经关灯了&lt;br /&gt;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 用户调用用例 </div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">client</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> $content;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;content = <span class="keyword">new</span> content();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOnLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOnLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOffLight();</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;content-&gt;trueOffLight();<span class="keyword">exit</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$client = <span class="keyword">new</span> client();</div><div class="line"><span class="meta">?&gt;</span></div><div class="line"><span class="comment">/** </span></div><div class="line"> * 实例化一个Context 实例之后，初始请求是打开灯，因为灯默认是关的 ，请求显示的结果如下</div><div class="line"> * 开灯了</div><div class="line"> * 已经开灯了</div><div class="line"> * 关灯了</div><div class="line"> * 已经关灯了</div><div class="line"> */</div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>每一个行动中，我们必须把目光放到我们的过去、现在和将来的行动之外，<br>还要超越这些行为影响到的其他人，而看到所有这一切之间的关系，<br>这样一来，我们就会非常的谨慎</p>
-</blockquote>
-
+        
+          <a class="article-more-a" href="/2016/04/12/状态设计模式/#more">more >></a>
+        
       
 
       
@@ -1124,9 +559,372 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/11/单例模式/">单例模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/04/11/单例模式/" class="archive-article-date">
+  	<time datetime="2016-04-11T12:04:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="单例模式的特点"><a href="#单例模式的特点" class="headerlink" title="单例模式的特点"></a>单例模式的特点</h3><ul>
+<li>只能有一个实例</li>
+<li>必须自行创建这个实例</li>
+<li>必须给其他对象提供这一实例</li>
+</ul>
+        
+          <a class="article-more-a" href="/2016/04/11/单例模式/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/04/11/单例模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-秒杀活动的架构设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/09/秒杀活动的架构设计/">秒杀活动的架构设计</a>
+    </h1>
+  
+
+        
+        <a href="/2016/03/09/秒杀活动的架构设计/" class="archive-article-date">
+  	<time datetime="2016-03-09T09:04:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="业务的基本说明"><a href="#业务的基本说明" class="headerlink" title="业务的基本说明"></a>业务的基本说明</h3><ol>
+<li>运营评估最高的并发会达到  10W（根据推广的力度，以及以往的经验）</li>
+<li>业务现有的服务器架构 反向代理 4台，前端机 8台， db 2台（主从），redis 2台（主从）以下是服务器架构图</li>
+</ol>
+<p><img src="https://yeyute.github.io/assets/msjgt.jpg" alt="服务器架构图"></p>
+        
+          <a class="article-more-a" href="/2016/03/09/秒杀活动的架构设计/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">架构设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/03/09/秒杀活动的架构设计/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-用脚步丈量家乡-汕尾" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/22/用脚步丈量家乡-汕尾/">用脚步丈量家乡 - 汕尾</a>
+    </h1>
+  
+
+        
+        <a href="/2016/02/22/用脚步丈量家乡-汕尾/" class="archive-article-date">
+  	<time datetime="2016-02-22T10:00:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="汕尾"><a href="#汕尾" class="headerlink" title="汕尾"></a>汕尾</h3><p>或许汕尾这个城市鲜为人知，一般情况下说汕尾，对方都会复读一次是“汕头”来确认，但汕尾确实是以后可以养老的好地方，空气质量好，生活节奏慢.</p>
+<p>不过大家都为了理想而各奔东西，每年回家乡的次数也有限，借着春节的假期，各种聚会的疯狂过后，去认真的体会一下家乡的自然与空气，这种熟悉且又有了陌生的感觉，让人心平气静。</p>
+<p>沿着汕尾海边街，一路顶着海风飞（man）奔（pao）起来，想知道在海边跑步是什么感受的话，我来告诉你，就一个字，爽。</p>
+<h3 id="下面贴个跑步的小地图"><a href="#下面贴个跑步的小地图" class="headerlink" title="下面贴个跑步的小地图"></a>下面贴个跑步的小地图</h3><p><img src="https://yeyute.github.io/assets/pbdt.jpg" alt=""></p>
+        
+          <a class="article-more-a" href="/2016/02/22/用脚步丈量家乡-汕尾/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">生活</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/02/22/用脚步丈量家乡-汕尾/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Mysql 查询今天、昨天、最近7天、最近30天的优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/">Mysql 查询今天、昨天、最近7天、最近30天的优化</a>
+    </h1>
+  
+
+        
+        <a href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/" class="archive-article-date">
+  	<time datetime="2016-01-10T15:48:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>表结构<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`student`</span> (</div><div class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</div><div class="line">  <span class="string">`createtime`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span>,</div><div class="line">  <span class="string">`price`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</div><div class="line">  <span class="keyword">KEY</span> <span class="string">`createtime`</span> (<span class="string">`createtime`</span>) <span class="keyword">USING</span> BTREE</div><div class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure></p>
+        
+          <a class="article-more-a" href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/01/10/Mysql 查询今天、昨天、最近7天、最近30天的优化/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1159,7 +957,7 @@ var _hmt = _hmt || [];
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -1190,13 +988,13 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章2</a></li>
       
         
       
         
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我2</a></li>
       
         
     </ul>
@@ -1217,15 +1015,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
