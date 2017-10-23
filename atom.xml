@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="//yeyute.github.io/"/>
-  <updated>2017-10-10T12:08:48.000Z</updated>
+  <updated>2017-10-23T15:12:03.000Z</updated>
   <id>//yeyute.github.io/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2017的秋天-开花</title>
+    <link href="//yeyute.github.io/2017/10/23/2017%E7%9A%84%E7%A7%8B%E5%A4%A9-%E5%BC%80%E8%8A%B1/"/>
+    <id>//yeyute.github.io/2017/10/23/2017的秋天-开花/</id>
+    <published>2017-10-23T14:50:11.000Z</published>
+    <updated>2017-10-23T15:12:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="开花"><a href="#开花" class="headerlink" title="开花"></a>开花</h3><p>起初播种含羞草时，心里还有种感觉，感觉太过于平凡，不太用心的去浇水，后来初心其实就是为了静心的生活，培养自己有节奏的生活，不对事物麻木，一切都有生机。</p><p>这是今天开的花球<br><img src="/assets/hxc.jpeg" alt=""></p><a id="more"></a><p><img src="/assets/hxc3.jpeg" alt=""></p><p>另外还有薰衣草未开花，淘宝买的种子，一直怀疑种子货不对版，不过还好，一步步的心里没那么看重不否是薰衣草了，更看重自己能不能养得好，之前养过鱼，水草，都没超过半年，没把它们养好，这次我只是想一直的养下去。</p><p><img src="/assets/xunyicao.jpeg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      花花草草
+    
+    </summary>
+    
+      <category term="Life" scheme="//yeyute.github.io/categories/Life/"/>
+    
+    
+      <category term="生活" scheme="//yeyute.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>lumen 错误总结(初步整理)</title>
+    <link href="//yeyute.github.io/2017/10/18/lumen-%E9%94%99%E8%AF%AF%E6%80%BB%E7%BB%93/"/>
+    <id>//yeyute.github.io/2017/10/18/lumen-错误总结/</id>
+    <published>2017-10-18T08:04:49.000Z</published>
+    <updated>2017-10-23T14:48:53.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="错误汇总"><a href="#错误汇总" class="headerlink" title="错误汇总"></a>错误汇总</h3><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 问题</span></div><div class="line">[Symfony\Component\Debug\Exception\FatalThrowableError]</div><div class="line">  Type error: Argument 1 passed to Illuminate\Cache\RedisStore::__construct() must be an<span class="built_in"> instance </span>of Illuminate\Contracts\Redis\Factory,<span class="built_in"> instance </span>of Illuminate\Support\Facades\Redis given, called in /www/sailLivePHP/vendor/illuminate/cache/CacheManager.php on line 200</div><div class="line"></div><div class="line"><span class="comment"># 解决，在 bootstrap/app.php 添加</span></div><div class="line"></div><div class="line">$app-&gt;register(\Illuminate\Redis\RedisServiceProvider::class);</div></pre></td></tr></table></figure><figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 问题</span></div><div class="line">[ReflectionException]</div><div class="line">  Class redis <span class="keyword">does</span> <span class="keyword">not</span> exist</div><div class="line"></div><div class="line"><span class="comment"># 解决， 在composer.json 中添加，个人是少添加第二条</span></div><div class="line"><span class="string">"predis/predis"</span>: <span class="string">"^1.1"</span>,</div><div class="line"><span class="string">"illuminate/redis"</span>: <span class="string">"^5.3"</span>,</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      lumen框架,php,laravel
+    
+    </summary>
+    
+      <category term="Technology" scheme="//yeyute.github.io/categories/Technology/"/>
+    
+    
+      <category term="php" scheme="//yeyute.github.io/tags/php/"/>
+    
+  </entry>
   
   <entry>
     <title>使用php swoole扩展实现IM系统</title>
