@@ -36,7 +36,7 @@
 var _hmt = _hmt || [];
 (function() {
 	var hm = document.createElement("script");
-	hm.src = "https://hm.baidu.com/hm.js?4f9e601dfe71ef2e0e8457ccc79195a3";
+	hm.src = "https://hm.baidu.com/hm.js?efefa361670ba7d0bdf627ed85ae05c1";
 	var s = document.getElementsByTagName("script")[0]; 
 	s.parentNode.insertBefore(hm, s);
 })();
@@ -163,6 +163,582 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-二维被扫实时返回方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/19/二维被扫实时返回方案/">二维被扫实时返回方案</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/19/二维被扫实时返回方案/" class="archive-article-date">
+  	<time datetime="2018-03-19T08:20:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><ol>
+<li>需要在小程序二维码扫码功能 </li>
+<li>被扫码成功后跳转到成功页面</li>
+<li>不想使用websocket 通讯，想通过接口的方法实现</li>
+</ol>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><ol>
+<li>用户扫码二维码成功后 会入库，并入redis 队列</li>
+<li>前端请求扫码状态接口，后端使用redis 取队列方法BRPOP 阻塞25秒，有则返回成功状态，没有则继续等待，超过25秒发状态码让前端重新请求接口。   </li>
+</ol>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>避免前端多次的轮询，减少服务器压力</li>
+<li>可以不用websocket实时的知道被扫码情况</li>
+</ol>
+<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3>
+        
+          <a class="article-more-a" href="/2018/03/19/二维被扫实时返回方案/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">扫码</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/19/二维被扫实时返回方案/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-php笔试题面试题整理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/08/php笔试题面试题整理/">php笔试题面试题整理</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/08/php笔试题面试题整理/" class="archive-article-date">
+  	<time datetime="2018-03-08T15:55:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>整理于之前面试别人或被面试的一些题目(持续更新),答案网上基本都有，不一一列举。</p>
+</blockquote>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><ol>
+<li>mysql 索引的理解</li>
+<li>mysql b-tree 与hash 索引的区别</li>
+<li>mysql 索引的优化</li>
+<li>mysql 存储引擎的理解，例 MyISAM与InnoDB的区别</li>
+<li>除了mysql 还用过其它数据库吗？ 有那些，应用的场景，优缺点</li>
+<li>mysql主从配置原理</li>
+</ol>
+<h3 id="安全方面"><a href="#安全方面" class="headerlink" title="安全方面"></a>安全方面</h3><ol>
+<li>防sql注入的方法</li>
+<li>XSS攻击是什么？ 如何预防</li>
+<li>常见的web攻击有那几种 ？ DoS攻击，跨站请求伪造攻击(CSRF)，跨站脚本攻击(XSS),SQL注入等</li>
+</ol>
+        
+          <a class="article-more-a" href="/2018/03/08/php笔试题面试题整理/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/08/php笔试题面试题整理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-go程序设计语言练习题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/08/go程序设计语言练习题/">go程序设计语言练习题</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/08/go程序设计语言练习题/" class="archive-article-date">
+  	<time datetime="2018-03-08T15:22:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>来自 go程序设计语言 一书</p>
+</blockquote>
+<h4 id="编写一个非递归的comma函数，运用bytes-Buffer，而不是简单的字符串拼接"><a href="#编写一个非递归的comma函数，运用bytes-Buffer，而不是简单的字符串拼接" class="headerlink" title="编写一个非递归的comma函数，运用bytes.Buffer，而不是简单的字符串拼接"></a>编写一个非递归的comma函数，运用bytes.Buffer，而不是简单的字符串拼接</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"bytes"</span></div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line"></div><div class="line">    fmt.Println(comma(<span class="string">"1234567889988"</span>))</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">comma</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> newByte <span class="keyword">byte</span> = <span class="string">','</span></div><div class="line">    n := <span class="built_in">len</span>(s)</div><div class="line">    buf := bytes.NewBuffer([]<span class="keyword">byte</span>&#123;&#125;)</div><div class="line"></div><div class="line">    <span class="keyword">if</span> n &lt;= <span class="number">3</span> &#123;</div><div class="line">        <span class="keyword">return</span> s</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (n-i)%<span class="number">3</span> == <span class="number">0</span> &amp;&amp; i != <span class="number">0</span> &#123;</div><div class="line">            buf.WriteByte(newByte)</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        buf.WriteByte(s[i])</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> buf.String()</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="练习4-3-重写函数reverse-使用数组指针作为参数而不是slice"><a href="#练习4-3-重写函数reverse-使用数组指针作为参数而不是slice" class="headerlink" title="练习4.3 重写函数reverse,使用数组指针作为参数而不是slice"></a>练习4.3 重写函数reverse,使用数组指针作为参数而不是slice</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> arr [<span class="number">7</span>]<span class="keyword">int</span> = [<span class="number">7</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">48</span>, <span class="number">299</span>, <span class="number">4990</span>&#125;</div><div class="line">    reverse(&amp;arr)</div><div class="line">    fmt.Println(<span class="string">"In main(), arr values:"</span>, arr)</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverse</span><span class="params">(arr *[7]<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> i, j := <span class="number">0</span>, <span class="built_in">len</span>(*arr)<span class="number">-1</span>; i &lt; j; i, j = i+<span class="number">1</span>, j<span class="number">-1</span> &#123;</div><div class="line">        (*arr)[i], (*arr)[j] = (*arr)[j], (*arr)[i]</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="练习4-5，编写一个就地处理函数，用于去-除-string-slice-中相邻的重复字符串元素"><a href="#练习4-5，编写一个就地处理函数，用于去-除-string-slice-中相邻的重复字符串元素" class="headerlink" title="练习4.5，编写一个就地处理函数，用于去 除[]string slice 中相邻的重复字符串元素"></a>练习4.5，编写一个就地处理函数，用于去 除[]string slice 中相邻的重复字符串元素</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    x := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">7</span>&#125;</div><div class="line">    x = remove(x)</div><div class="line">    fmt.Printf(<span class="string">"%d"</span>, x)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">remove</span><span class="params">(slice []<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> i := <span class="keyword">range</span> slice &#123;</div><div class="line">        <span class="keyword">if</span> i &gt; <span class="built_in">len</span>(slice)<span class="number">-1</span> &#123;</div><div class="line">            <span class="keyword">return</span> slice</div><div class="line">        &#125;</div><div class="line">        fmt.Printf(<span class="string">"%d\n"</span>, slice)</div><div class="line">        <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(slice)<span class="number">-1</span> &amp;&amp; slice[i] == slice[i+<span class="number">1</span>] &#123;</div><div class="line"></div><div class="line">            <span class="built_in">copy</span>(slice[i:], slice[i+<span class="number">1</span>:])</div><div class="line">            slice = slice[:<span class="built_in">len</span>(slice)<span class="number">-1</span>]</div><div class="line">            fmt.Printf(<span class="string">"%d \n"</span>, slice)</div><div class="line">            <span class="keyword">return</span> remove(slice)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> slice</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">go</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/08/go程序设计语言练习题/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-选择MariaDB的压缩数据引擎TokuDB" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/02/选择MariaDB的压缩数据引擎TokuDB/">选择MariaDB的压缩数据引擎TokuDB</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/02/选择MariaDB的压缩数据引擎TokuDB/" class="archive-article-date">
+  	<time datetime="2018-02-02T08:57:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="业务运用场景"><a href="#业务运用场景" class="headerlink" title="业务运用场景"></a>业务运用场景</h3><ol>
+<li>数据基本不用update， 不频繁的范围查询</li>
+<li>数据存储量较大（为以后准备）</li>
+<li>选择占用磁盘较小的db</li>
+<li>业务对数据库插入操作频繁，为避免影响其它业务，需要将直播业务的DB 独立出来，选择另外的db</li>
+</ol>
+        
+          <a class="article-more-a" href="/2018/02/02/选择MariaDB的压缩数据引擎TokuDB/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">架构设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/02/选择MariaDB的压缩数据引擎TokuDB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-php使用swoole的应用场景" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/php使用swoole的应用场景/">php使用swoole的应用场景</a>
+    </h1>
+  
+
+        
+        <a href="/2017/11/20/php使用swoole的应用场景/" class="archive-article-date">
+  	<time datetime="2017-11-20T02:11:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="应用场景简介"><a href="#应用场景简介" class="headerlink" title="应用场景简介"></a>应用场景简介</h3><ol>
+<li>与硬件设备连接通讯(定位设备)</li>
+<li>IM系统(用于直播页面的聊天通讯)</li>
+</ol>
+<h3 id="场景1-实时收集定位数据实时输出（例-滴滴司机行驶轨迹）"><a href="#场景1-实时收集定位数据实时输出（例-滴滴司机行驶轨迹）" class="headerlink" title="场景1 - 实时收集定位数据实时输出（例 滴滴司机行驶轨迹）"></a>场景1 - 实时收集定位数据实时输出（例 滴滴司机行驶轨迹）</h3><p><strong>说明：</strong><br>需要将所有的定位设备实时的接收，将实时的轨迹记录显示在地图上</p>
+        
+          <a class="article-more-a" href="/2017/11/20/php使用swoole的应用场景/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/11/20/php使用swoole的应用场景/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-交流" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/19/交流/">交流的提醒</a>
+    </h1>
+  
+
+        
+        <a href="/2017/11/19/交流/" class="archive-article-date">
+  	<time datetime="2017-11-19T15:20:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div><img src="/assets/jl.jpeg" width="600" align="left"></div>
+
+<div style="clear:both;"></div>
+
+
+<p>家，离得很近，回去的次数不多。</p>
+<p>记得是一天的晚饭后，是和妈一次久违的聊天，我说今年过年我还会出去外面玩，让她提前知道有个准备。</p>
+        
+          <a class="article-more-a" href="/2017/11/19/交流/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">生活</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/11/19/交流/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017的秋天-开花" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -184,7 +760,10 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="开花"><a href="#开花" class="headerlink" title="开花"></a>开花</h3><p>起初播种含羞草时，心里还有种感觉，感觉太过于平凡，不太用心的去浇水，后来初心其实就是为了静心的生活，培养自己有节奏的生活，不对事物麻木，一切都有生机。</p>
-<p>这是今天开的花球<br><img src="/assets/hxc.jpeg" alt=""></p>
+<p>这是今天开的花球</p>
+<div><img src="/assets/hxc.jpeg" width="600" align="left"></div>
+
+<div style="clear:both;"></div>
         
           <a class="article-more-a" href="/2017/10/23/2017的秋天-开花/#more">more >></a>
         
@@ -222,92 +801,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/10/23/2017的秋天-开花/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lumen-错误总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/18/lumen-错误总结/">lumen 错误总结(初步整理)</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/18/lumen-错误总结/" class="archive-article-date">
-  	<time datetime="2017-10-18T08:04:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="错误汇总"><a href="#错误汇总" class="headerlink" title="错误汇总"></a>错误汇总</h3><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 问题</span></div><div class="line">[Symfony\Component\Debug\Exception\FatalThrowableError]</div><div class="line">  Type error: Argument 1 passed to Illuminate\Cache\RedisStore::__construct() must be an<span class="built_in"> instance </span>of Illuminate\Contracts\Redis\Factory,<span class="built_in"> instance </span>of Illuminate\Support\Facades\Redis given, called in /www/sailLivePHP/vendor/illuminate/cache/CacheManager.php on line 200</div><div class="line"></div><div class="line"><span class="comment"># 解决，在 bootstrap/app.php 添加</span></div><div class="line"></div><div class="line">$app-&gt;register(\Illuminate\Redis\RedisServiceProvider::class);</div></pre></td></tr></table></figure>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 问题</span></div><div class="line">[ReflectionException]</div><div class="line">  Class redis <span class="keyword">does</span> <span class="keyword">not</span> exist</div><div class="line"></div><div class="line"><span class="comment"># 解决， 在composer.json 中添加，个人是少添加第二条</span></div><div class="line"><span class="string">"predis/predis"</span>: <span class="string">"^1.1"</span>,</div><div class="line"><span class="string">"illuminate/redis"</span>: <span class="string">"^5.3"</span>,</div></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/18/lumen-错误总结/">展开全文 >></a>
         </p>
       
 
@@ -432,465 +925,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-go-学习笔记一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/03/go-学习笔记一/">golang 学习笔记一(基础部分)</a>
-    </h1>
-  
-
-        
-        <a href="/2017/05/03/go-学习笔记一/" class="archive-article-date">
-  	<time datetime="2017-05-03T02:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Go语言最主要的特性"><a href="#Go语言最主要的特性" class="headerlink" title="Go语言最主要的特性"></a>Go语言最主要的特性</h3><p>自动垃圾回收<br>更丰富的内置类型<br>函数多返回值<br>错误处理<br>匿名函数和闭包<br>类型和接口<br>并发编程<br>反射<br>语言交互性</p>
-        
-          <a class="article-more-a" href="/2017/05/03/go-学习笔记一/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/03/go-学习笔记一/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-golang-排序练习题学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/03/golang-排序练习题学习/">golang 排序练习题学习</a>
-    </h1>
-  
-
-        
-        <a href="/2017/03/03/golang-排序练习题学习/" class="archive-article-date">
-  	<time datetime="2017-03-03T05:38:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>练习题目来源于 go 语言编程  一书,程序自己测试完成通过</p>
-</blockquote>
-<p>我们将该函数分为两类：主程序和排序算法函数。每个排序算法都包装成一个静态库，虽然现在看起来似乎有些多此一举，但这只是为了顺便演示包之间的依赖方法<br>注：环境变量需要指定到该根目录执行程序，另外文章只是简单的说明构建流程，主要自己看代码理解</p>
-<h3 id="目录结构代码-https-github-com-yeyute-go-git"><a href="#目录结构代码-https-github-com-yeyute-go-git" class="headerlink" title="目录结构代码 (https://github.com/yeyute/go.git)"></a>目录结构代码 (<a href="https://github.com/yeyute/go.git" target="_blank" rel="external">https://github.com/yeyute/go.git</a>)</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">├─<span class="symbol">&lt;src&gt;</span></div><div class="line">	├─<span class="symbol">&lt;sorter&gt;</span></div><div class="line">		├─sorter.<span class="keyword">go</span></div><div class="line">	├─<span class="symbol">&lt;algorithms&gt;</span></div><div class="line">		├─<span class="symbol">&lt;qsort&gt;</span></div><div class="line">			├─qsort.<span class="keyword">go</span></div><div class="line">			├─qsort_test.<span class="keyword">go</span></div><div class="line">		├─<span class="symbol">&lt;bubblesort&gt;</span></div><div class="line">			├─bubblesort.<span class="keyword">go</span></div><div class="line">			├─bubblesort_test.<span class="keyword">go</span></div><div class="line">	├─<span class="symbol">&lt;pkg&gt;</span>(程序构建时自动创建)</div><div class="line">	├─<span class="symbol">&lt;bin&gt;</span>(程序构建时自动创建)</div></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2017/03/03/golang-排序练习题学习/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/03/golang-排序练习题学习/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-go-安装笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/25/go-安装笔记/">golang 环境搭建笔记</a>
-    </h1>
-  
-
-        
-        <a href="/2017/02/25/go-安装笔记/" class="archive-article-date">
-  	<time datetime="2017-02-25T06:12:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>下载地址：<a href="https://golang.org/dl/" target="_blank" rel="external">https://golang.org/dl/</a></p>
-<h3 id="mac-安装"><a href="#mac-安装" class="headerlink" title="mac 安装"></a>mac 安装</h3><p>版本：1.8.1<br>MAC 系统下你可以使用 .pkg 结尾的安装包直接双击来完成安装，安装目录在 /usr/local/go/ 下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 没有bash_profile 则新建</div><div class="line">vim ~/.bash_profile</div><div class="line"></div><div class="line"><span class="comment"># 项目路径</span></div><div class="line"><span class="built_in">export</span> GOPATH=/Users/AT/Dropbox/htdocs/go</div><div class="line"><span class="comment"># go执行的执行位置 默认是</span></div><div class="line"><span class="built_in">export</span> GOBIN=/usr/<span class="built_in">local</span>/go/bin</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GOBIN</span></div><div class="line">:wq</div><div class="line"></div><div class="line"><span class="comment"># 编译</span></div><div class="line"><span class="built_in">source</span> .bash_profile</div><div class="line"><span class="comment"># 查看 go 环境变量是否成功</span></div><div class="line">go env</div></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2017/02/25/go-安装笔记/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">golang</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/02/25/go-安装笔记/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Facade外观设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/22/Facade外观设计模式/">Facade外观设计模式</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/22/Facade外观设计模式/" class="archive-article-date">
-  	<time datetime="2017-01-22T07:38:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>用于全部api的统一调用方式，规范化代码，后续维护方便<br>具有独立性 和可移植性<br>在 apiImplement类 做接口接入的扩展，例： apiImplement类中的mango 方法 实例化 MangoApi类，调用方式如下</p>
-        
-          <a class="article-more-a" href="/2017/01/22/Facade外观设计模式/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/22/Facade外观设计模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-laravel后台框架laravel-admin-select框的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/">laravel后台框架laravel-admin select框的使用</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/" class="archive-article-date">
-  	<time datetime="2016-12-15T04:01:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="select-二级联动不能正常获取数据原因"><a href="#select-二级联动不能正常获取数据原因" class="headerlink" title="select 二级联动不能正常获取数据原因"></a>select 二级联动不能正常获取数据原因</h3><p><img src="https://yeyute.github.io/assets/laravel_admin1.png" alt="laravel_admin"><br>使用二级联动时调用的api时，api返回的代码如以下, </p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//控制器文件controller.php</span></div><div class="line"><span class="keyword">$this</span>-&gt;form-&gt;select(<span class="string">'sort'</span>, <span class="string">'app'</span>)</div><div class="line">             -&gt;options($sort_type)</div><div class="line">             -&gt;load(<span class="string">'position_id'</span>, <span class="string">'/admin/api_general/get_position'</span>);</div><div class="line"></div><div class="line"><span class="comment">//api文件                     </span></div><div class="line">$data = [</div><div class="line">	&#123;<span class="string">"id"</span>=&gt;<span class="string">"111"</span>,<span class="string">"text"</span>=&gt;<span class="string">"index"</span>&#125;,</div><div class="line">	];</div><div class="line"><span class="keyword">return</span> json_encode($data);</div></pre></td></tr></table></figure>
-<p><img src="https://yeyute.github.io/assets/laravel_admin2.png" alt="laravel_admin"></p>
-        
-          <a class="article-more-a" href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Technology//" class="article-tag-list-link color1">Technology</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/15/laravel后台框架laravel-admin-select框的使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -905,7 +939,7 @@ var _hmt = _hmt || [];
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 AT
+    		&copy; 2018 AT
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -992,19 +1026,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">golang</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1016,6 +1046,14 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">go</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
@@ -1024,11 +1062,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">扫码</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>
